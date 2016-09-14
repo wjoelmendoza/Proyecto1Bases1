@@ -1,0 +1,45 @@
+<nav class="nav navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type ="button" class="navbar-toggle collapsed" data-toggle="collapse" data-targer="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle Navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <h1><font color="white">Apuestas</font></h1>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/Apuestas/Admin/AInicio.jsp">Inicio</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Apostar<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Todos los partidos</a></li>
+                        <li><a href="#">Buscar pais</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Grupo A</a></li>
+                        <li><a href="#">Grupo B</a></li>
+                        <li><a href="#">Grupo C</a></li>
+                        <li><a href="#">Grupo D</a></li>
+                        <li><a href="#">Grupo E</a></li>
+                        <li><a href="#">Grupo F</a></li>
+                        <li><a href="#">Grupo G</a></li>
+                        <li><a href="#">Grupo H</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Usuario<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Cambiar datos</a></li>
+                        <li><a href="#">Cambiar Clave</a></li>
+                        <li><a href="#">Eliminar Cuenta</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="/Apuestas/logout">Salir</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
