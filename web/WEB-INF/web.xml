@@ -18,8 +18,8 @@
         <servlet-class>servlet.logout</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>cambiarc</servlet-name>
-        <servlet-class>servlet.cambiarc</servlet-class>
+        <servlet-name>CambiarC</servlet-name>
+        <servlet-class>servlet.CambiarC</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
@@ -38,8 +38,8 @@
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>cambiarc</servlet-name>
-        <url-pattern>/cambiarc</url-pattern>
+        <servlet-name>CambiarC</servlet-name>
+        <url-pattern>/CambiarC</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

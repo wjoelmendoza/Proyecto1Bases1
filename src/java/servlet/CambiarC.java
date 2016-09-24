@@ -5,6 +5,7 @@
  */
 package servlet;
 
+import com.conexion.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -16,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author wxjoy
  */
-public class cambiarc extends HttpServlet {
+public class CambiarC extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,19 +30,40 @@ public class cambiarc extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet cambiarc</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet cambiarc at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        User u ;
+        String cAct = request.getParameter("c_act");
+        String nClave = request.getParameter("nueva_c");
+        String nrClave = request.getParameter("nueva_cr");
+        response.sendRedirect("/Apuestas/User/c_clave.jsp");
+        if(cAct==null){
+            request.getSession().setAttribute("error", "No ingreso la clave actual");
+            return;
         }
+        
+        if(nClave==null){
+            request.getSession().setAttribute("error", "No ingreso la nueva clave");
+            return;
+        }
+        
+        if(nrClave == null){
+            request.getSession().setAttribute("error", "No confirmo la nueva clave");
+            return;
+        }
+        
+        if(!nrClave.equals(nClave)){
+            request.getSession().setAttribute("error", "La nueva clave no coincide");
+            return;
+        }
+        int codu =(int) request.getSession().getAttribute("id");
+        u = new User();
+        int tmp = u.cambiarClave(codu, cAct, nClave);
+        
+        if (tmp==1){
+            request.getSession().setAttribute("hecho", "Se cambio la clave");
+        }else{
+            request.getSession().setAttribute("error", "La clave actual es incorrecta");
+        }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

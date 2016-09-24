@@ -16,7 +16,7 @@
         <%@include file="../WEB-INF/jspf/headeru.jspf" %>
         <title>Buscar Plantilla</title>
     </head>
-    <body rol="document">
+    <body role="document">
         <%@include file="../WEB-INF/jspf/menu_u.jspf"%>
         <div rol="main" class="container theme-showcase">
             <br>

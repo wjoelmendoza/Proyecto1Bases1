@@ -13,7 +13,7 @@
         <%@include file="../WEB-INF/jspf/headeru.jspf" %>
         <title>Inicio-Usuario</title>
     </head>
-    <body rol="document">
+    <body role="document">
         <%@include file="../WEB-INF/jspf/menu_u.jspf" %>
         <div role="main" class="container theme-showcase">
             <br>

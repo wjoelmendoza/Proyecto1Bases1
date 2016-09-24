@@ -95,7 +95,7 @@ public class RegUser extends HttpServlet {
         String nombre = request.getParameter("nombre");
         
         if(nombre==null){
-            request.getSession().setAttribute(nombre,"No ingreso+nombre");
+            request.getSession().setAttribute(nombre,"No ingreso nombre");
             response.sendRedirect(msj);
             return;
         }

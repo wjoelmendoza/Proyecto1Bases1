@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@include file="WEB-INF/jspf/val_l.jspf" %>
+<%val_user(session,response);%>
 <!DOCTYPE html>
 <html lang="es">
     <head>

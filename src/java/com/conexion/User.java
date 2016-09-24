@@ -7,6 +7,7 @@ package com.conexion;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import oracle.jdbc.OracleTypes;
 
 /**
  *
@@ -19,8 +20,11 @@ public class User {
     private ResultSet rset;
     private String nombre ="";
     private char rol;
+    private CallableStatement clstm;
     
+    public User(){}
     
+
     private void nuevaConexion(){
         conexion = new Conexion();
     }
@@ -78,17 +82,14 @@ public class User {
         this.nuevaConexion();
         int id=-1;
         String tipo;
-        StringBuilder stme = new StringBuilder();
-        stme.append("SELECT U.cod_usuario, U.nombre, U.tipo")
-                .append(" FROM USUARIO U")
-                .append(" WHERE U.correo = '")
-                .append(correo)
-                .append("' and U.clave = '")
-                .append(clave)
-                .append("'");
+        
         try{
-            stm = conexion.getConexion().createStatement();
-            rset = stm.executeQuery(stme.toString());
+            clstm = conexion.getConexion().prepareCall("{call login_usuarios(?,?,?)}");
+            clstm.setString(1, correo);
+            clstm.setString(2, clave);
+            clstm.registerOutParameter(3, OracleTypes.CURSOR);
+            clstm.execute();
+            rset = (ResultSet) clstm.getObject(3);
             if(rset.next()){
                 id = rset.getInt(1);
                 nombre = rset.getString(2);
@@ -114,20 +115,20 @@ public class User {
     /**
      * llamar para verificar si el correo no le pertenece a otro usuario
      * que ya esta registrado
+     * @param correo es el correo que se desea validar
+     * @return true si y solo si no existe otro usuario con el correo en cuestion
      */
     public boolean isDisponible(String correo){
         this.nuevaConexion();
         StringBuilder query = new StringBuilder();
         boolean disp = true;
-        query.append("SELECT U.cod_usuario ")
-                .append("FROM USUARIO U ")
-                .append("WHERE U.correo = '")
-                .append(correo)
-                .append("'");
         
         try{
-            stm = conexion.getConexion().createStatement();
-            rset = stm.executeQuery(query.toString());
+            clstm = conexion.getConexion().prepareCall("{call validar_correo(?,?)}");
+            clstm.setString(1, correo);
+            clstm.registerOutParameter(2, OracleTypes.CURSOR);
+            clstm.execute();
+            rset =(ResultSet) clstm.getObject(2);
             disp = !rset.next();
         } catch (SQLException ex) {
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
@@ -143,5 +144,45 @@ public class User {
             }
         }
         return disp;
+    }
+    
+    /**
+     * Este metodo se utilizar para el cambio de contraseña
+     * @param codigo de usuario
+     * @param clave actual del usuario
+     * @param nClave sustituira la clave anterior
+     * @return 0 si ocurre algun error 1 si se logra realizar el cambio satisfactorio
+     */
+    public int cambiarClave(int codigo, String clave, String nClave){
+        int resultado=0;
+        try {
+            conexion = new Conexion();
+            clstm = conexion.getConexion().prepareCall("{call cambiar_clave(?,?,?,?)}");
+            clstm.setInt(1, codigo);
+            clstm.setString(2, clave);
+            clstm.setString(3, nClave);
+            clstm.registerOutParameter(4, OracleTypes.INTEGER);
+            clstm.execute();
+            resultado =(int) clstm.getObject(4);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            if(rset!=null) try {
+                rset.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if(clstm!=null) try {
+                clstm.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if(conexion!=null) conexion.close();
+        }
+        
+        return resultado;
     }
 }

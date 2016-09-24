@@ -1,0 +1,16 @@
+<%@page import="java.io.IOException" %>
+<%!
+public void val_user(HttpSession session, HttpServletResponse response) throws ServletException,IOException{
+    Object orol = session.getAttribute("rol");
+    char rol;
+    if(orol != null){
+        rol = (char) orol;
+        if(rol == 'A')
+            response.sendRedirect("/Apuestas/Admin/AInicio.jsp");
+        else if(rol == 'C')
+            response.sendRedirect("/Apuestas/User/UInicio.jsp");
+        else
+            session.removeAttribute("rol");
+    }
+}
+%>

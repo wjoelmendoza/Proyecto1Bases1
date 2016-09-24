@@ -18,13 +18,16 @@ public class Pais {
     private Conexion conexion;
     private Statement stm;
     private ResultSet rset;
+    private CallableStatement clstm;
     
     public ArrayList<String> getPaises(){
         try {
             conexion = new Conexion();
             paises = new ArrayList<>();
-            stm = conexion.getConexion().createStatement();
-            rset = stm.executeQuery("SELECT P.nombre FROM PAIS P ORDER BY P.nombre");
+            clstm = conexion.getConexion().prepareCall("{call listado_paises(?)}");
+            clstm.registerOutParameter(1, oracle.jdbc.OracleTypes.CURSOR);
+            clstm.execute();
+            rset =(ResultSet)clstm.getObject(1);
             while(rset.next())
                 paises.add(rset.getString(1));
             

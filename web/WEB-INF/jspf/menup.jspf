@@ -15,10 +15,6 @@
                 <li><a href="reg.jsp">Registrarse</a></li>
                 <li><a href="login.jsp">Iniciar Sesion</a></li>
                 <li><a href="apostar.jsp">Apostar</a></li>
-                <!--
-                    aqui podria poner un if que 
-                    verifique que el usuario esta logueado
-                -->
                 <li><a href="about.jsp">Acerca de</a></li>
             </ul>
         </div>

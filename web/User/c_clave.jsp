@@ -13,12 +13,12 @@
         <%@include file="../WEB-INF/jspf/headeru.jspf" %>
         <title>Cambiar Clave</title>
     </head>
-    <body rol="document">
+    <body role="document">
         <%@include file="../WEB-INF/jspf/menu_u.jspf" %>
         <div role="main" class="container theme-showcase">
             <br>
             <div class="jumbotron">
-                <form method="post" action="/Apuestas/cambiarc">
+                <form method="post" action="/Apuestas/CambiarC">
                     <table>
                         <tr>
                             <td>Clave:</td>

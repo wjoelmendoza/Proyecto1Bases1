@@ -1,11 +1,4 @@
--- Generado por Oracle SQL Developer Data Modeler 4.1.3.901
---   en:        2016-09-14 16:46:58 CST
---   sitio:      Oracle Database 11g
---   tipo:      Oracle Database 11g
-
-
-
-
+--Oracle DataBase
 CREATE TABLE ARBITRO
   (
     cod_arb  SMALLINT NOT NULL ,
@@ -17,17 +10,25 @@ ALTER TABLE ARBITRO ADD CONSTRAINT ARBITRO_PK PRIMARY KEY ( cod_arb ) ;
 
 CREATE TABLE ASIG
   (
-    cod_arb  SMALLINT NOT NULL ,
-    cod_part INTEGER NOT NULL ,
-    posicion VARCHAR2 (15 CHAR)
+    cod_arb     SMALLINT NOT NULL ,
+    cod_partido INTEGER NOT NULL ,
+    posicion    VARCHAR2 (15 CHAR)
   ) ;
-ALTER TABLE ASIG ADD CONSTRAINT ASIG_PK PRIMARY KEY ( cod_arb, cod_part ) ;
+ALTER TABLE ASIG ADD CONSTRAINT ASIG_PK PRIMARY KEY ( cod_arb, cod_partido ) ;
+
+
+CREATE TABLE CIUDAD
+  (
+    cod_ciudad INTEGER NOT NULL ,
+    nombre     VARCHAR2 (75 CHAR) NOT NULL
+  ) ;
+ALTER TABLE CIUDAD ADD CONSTRAINT CIUDAD_PK PRIMARY KEY ( cod_ciudad ) ;
 
 
 CREATE TABLE CONFEDERACION
   (
     cod      INTEGER NOT NULL ,
-    nombre   VARCHAR2 (60) NOT NULL ,
+    nombre   VARCHAR2 (70 CHAR) NOT NULL ,
     acronimo VARCHAR2 (8) NOT NULL
   ) ;
 ALTER TABLE CONFEDERACION ADD CONSTRAINT CONFEDERACION_PK PRIMARY KEY ( cod ) ;
@@ -36,7 +37,7 @@ ALTER TABLE CONFEDERACION ADD CONSTRAINT CONFEDERACION_PK PRIMARY KEY ( cod ) ;
 CREATE TABLE EQUIPO
   (
     cod_equipo INTEGER NOT NULL ,
-    director   VARCHAR2 (50 CHAR) ,
+    director   VARCHAR2 (50 CHAR) NOT NULL ,
     cod_pais   SMALLINT NOT NULL ,
     grupo      CHAR (1 CHAR) NOT NULL
   ) ;
@@ -65,13 +66,13 @@ ALTER TABLE JUGADOR ADD CONSTRAINT JUGADOR_PK PRIMARY KEY ( cod_equipo, camiseta
 
 CREATE TABLE MARCADOR
   (
-    goles       SMALLINT NOT NULL ,
-    cod_equipo  INTEGER NOT NULL ,
-    cod_partido INTEGER NOT NULL ,
-    tipo        CHAR (1 CHAR) NOT NULL ,
-    cod_usuario INTEGER NOT NULL
+    goles         SMALLINT NOT NULL ,
+    cod_equipo    INTEGER NOT NULL ,
+    codigo_codigo INTEGER NOT NULL ,
+    tipo          CHAR (1 CHAR) NOT NULL ,
+    cod_usuario   INTEGER NOT NULL
   ) ;
-ALTER TABLE MARCADOR ADD CONSTRAINT MARCADOR_PK PRIMARY KEY ( cod_usuario, cod_partido ) ;
+ALTER TABLE MARCADOR ADD CONSTRAINT MARCADOR_PK PRIMARY KEY ( cod_usuario, codigo_codigo ) ;
 
 
 CREATE TABLE PAIS
@@ -87,17 +88,18 @@ CREATE TABLE PARTIDO
   (
     codigo      INTEGER NOT NULL ,
     fecha       DATE NOT NULL ,
-    hora_inicio DATE NOT NULL
+    hora_inicio DATE NOT NULL ,
+    cod_ciudad  INTEGER NOT NULL
   ) ;
 ALTER TABLE PARTIDO ADD CONSTRAINT PARTIDO_PK PRIMARY KEY ( codigo ) ;
 
 
 CREATE TABLE RIVALES
   (
-    cod_equipo INTEGER NOT NULL ,
-    cod_part   INTEGER NOT NULL
+    cod_equipo     INTEGER NOT NULL ,
+    codigo_partido INTEGER NOT NULL
   ) ;
-ALTER TABLE RIVALES ADD CONSTRAINT RIVALES_PK PRIMARY KEY ( cod_equipo, cod_part ) ;
+ALTER TABLE RIVALES ADD CONSTRAINT RIVALES_PK PRIMARY KEY ( cod_equipo, codigo_partido ) ;
 
 
 CREATE TABLE USUARIO
@@ -110,7 +112,8 @@ CREATE TABLE USUARIO
     tipo        CHAR (1 CHAR) NOT NULL ,
     clave       VARCHAR2 (15 CHAR) NOT NULL ,
     pago        CHAR (1 CHAR) NOT NULL ,
-    puntos      SMALLINT
+    puntos      SMALLINT ,
+    tipo_u      CHAR (1 CHAR) NOT NULL
   ) ;
 ALTER TABLE USUARIO ADD CONSTRAINT USUARIO_PK PRIMARY KEY ( cod_usuario ) ;
 ALTER TABLE USUARIO ADD CONSTRAINT USUARIO__correo UNIQUE ( correo ) ;
@@ -120,7 +123,7 @@ ALTER TABLE ARBITRO ADD CONSTRAINT ARBITRO_PAIS_FK FOREIGN KEY ( cod_pais ) REFE
 
 ALTER TABLE ASIG ADD CONSTRAINT ASIG_ARBITRO_FK FOREIGN KEY ( cod_arb ) REFERENCES ARBITRO ( cod_arb ) ;
 
-ALTER TABLE ASIG ADD CONSTRAINT ASIG_PARTIDO_FK FOREIGN KEY ( cod_part ) REFERENCES PARTIDO ( codigo ) ;
+ALTER TABLE ASIG ADD CONSTRAINT ASIG_PARTIDO_FK FOREIGN KEY ( cod_partido ) REFERENCES PARTIDO ( codigo ) ;
 
 ALTER TABLE EQUIPO ADD CONSTRAINT EQUIPO_PAIS_FK FOREIGN KEY ( cod_pais ) REFERENCES PAIS ( cod_pais ) ;
 
@@ -128,15 +131,17 @@ ALTER TABLE JUGADOR ADD CONSTRAINT JUGADOR_EQUIPO_FK FOREIGN KEY ( cod_equipo ) 
 
 ALTER TABLE MARCADOR ADD CONSTRAINT MARCADOR_EQUIPO_FK FOREIGN KEY ( cod_equipo ) REFERENCES EQUIPO ( cod_equipo ) ;
 
-ALTER TABLE MARCADOR ADD CONSTRAINT MARCADOR_PARTIDO_FK FOREIGN KEY ( cod_partido ) REFERENCES PARTIDO ( codigo ) ;
+ALTER TABLE MARCADOR ADD CONSTRAINT MARCADOR_PARTIDO_FK FOREIGN KEY ( codigo_codigo ) REFERENCES PARTIDO ( codigo ) ;
 
 ALTER TABLE MARCADOR ADD CONSTRAINT MARCADOR_USUARIO_FK FOREIGN KEY ( cod_usuario ) REFERENCES USUARIO ( cod_usuario ) ;
 
 ALTER TABLE PAIS ADD CONSTRAINT PAIS_CONFEDERACION_FK FOREIGN KEY ( cod_conf ) REFERENCES CONFEDERACION ( cod ) ;
 
+ALTER TABLE PARTIDO ADD CONSTRAINT PARTIDO_CIUDAD_FK FOREIGN KEY ( cod_ciudad ) REFERENCES CIUDAD ( cod_ciudad ) ;
+
 ALTER TABLE RIVALES ADD CONSTRAINT RIVALES_EQUIPO_FK FOREIGN KEY ( cod_equipo ) REFERENCES EQUIPO ( cod_equipo ) ;
 
-ALTER TABLE RIVALES ADD CONSTRAINT RIVALES_PARTIDO_FK FOREIGN KEY ( cod_part ) REFERENCES PARTIDO ( codigo ) ;
+ALTER TABLE RIVALES ADD CONSTRAINT RIVALES_PARTIDO_FK FOREIGN KEY ( codigo_partido ) REFERENCES PARTIDO ( codigo ) ;
 
 ALTER TABLE USUARIO ADD CONSTRAINT USUARIO_PAIS_FK FOREIGN KEY ( cod_pais ) REFERENCES PAIS ( cod_pais ) ;
 
@@ -175,46 +180,3 @@ CREATE OR REPLACE TRIGGER USUARIO_cod_usuario_TRG BEFORE
   INSERT ON USUARIO FOR EACH ROW WHEN (NEW.cod_usuario IS NULL) BEGIN :NEW.cod_usuario := USUARIO_cod_usuario_SEQ.NEXTVAL;
 END;
 /
-
-
--- Informe de Resumen de Oracle SQL Developer Data Modeler: 
--- 
--- CREATE TABLE                            10
--- CREATE INDEX                             1
--- ALTER TABLE                             24
--- CREATE VIEW                              0
--- ALTER VIEW                               0
--- CREATE PACKAGE                           0
--- CREATE PACKAGE BODY                      0
--- CREATE PROCEDURE                         0
--- CREATE FUNCTION                          0
--- CREATE TRIGGER                           6
--- ALTER TRIGGER                            0
--- CREATE COLLECTION TYPE                   0
--- CREATE STRUCTURED TYPE                   0
--- CREATE STRUCTURED TYPE BODY              0
--- CREATE CLUSTER                           0
--- CREATE CONTEXT                           0
--- CREATE DATABASE                          0
--- CREATE DIMENSION                         0
--- CREATE DIRECTORY                         0
--- CREATE DISK GROUP                        0
--- CREATE ROLE                              0
--- CREATE ROLLBACK SEGMENT                  0
--- CREATE SEQUENCE                          6
--- CREATE MATERIALIZED VIEW                 0
--- CREATE SYNONYM                           0
--- CREATE TABLESPACE                        0
--- CREATE USER                              0
--- 
--- DROP TABLESPACE                          0
--- DROP DATABASE                            0
--- 
--- REDACTION POLICY                         0
--- 
--- ORDS DROP SCHEMA                         0
--- ORDS ENABLE SCHEMA                       0
--- ORDS ENABLE OBJECT                       0
--- 
--- ERRORS                                   0
--- WARNINGS                                 0

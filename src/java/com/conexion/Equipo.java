@@ -8,6 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import oracle.jdbc.OracleTypes;
 
 
 /**
@@ -16,9 +17,9 @@ import java.util.logging.Logger;
  */
 public class Equipo {
     private ResultSet rset;
-    private Statement stm;
     private Conexion conexion;
     private String pais;
+    private CallableStatement clstm;
     private String director;
     private int codeq;
     private ArrayList<Jugador> jugadores;
@@ -31,15 +32,11 @@ public class Equipo {
     public void buscarEquipo(String nombrePais){
         try {
             conexion = new Conexion();
-            StringBuilder query = new StringBuilder();
-            query.append("SELECT E.cod_equipo, E.director ")
-                    .append("FROM Equipo E, Pais P ")
-                    .append("WHERE P.nombre = '")
-                    .append(nombrePais)
-                    .append("' AND E.cod_pais = p.cod_pais");
-            
-            stm = conexion.getConexion().createStatement();
-            rset = stm.executeQuery(query.toString());
+            clstm = conexion.getConexion().prepareCall("{call buscar_equipo(?,?)}");
+            clstm.registerOutParameter(1, oracle.jdbc.OracleTypes.CURSOR);
+            clstm.setString(2, nombrePais);
+            clstm.execute();
+            rset = (ResultSet)clstm.getObject(1);
             if(rset.next()){
                 equipo = true;
                 codeq = rset.getInt(1);
@@ -54,8 +51,8 @@ public class Equipo {
             Logger.getLogger(Equipo.class.getName()).log(Level.SEVERE, null, ex);
         }finally{
             try {
-                if (stm != null)
-                    stm.close();
+                if (clstm != null)
+                    clstm.close();
                 
                 if(rset!=null)
                     rset.close();
@@ -74,14 +71,12 @@ public class Equipo {
     
     private void cargarJugadores(){
         try {
-            StringBuilder query = new StringBuilder();
-            query.append("SELECT J.camiseta, J.fecha_nac, J.estatura, J.peso,J.nombre,J.equipo ")
-                    .append("FROM jugador J WHERE J.COD_EQUIPO = ")
-                    .append(this.codeq);
-            
             conexion = new Conexion();
-            stm = conexion.getConexion().createStatement();
-            rset = stm.executeQuery(query.toString());
+            clstm = conexion.getConexion().prepareCall("{ call listar_plantilla(?,?)}");
+            clstm.setInt(1, codeq);
+            clstm.registerOutParameter(2, OracleTypes.CURSOR);
+            clstm.execute();
+            rset = (ResultSet)clstm.getObject(2);
             jugadores = new ArrayList<>();
             while(rset.next()){
                 jugadores.add(new Jugador(rset));
