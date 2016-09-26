@@ -11,9 +11,9 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="/Apuestas/User/UInicio.jsp">Inicio</a></li>
+                <li><a href="/Apuestas/Admin/AInicio.jsp">Inicio</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Quiniela Partidos<span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Apostar<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">Todos los partidos</a></li>
                         <li><a href="#">Buscar pais</a></li>
@@ -29,27 +29,11 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Equipos<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Todos</a></li>
-                        <li><a href="/Apuestas/User/buscarEquipo.jsp">Buscar</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="/Apuestas/User/equipos.jsp?grupo=A&eq=0">Grupo A</a></li>
-                        <li><a href="/Apuestas/User/equipos.jsp?grupo=B&eq=0">Grupo B</a></li>
-                        <li><a href="/Apuestas/User/equipos.jsp?grupo=C&eq=0">Grupo C</a></li>
-                        <li><a href="/Apuestas/User/equipos.jsp?grupo=D&eq=0">Grupo D</a></li>
-                        <li><a href="/Apuestas/User/equipos.jsp?grupo=E&eq=0">Grupo E</a></li>
-                        <li><a href="/Apuestas/User/equipos.jsp?grupo=F&eq=0">Grupo F</a></li>
-                        <li><a href="/Apuestas/User/equipos.jsp?grupo=G&eq=0">Grupo G</a></li>
-                        <li><a href="/Apuestas/User/equipos.jsp?grupo=H&eq=0">Grupo H</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Usuario<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">Cambiar datos</a></li>
-                        <li><a href="/Apuestas/User/c_clave.jsp">Cambiar Clave</a></li>
-                        <li><a href="/Apuestas/User/eliminar.jsp">Eliminar Cuenta</a></li>
+                        <li><a href="#">Cambiar Clave</a></li>
+                        <li><a href="#">Eliminar Cuenta</a></li>
                     </ul>
                 </li>
                 <li>

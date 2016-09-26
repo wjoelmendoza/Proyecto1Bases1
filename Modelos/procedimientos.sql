@@ -136,3 +136,51 @@ BEGIN
     WHERE R.COD_PART = codigo_partido AND R.COD_EQUIPO = E.COD_EQUIPO 
       AND P.COD_PAIS = E.COD_PAIS;
 END;
+
+--Eliminar usuario
+
+CREATE OR REPLACE PROCEDURE eliminar_usuario(
+  codigo_usuario IN INTEGER,
+  clave_usuario IN VARCHAR2,
+  resultado OUT INTEGER
+)
+IS
+clave_user VARCHAR(15);
+BEGIN
+  SELECT U.clave into clave_user FROM USUARIO U WHERE U.cod_usuario = codigo_usuario;
+  
+  IF clave_usuario = clave_user THEN
+    resultado := 1;
+    DELETE FROM marcador M WHERE M.COD_USUARIO = codigo_usuario;
+    DELETE FROM usuario U WHERE U.cod_usuario = codigo_usuario;
+  ELSE
+    resultado := 0;
+  END IF;
+END;
+
+--listar paises por grupo
+CREATE OR REPLACE PROCEDURE listar_equipo_grupo(
+  grupo_s in VARCHAR2,
+  resultado  OUT   SYS_REFCURSOR
+)
+IS
+BEGIN
+  OPEN resultado FOR
+    SELECT E.DIRECTOR , P.NOMBRE, C.ACRONIMO, E.COD_EQUIPO
+    FROM Equipo E, Pais P, Confederacion C
+    WHERE E.cod_pais = P.COD_PAIS AND p.cod_conf = C.cod AND  E.GRUPO = grupo_s;
+END;
+
+--busca el equipo segun codigo
+CREATE OR REPLACE PROCEDURE buscar_equipo_cod(
+  DATOS OUT SYS_REFCURSOR,
+  cod_eq IN INTEGER,
+  grupo_eq IN VARCHAR2
+)
+IS
+BEGIN
+  OPEN DATOS FOR
+    SELECT E.cod_equipo, E.director, P.NOMBRE
+    FROM equipo E, Pais P
+    WHERE E.COD_EQUIPO = cod_eq AND E.COD_PAIS = P.COD_PAIS AND E.GRUPO = grupo_eq;
+END;

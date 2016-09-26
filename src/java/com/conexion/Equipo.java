@@ -21,9 +21,23 @@ public class Equipo {
     private String pais;
     private CallableStatement clstm;
     private String director;
+    private String confederacion;
     private int codeq;
     private ArrayList<Jugador> jugadores;
     private boolean equipo;
+    
+    public Equipo(){}
+    
+    public Equipo(ResultSet rset){
+        try {
+            director = rset.getString(1);
+            pais = rset.getString(2);
+            confederacion = rset.getString(3);
+            codeq = rset.getInt(4);
+        } catch (SQLException ex) {
+            Logger.getLogger(Equipo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     /**
      * Este metodo realiza una busqueda en la base de datos seung el 
      * nombre 
@@ -69,6 +83,31 @@ public class Equipo {
         
     }
     
+    public void buscarEquipo(String grupo, int codEq){
+        conexion = new Conexion();
+        try {
+            clstm = conexion.getConexion().prepareCall("{call buscar_equipo_cod(?,?,?)}");
+            clstm.registerOutParameter(1, OracleTypes.CURSOR);
+            clstm.setInt(2, codEq);
+            clstm.setString(3, grupo);
+            clstm.execute();
+            rset = (ResultSet)clstm.getObject(1);
+            if(rset.next()){
+                equipo = true;
+                codeq = rset.getInt(1);
+                director = rset.getString(2);
+                pais = rset.getString(3);
+            }else{
+                equipo = false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Equipo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        if(hasEquipo())
+            cargarJugadores();
+    }
+    
     private void cargarJugadores(){
         try {
             conexion = new Conexion();
@@ -78,6 +117,7 @@ public class Equipo {
             clstm.execute();
             rset = (ResultSet)clstm.getObject(2);
             jugadores = new ArrayList<>();
+            System.out.println("obteniendo equipo");
             while(rset.next()){
                 jugadores.add(new Jugador(rset));
             }
@@ -97,4 +137,44 @@ public class Equipo {
     public ArrayList<Jugador> getJugadores(){
         return jugadores;
     }
+    
+    public String getConfederacion(){
+        return confederacion;
+    }
+    
+    public int getCodEquipo(){
+        return codeq;
+    }
+    public ArrayList<Equipo> getEquiposGrupo(char grupo){
+        ArrayList<Equipo> equipos=null;
+        String tmp;
+        tmp = ""+ grupo;
+        try {
+            conexion = new Conexion();
+            clstm = conexion.getConexion().prepareCall("{ call listar_equipo_grupo(?,?)}");
+            clstm.setString(1,tmp);
+            
+            clstm.registerOutParameter(2, OracleTypes.CURSOR);
+            clstm.execute();
+            rset = (ResultSet)clstm.getObject(2);
+            
+            equipos = new ArrayList<>();
+            this.cargarEquipos(rset, equipos);
+        } catch (SQLException ex) {
+            Logger.getLogger(Equipo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+         return equipos;
+    }
+    
+    private void cargarEquipos(ResultSet rse, ArrayList<Equipo> equipos){
+        try {
+            while(rse.next()){
+                equipos.add(new Equipo(rse));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Equipo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 }

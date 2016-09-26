@@ -185,4 +185,22 @@ public class User {
         
         return resultado;
     }
+    
+    public boolean eliminarUsuario(int id, String clave){
+        boolean resultado = false;
+        int tmp;    
+        try {
+            conexion = new Conexion();
+            clstm = conexion.getConexion().prepareCall("{call eliminar_usuario(?,?,?)}");
+            clstm.setInt(1, id);
+            clstm.setString(2, clave);
+            clstm.registerOutParameter(3, OracleTypes.INTEGER);
+            clstm.execute();
+            tmp = clstm.getInt(3);
+            resultado = tmp == 1;
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resultado;
+    }
 }

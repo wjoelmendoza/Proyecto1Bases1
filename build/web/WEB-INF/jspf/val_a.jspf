@@ -1,0 +1,25 @@
+<%@page import="java.io.IOException"%>
+<%!
+    /***
+     * valida que el usuario este identificado y si
+     * el usuario es un cliente lo redirige a su sitio
+     * si es administrador lo deja continuar
+     * si el usuario no esta identificado lo redirige
+     * hacia el inicio del sitio web
+     */
+public void valAdmin(HttpSession session, HttpServletResponse response) throws ServletException, IOException{
+    Object oid = session.getAttribute("id");
+    Object orol = session.getAttribute("rol");
+    char rol = ' ';
+    if( oid!=null){
+        rol = (char) orol;
+        if(rol == 'C'){
+            response.sendRedirect("/Apuestas/User/UInicio.jsp");
+        }else if(rol == ' '){
+            response.sendRedirect("/Apuestas");
+        }
+    }else{
+        response.sendRedirect("/Apuestas");
+    }
+}
+%>

@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author wxjoy
  */
-public class LoginUser extends HttpServlet {
+public class EliminarUser extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,22 +29,25 @@ public class LoginUser extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-          /**
-             * Aqui deberia de hacer una disticion
-             * entre los administradores y los usuarios normales para
-             * redireccionar a sus vistas correspondientes
-             */
-        char rol =(char) request.getSession().getAttribute("rol");
-        switch (rol) {
-            case 'A':
-                response.sendRedirect("/Apuestas/Admin/AInicio.jsp");
-                break;
-            case 'C':
-                response.sendRedirect("/Apuestas/User/UInicio.jsp");
-                break;
-            default:
-                response.sendRedirect("/Apuestas");
-                break;
+        int id =(int) request.getSession().getAttribute("id");
+        String clave =(String) request.getParameter("clave");
+        User u;
+        
+        if(clave == null){
+            request.getSession().setAttribute("error", "No ingreso la clave");
+            response.sendRedirect("/Apuestas/User/eliminar.jsp");
+            return;
+        }
+        
+        u = new User();
+        if(u.eliminarUsuario(id, clave)){
+            request.getSession().removeAttribute("id");
+            request.getSession().removeAttribute("nombre");
+            request.getSession().removeAttribute("rol");
+            response.sendRedirect("/Apuestas");
+        }else{
+            request.getSession().setAttribute("error", "La clave es incorrecta");
+            response.sendRedirect("/Apuestas/User/eliminar.jsp");
         }
     }
 
@@ -60,8 +63,7 @@ public class LoginUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getSession().setAttribute("error", "No ingreso los datos solicitados");
-        response.sendRedirect("/Apuestas/login.jsp");
+        response.sendRedirect("/Apuestas");
     }
 
     /**
@@ -75,31 +77,7 @@ public class LoginUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        boolean valida;
-        int id;
-        String nombre;
-        String correo, clave;
-        correo = request.getParameter("correo");
-        clave = request.getParameter("clave");
-        valida = correo!= null && clave != null;
-        
-        if(valida){
-            User u = new User();
-            id = u.login(correo, clave);
-            if(id >0){
-                nombre = u.getNombre();
-                request.getSession().setAttribute("id", id);
-                request.getSession().setAttribute("nombre", nombre);
-                request.getSession().setAttribute("rol", u.getRol());
-                this.processRequest(request, response);
-            }else{
-                request.getSession().setAttribute("error", "Credenciales invalidas");
-                response.sendRedirect("/Apuestas/login.jsp");
-            }
-        }else{
-            request.getSession().setAttribute("error", "Datos invalidos");
-            response.sendRedirect("/Apuestas/login.jsp");
-        }
+        processRequest(request, response);
     }
 
     /**
