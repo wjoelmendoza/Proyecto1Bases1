@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <%@include file="../WEB-INF/jspf/headeru.jspf" %>
+        <%@include file="../WEB-INF/jspf/headera.jspf" %>
         <title>Inicio-Admin</title>
     </head>
     <body rol="document">

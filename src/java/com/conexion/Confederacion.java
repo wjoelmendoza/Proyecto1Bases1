@@ -4,42 +4,52 @@
  * and open the template in the editor.
  */
 package com.conexion;
-import java.sql.*;
+
+import java.sql.CallableStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  *
- * @author wxjoy
+ * @author byron
  */
-public class Pais {
-    private ArrayList<String> paises;
-    private ArrayList<Pais> lpaises;
+public class Confederacion {
+    
+    private ArrayList<Confederacion> confederas;
     private Conexion conexion;
     private Statement stm;
     private ResultSet rset;
-    private CallableStatement clstm;
-    private int codpais;
+    CallableStatement cstmt;
+    
+    private int cod;
     private String nombre;
+    private String acronimo;
     
     
-    public Pais(){}
-    public Pais(int cod,String nom){this.codpais=cod;this.nombre=nom;}
-    public ArrayList<Pais> getPaisesDisponibles(){
-        
+    public Confederacion(){}
+    public Confederacion(int co,String nom,String acro){this.cod = co;this.nombre=nom;this.acronimo=acro;}
+    public Confederacion getconfederacion(int cod)
+    {
+        Confederacion confe = null;
         try {
             conexion = new Conexion();
+            cstmt = conexion.getConexion().prepareCall("{call get_confederacion2(?,?)}");
+            cstmt.registerOutParameter(1,oracle.jdbc.OracleTypes.CURSOR);
+            cstmt.setInt(2, cod);
+            cstmt.execute();
             
-            lpaises = new ArrayList<>();
+            rset = (ResultSet)cstmt.getObject(1);
+            System.err.println("NUMERO DE FILA: "+rset.getRow());
+            rset.next();
+            System.err.println("NUMERO DE FILA: "+rset.getRow());
+            confe = new Confederacion(rset.getInt("cod"),rset.getString("nombre"),rset.getString("acronimo"));
             
-            clstm = conexion.getConexion().prepareCall("{call get_PaisesDisponibles(?)}");
-           clstm.registerOutParameter(1,oracle.jdbc.OracleTypes.CURSOR);
+            
            
-            clstm.execute();
-            rset = (ResultSet)clstm.getObject(1);
-            while(rset.next())
-              lpaises.add(new Pais(rset.getInt("cod_pais"),rset.getString("nombre")));
             
         } catch (SQLException ex) {
             Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
@@ -59,24 +69,27 @@ public class Pais {
                 }
             }
         }
-    
-        
-    return lpaises;
-    
+        return confe;
     }
     
-    
-    
-    public ArrayList<String> getPaises(){
+    public ArrayList<Confederacion> getConfederaciones(){
         try {
             conexion = new Conexion();
-            paises = new ArrayList<>();
-            clstm = conexion.getConexion().prepareCall("{call listado_paises(?)}");
-            clstm.registerOutParameter(1, oracle.jdbc.OracleTypes.CURSOR);
-            clstm.execute();
-            rset =(ResultSet)clstm.getObject(1);
+            
+            confederas = new ArrayList<>();
+            
+            cstmt = conexion.getConexion().prepareCall("{call get_confederacion(?)}");
+            cstmt.registerOutParameter(1,oracle.jdbc.OracleTypes.CURSOR);
+           
+            cstmt.execute();
+            rset = (ResultSet)cstmt.getObject(1);
+            //rset = cstmt.getResultSet();
+            //System.out.println(rset.getCursorName());
             while(rset.next())
-                paises.add(rset.getString(1));
+            {
+                
+              confederas.add(new Confederacion(rset.getInt("cod"),rset.getString("nombre"),rset.getString("acronimo")));
+            }
             
         } catch (SQLException ex) {
             Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
@@ -97,21 +110,21 @@ public class Pais {
             }
         }
         
-        return paises;
-    }
-    
-    /**
-     * @return the codpais
-     */
-    public int getCodpais() {
-        return codpais;
+        return confederas;
     }
 
     /**
-     * @param codpais the codpais to set
+     * @return the cod
      */
-    public void setCodpais(int codpais) {
-        this.codpais = codpais;
+    public int getCod() {
+        return cod;
+    }
+
+    /**
+     * @param cod the cod to set
+     */
+    public void setCod(int cod) {
+        this.cod = cod;
     }
 
     /**
@@ -127,4 +140,19 @@ public class Pais {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    /**
+     * @return the acronimo
+     */
+    public String getAcronimo() {
+        return acronimo;
+    }
+
+    /**
+     * @param acronimo the acronimo to set
+     */
+    public void setAcronimo(String acronimo) {
+        this.acronimo = acronimo;
+    }
+    
 }

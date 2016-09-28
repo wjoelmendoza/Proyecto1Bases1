@@ -1,0 +1,25 @@
+<%-- any content can be specified here e.g.: --%>
+<%@ page pageEncoding="UTF-8" %>
+
+
+
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="" />
+<meta name="author" content="wx" />
+<link href="../bootstrap/bootstrap.css" rel="stylesheet" />
+<link href="../bootstrap/bootstrap-theme.css" rel="stylesheet" />
+<link href="../bootstrap/ie10-viewport-bug-workaround.css" rel="stylesheet"/>
+<link href="../bootstrap/theme.css" rel="stylesheet" />
+
+
+
+                                              <!-- Bootstrap style -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400">  
+<!--<link rel="stylesheet" href="../Template1/css/bootstrap.min.css"> --> 
+<link rel="stylesheet" href="../Template1/css/flexslider.css">                                                       
+<link rel="stylesheet" href="../Template1/css/templatemo-style.css">    

@@ -27,7 +27,42 @@ public class Equipo {
     private boolean equipo;
     
     public Equipo(){}
-    
+    public String SetEquipo(int codpais,String grup,String director)
+    {
+        String mensaje="";
+        try {
+            conexion = new Conexion();
+            clstm = conexion.getConexion().prepareCall("{call set_Equipo(?,?,?,?)}");
+            clstm.registerOutParameter(4,oracle.jdbc.OracleTypes.VARCHAR);
+            clstm.setString(1,director);
+            clstm.setInt(2, codpais);
+            clstm.setString(3, grup);
+            clstm.execute();
+            
+            mensaje = clstm.getString(4);
+            System.out.println("MENSAJE DE LA BASE DE DATOS: "+mensaje);          
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            if(clstm!=null){
+                try {
+                    clstm.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if(rset!=null){
+                try {
+                    rset.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+        return mensaje;
+    }
     public Equipo(ResultSet rset){
         try {
             director = rset.getString(1);
