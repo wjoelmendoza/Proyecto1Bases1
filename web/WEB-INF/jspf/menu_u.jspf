@@ -18,14 +18,14 @@
                         <li><a href="#">Todos los partidos</a></li>
                         <li><a href="#">Buscar pais</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#">Grupo A</a></li>
-                        <li><a href="#">Grupo B</a></li>
-                        <li><a href="#">Grupo C</a></li>
-                        <li><a href="#">Grupo D</a></li>
-                        <li><a href="#">Grupo E</a></li>
-                        <li><a href="#">Grupo F</a></li>
-                        <li><a href="#">Grupo G</a></li>
-                        <li><a href="#">Grupo H</a></li>
+                        <li><a href="/Apuestas/User/quinielaGrupo.jsp?grupo=A&partido=0">Grupo A</a></li>
+                        <li><a href="/Apuestas/User/quinielaGrupo.jsp?grupo=B&partido=0">Grupo B</a></li>
+                        <li><a href="/Apuestas/User/quinielaGrupo.jsp?grupo=C&partido=0">Grupo C</a></li>
+                        <li><a href="/Apuestas/User/quinielaGrupo.jsp?grupo=D&partido=0">Grupo D</a></li>
+                        <li><a href="/Apuestas/User/quinielaGrupo.jsp?grupo=E&partido=0">Grupo E</a></li>
+                        <li><a href="/Apuestas/User/quinielaGrupo.jsp?grupo=F&partido=0">Grupo F</a></li>
+                        <li><a href="/Apuestas/User/quinielaGrupo.jsp?grupo=G&partido=0">Grupo G</a></li>
+                        <li><a href="/Apuestas/User/quinielaGrupo.jsp?grupo=H&partido=0">Grupo H</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">

@@ -6,7 +6,7 @@
 
 <%@page import="com.conexion.Jugador"%>
 <%@page import="java.util.ArrayList"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html; charset=ISO-8859-1"%>
 <%@page import="com.conexion.Equipo" %>
 <%@include file="../WEB-INF/jspf/val_u.jspf" %>
 <%valUsuario(session,response);%>
@@ -18,7 +18,7 @@
     </head>
     <body role="document">
         <%@include file="../WEB-INF/jspf/menu_u.jspf"%>
-        <div rol="main" class="container theme-showcase">
+        <div role="main" class="container theme-showcase">
             <br>
             <div class="jumbotron">
                 <form method="post" action="/Apuestas/User/buscarEquipo.jsp">

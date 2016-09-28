@@ -117,7 +117,7 @@ public class Equipo {
             clstm.execute();
             rset = (ResultSet)clstm.getObject(2);
             jugadores = new ArrayList<>();
-            System.out.println("obteniendo equipo");
+            //System.out.println("obteniendo equipo");
             while(rset.next()){
                 jugadores.add(new Jugador(rset));
             }
