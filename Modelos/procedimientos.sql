@@ -199,3 +199,158 @@ OPEN datos for
   WHERE R.COD_EQUIPO = E.COD_EQUIPO AND P.COD_PAIS = E.COD_PAIS AND E.GRUPO = grupo_cons
   ORDER BY R.COD_PART;
 END;
+
+--Esto consulta a la base pos si un usuario ya ingreso un marcador
+--si ya se encuentra el marcador, el cursor marcardor lleva datos de lo
+--contrario se propone la creacion de un nuevo marcador
+
+CREATE OR REPLACE PROCEDURE get_marcador_partido(
+  grupo_cons IN VARCHAR2,
+  codigo_partido IN INTEGER,
+  partido OUT SYS_REFCURSOR,
+  marcador OUT SYS_REFCURSOR
+)
+IS
+BEGIN
+  OPEN partido FOR
+    SELECT R.COD_PART,E.COD_EQUIPO,C.NOMBRE 
+    FROM  rivales R, pais C, equipo E
+    WHERE R.COD_PART=codigo_partido AND R.COD_EQUIPO = E.COD_EQUIPO AND C.COD_PAIS = E.COD_PAIS 
+    AND E.GRUPO = grupo_cons;
+  
+  OPEN marcador FOR
+    SELECT E.COD_EQUIPO,P.NOMBRE, M.GOLES
+    FROM marcador M, pais P, equipo E
+    WHERE M.COD_EQUIPO = E.COD_EQUIPO AND E.COD_PAIS = P.COD_PAIS
+    AND E.GRUPO = grupo_cons AND M.COD_PART = codigo_partido;
+END;
+
+
+--PROCEDIMIENTOS DE ADMINISTRADOR
+CREATE OR REPLACE PROCEDURE set_confederacion(nom IN varchar2,acro IN varchar2)
+AS
+BEGIN
+  INSERT INTO confederacion(nombre,acronimo)values(nom,acro);
+END set_confederacion;
+
+
+-----------------------------------------------------------
+
+CREATE OR REPLACE PROCEDURE get_confederacion(cursor1 OUT SYS_REFCURSOR)
+AS
+BEGIN
+  OPEN cursor1 FOR
+  select * from CONFEDERACION;
+END get_confederacion;
+
+-----------------------------------------------------------
+
+CREATE OR REPLACE PROCEDURE get_confederacion2(cursor1 OUT SYS_REFCURSOR,codd IN INTEGER)
+AS
+BEGIN
+  OPEN cursor1 FOR
+  select * from CONFEDERACION WHERE cod=codd;
+END get_confederacion2;
+
+----------------------------------------------------------
+CREATE OR REPLACE PROCEDURE E_confederacion(codigo IN INTEGER)
+AS
+BEGIN
+  delete from CONFEDERACION 
+  WHERE  COD=codigo;
+END E_confederacion;
+
+-------------------------------------------
+
+CREATE OR REPLACE PROCEDURE M_confederacion(codigo IN INTEGER,nom IN VARCHAR2,acronim IN VARCHAR2)
+AS
+BEGIN
+  UPDATE CONFEDERACION
+  SET nombre=nom,acronimo=acronim
+  WHERE cod=codigo;
+END M_confederacion;
+----------------------------------------------
+CREATE OR REPLACE PROCEDURE set_pais(nom IN varchar2,codconf IN integer,mess OUT varchar2)
+AS
+
+ cursor1 SYS_REFCURSOR;
+BEGIN
+    OPEN cursor1 FOR
+    SELECT cod_pais,nombre from pais where lower(nombre)=lower(nom);
+    IF cursor1%FOUND THEN
+      mess := nom||'YA ES UN PAIS QUE EXISTE EN DB';
+    ELSE
+      INSERT INTO pais(nombre,cod_conf)VALUES(nom,codconf);
+      mess := nom||'PAIS CREADO SATISFACTORIAMENTE';
+  END IF;
+  commit;
+END set_pais;
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+CREATE OR REPLACE PROCEDURE set_Equipo(direc IN VARCHAR2,codpais IN SMALLINT,grrr char,mess OUT VARCHAR2)
+AS
+  cantidad integer;
+  cursor1 SYS_REFCURSOR;
+BEGIN
+  OPEN cursor1 FOR
+ Select sumass
+  FROM
+  (
+    select eq.grupo, count(*) as sumass from equipo eq
+    where eq.grupo=grrr
+    group by eq.grupo
+  );
+  
+  
+  IF cursor1 IS NOT NULL THEN
+    Select sumass INTO cantidad
+  FROM
+  (
+    select eq.grupo, count(*) as sumass from equipo eq
+    where eq.grupo=grrr
+    group by eq.grupo
+  );
+  
+    IF cantidad<4 THEN
+        mess := grrr ||' SE INGRESARA PAIS,GRUPO NO LLENO';
+        INSERT INTO equipo(director,cod_pais,grupo)values(direc,codpais,grrr);
+    ELSE
+      mess := grrr ||' NO SE INGRESARA PAIS,GRUPO LLENO';
+    END IF;
+  
+  ELSE
+    mess := grrr ||' SE INGRESARA PAIS,GRUPO NO INICIALIZADO';
+    INSERT INTO equipo(director,cod_pais,grupo)values(direc,codpais,grrr);
+      
+  END IF;  
+END set_Equipo;
+
+----------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE PROCEDURE get_GruposDisponibles(cursor1 OUT SYS_REFCURSOR)
+AS
+BEGIN
+  OPEN cursor1 FOR
+  select se.grupo
+FROM
+(
+  select grupo, count(*) as sumass from equipo
+  group by grupo
+)se
+where se.sumass<3;
+END get_GruposDisponibles;
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE PROCEDURE get_PaisesDisponibles(cursor1 OUT SYS_REFCURSOR)
+AS
+BEGIN
+  OPEN cursor1 FOR
+  SELECT pais.cod_pais,pais.nombre FROM pais
+  WHERE pais.cod_pais NOT IN(SELECT equipo.COD_PAIS FROM equipo);
+  
+END get_PaisesDisponibles;
+
+commit;
