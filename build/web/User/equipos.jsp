@@ -11,14 +11,50 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <%@include file="../WEB-INF/jspf/headeru.jspf" %>
+        <%@include file="../WEB-INF/jspf/headeru.jspf" %> href
         <title>Equipos</title>
+        
+        <script>
+            function jsequipo(gr,codeq) {
+                var fl = 'hrefplantillas';
+                var idd  = 'href'+gr+codeq;
+                
+                var c = document.getElementById('divjumbo').getElementsByTagName("a");
+                //var num = document.getElementById('divjumbo').childNodes.length;
+                var mess=""
+                for(var i=0; i<c.length; i++)
+                {
+                     if (c[i].id == idd)
+                        {
+                            document.getElementById(c[i].id).className = "list-group-item active";
+                        }
+                        else
+                        {
+                            document.getElementById(c[i].id).className = "list-group-item";
+                        }
+                    
+                    
+                   mess = mess+", "+c[i].id;
+                }
+                //alert(mess);
+                
+                $.post('/Apuestas/jscliente', {
+				flaa : fl,
+                                codequipo : codeq,
+                                grupo : gr
+				
+			}, function(responseText) {
+                            	$("#divplantilla").html(responseText);
+			});
+            }
+        </script>
+        
     </head>
     <body role="document">
         <%@include file="../WEB-INF/jspf/menu_u.jspf" %>
         <div role="main" class="container theme-showcase">
             <br/>
-            <div class="jumbotron">
+            <div  id="divjumbo" class="jumbotron">
                 <h2>
                     Equipos Grupo 
                 <%
@@ -39,7 +75,7 @@
                             equipo = equipos.get(i);
                             if(equipo.getCodEquipo() == codeq){
                 %>
-                <a href="/Apuestas/User/equipos.jsp?grupo=<%=grupo.charAt(0)%>&eq=<%=equipo.getCodEquipo()%>" class="list-group-item active">
+                <a name="href<%=grupo.charAt(0)%><%=equipo.getCodEquipo()%>" id="href<%=grupo.charAt(0)%><%=equipo.getCodEquipo()%>" name href="javascript:jsequipo('<%=grupo.charAt(0)%>','<%=equipo.getCodEquipo()%>');"  class="list-group-item active">
                         <strong><%=equipo.getPais()%><br></strong>
                         <strong>Entrenador</strong> <%=equipo.getDirector()%><br>
                         <strong>Confederacion: </strong><%=equipo.getConfederacion()%>
@@ -47,7 +83,7 @@
                 <%
                         }else{
                 %>
-                    <a href="/Apuestas/User/equipos.jsp?grupo=<%=grupo.charAt(0)%>&eq=<%=equipo.getCodEquipo()%>" class="list-group-item">
+                    <a name="href<%=grupo.charAt(0)%><%=equipo.getCodEquipo()%>" id="href<%=grupo.charAt(0)%><%=equipo.getCodEquipo()%>" href="javascript:jsequipo('<%=grupo.charAt(0)%>','<%=equipo.getCodEquipo()%>');" class="list-group-item">
                         <strong><%=equipo.getPais()%><br></strong>
                         <strong>Entrenador</strong> <%=equipo.getDirector()%><br>
                         <strong>Confederacion: </strong><%=equipo.getConfederacion()%>
@@ -56,18 +92,9 @@
                 <%
                     }
                 %>
-                        </div>
-                <%     
-                    if(codeq!= 0){
-                        Equipo e = new Equipo();
-                        e.buscarEquipo(grupo, codeq);
-                        
-                        if(e.hasEquipo()){
-                %>
-                <hr>
-                <%=escribirPlantilla(e)%>
-                <%        }
-                    }
+                        </div> <!-- aqui va lo del if -->
+                        <%     
+                   
                     }else{
                 %>
                 </h2>
@@ -75,6 +102,10 @@
                 <%
                     }
                 %>
+                        <div id="divplantilla">
+                            
+                            dasdsadsadsadsadsadas
+                        </div>
             </div>
         </div>
         <%@include file="../WEB-INF/jspf/scriptsu.jspf" %>
