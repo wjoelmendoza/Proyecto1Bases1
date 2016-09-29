@@ -48,7 +48,7 @@ CREATE OR REPLACE PROCEDURE listar_plantilla(
 IS
 BEGIN
   OPEN jugadores FOR
-    SELECT J.camiseta, J.FECHA_NAC, J.estatura, J.peso, J.nombre, J.equipo
+    SELECT J.camiseta, J.FECHA_NAC, J.estatura, J.peso, J.nombre, J.equipo, J.POSICION
     FROM JUGADOR J
     WHERE J.cod_equipo = codigo_equipo;
 END;
@@ -80,7 +80,7 @@ BEGIN
     WHERE U.correo = v_correo;
 END;
 
---cambia la vlae del usuario
+--cambia la clave del usuario
 CREATE OR REPLACE PROCEDURE cambiar_clave(
   codigo_usuario IN INTEGER,
   clave IN VARCHAR2,
