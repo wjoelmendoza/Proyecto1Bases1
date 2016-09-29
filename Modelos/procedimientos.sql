@@ -219,12 +219,39 @@ BEGIN
     AND E.GRUPO = grupo_cons;
   
   OPEN marcador FOR
-    SELECT E.COD_EQUIPO,P.NOMBRE, M.GOLES
+    SELECT E.COD_EQUIPO,P.NOMBRE, M.GOLES, M.COD_PART
     FROM marcador M, pais P, equipo E
     WHERE M.COD_EQUIPO = E.COD_EQUIPO AND E.COD_PAIS = P.COD_PAIS
     AND E.GRUPO = grupo_cons AND M.COD_PART = codigo_partido;
 END;
 
+
+--este procedimiento guarda
+CREATE OR REPLACE PROCEDURE guardar_marcador(
+  codigo_usuario IN INTEGER,
+  codigo_partido IN INTEGER,
+  cod_equipo1 IN INTEGER,
+  cod_equipo2 IN INTEGER,
+  goles_1 IN INTEGER,
+  goles_2 IN INTEGER,
+  tipo_in IN VARCHAR2,
+  crear IN VARCHAR2
+)
+IS
+BEGIN
+  IF crear = 'SI' THEN
+    INSERT INTO MARCADOR (GOLES,COD_EQUIPO,COD_PART,TIPO,COD_USUARIO) VALUES(goles_1,cod_equipo1,codigo_partido,tipo_in,codigo_usuario);
+    INSERT INTO MARCADOR (GOLES,COD_EQUIPO,COD_PART,TIPO,COD_USUARIO) VALUES(goles_2,cod_equipo2,codigo_partido,tipo_in,codigo_usuario);
+    
+  ELSE
+    UPDATE MARCADOR
+    SET GOLES = goles_1
+    WHERE cod_equipo = cod_equipo1 AND COD_PART = codigo_partido AND COD_USUARIO =codigo_usuario;
+    UPDATE MARCADOR
+    SET GOLES = goles_2
+    WHERE cod_equipo = cod_equipo2 AND COD_PART = codigo_partido AND COD_USUARIO =codigo_usuario;
+  END IF;
+END;
 
 --PROCEDIMIENTOS DE ADMINISTRADOR
 CREATE OR REPLACE PROCEDURE set_confederacion(nom IN varchar2,acro IN varchar2)

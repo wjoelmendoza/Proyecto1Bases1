@@ -78,18 +78,19 @@ public class jscliente extends HttpServlet {
         //processRequest(request, response);
         
         String flag = request.getParameter("flaa");
-        System.out.println(flag);
+        //System.out.println(flag);
         if(flag.equals("hrefplantillas"))
         {
             response.setContentType( "text/html; charset=iso-8859-1" );
             PrintWriter out = response.getWriter();
-            System.out.println("LLEGO...href");
+            //System.out.println("LLEGO...href");
             String grp = request.getParameter("grupo");
             String code = request.getParameter("codequipo");
             Equipo e = new Equipo();
             e.buscarEquipo(grp,Integer.valueOf(code));
-            System.out.println("PAIS:"+e.getPais());
+            //System.out.println("PAIS:"+e.getPais());
             
+            out.println("<h2>Plantilla</h2>");
             out.println("<h3>Equipo: ");
             out.println(e.getPais());
             out.println("</h3>");
@@ -116,12 +117,14 @@ public class jscliente extends HttpServlet {
                 out.println("<td>");
                 out.println(j.getNombre());
                 out.println("</td>\n");
-                out.println("<td>posicion</td>\n");
+                out.println("<td>");
+                out.println(j.getPosicion());
+                out.println("</td>\n");
                 out.println("</tr>\n");
-                 System.out.println("EN EL FOR");
+                // System.out.println("EN EL FOR");
     }
             out.println("</tbody>\n</table");
-            System.out.println("SALIO DEL FOR");
+           // System.out.println("SALIO DEL FOR");
 
    
     }
