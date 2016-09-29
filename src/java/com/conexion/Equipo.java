@@ -36,7 +36,7 @@ public class Equipo {
             clstm.registerOutParameter(4,oracle.jdbc.OracleTypes.VARCHAR);
             clstm.setString(1,director);
             clstm.setInt(2, codpais);
-            clstm.setString(3, grup);
+            clstm.setString(3,"A");
             clstm.execute();
             
             mensaje = clstm.getString(4);

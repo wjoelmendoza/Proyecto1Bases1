@@ -164,7 +164,7 @@
                                             </tr>
                                             <tr>
                                                 <td></td>
-                                                <td><input  id="flagconf" type="text" value="confederacion"></td>
+                                                <td><input    id="flagconf" type="text" value="confederacion"></td>
                                             </tr>
                         
                                             <tr>
