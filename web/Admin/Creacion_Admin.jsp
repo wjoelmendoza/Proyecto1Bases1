@@ -76,7 +76,60 @@
 	});
             
         </script>
-       
+        
+        <script>
+           
+            $(document).ready(function() {
+		$('#btngetpartidos').click(function(event) {
+			
+                       var fl='creapartidos';
+                       var grupo =document.getElementById('2lgrupos').value;
+                       
+			// Si en vez de por post lo queremos hacer por get, cambiamos el $.post por $.get
+			$.post('/Apuestas/ACrear', {
+				flaa : fl,
+                                grupo : grupo
+                                				
+			}, function(responseText) {
+                                alert(responseText);
+				$('#divbtnspartidos').html(responseText);
+			});
+
+		});
+	});
+            
+        </script>
+        
+        <script>
+            function jsbtnpartido(eq1,eq2,grp) {
+                var fl = 'creapartidos2';
+                alert("BOTONASO");                
+                $.post('/Apuestas/ACrear', {
+				flaa : fl,
+                                codeq1 : eq1,
+                                codeq2 : eq2,
+                                grupo : grp
+				
+			}, function(responseText) {
+                            	$("#divbtnscontenido").html(responseText);
+			});
+            }
+        </script>
+         <script>
+            function jsGrabarPartido() {
+                var fl = 'creapartidos2';
+                alert("BOTONASO");                
+                $.post('/Apuestas/ACrear', {
+				flaa : fl,
+                                codeq1 : eq1,
+                                codeq2 : eq2,
+                                grupo : grp
+				
+			}, function(responseText) {
+                            	$("#divbtnscontenido").html(responseText);
+			});
+            }
+        </script>
         
     </head>
     
@@ -85,11 +138,12 @@
             <%@include file="../WEB-INF/jspf/menu_a.jspf"%>
             <!-- background images -->
             <div class="page-bg-imgs-list">
-                <img src="../Template1/img/story-bg-1.jpg" id="page-1-img" class="main-img" alt="Confederaciones">
-                <img src="../Template1/img/story-bg-2.jpg" id="page-2-img" alt="Paises">
-                <img src="../Template1/img/story-bg-3.jpg" id="page-3-img" alt="Selecciones">
-                <img src="../Template1/img/story-bg-4.jpg" id="page-4-img" alt="Grupos">                            
                 
+                <img src="../Template1/img/background.jpg" id="page-1-img" class="main-img" alt="Confederaciones">
+                <img src="../Template1/img/background.jpg" id="page-2-img" alt="Paises">
+                <img src="../Template1/img/background.jpg" id="page-3-img" alt="Selecciones">
+                <img src="../Template1/img/background.jpg" id="page-4-img" alt="Grupos">                            
+               
             
             </div>
             
@@ -164,7 +218,7 @@
                                             </tr>
                                             <tr>
                                                 <td></td>
-                                                <td><input    id="flagconf" type="text" value="confederacion"></td>
+                                                <td><input    id="flagconf" type="hidden" value="confederacion" ></td>
                                             </tr>
                         
                                             <tr>
@@ -194,7 +248,8 @@
                                 <div class="content-text">
                                     <p>Escoje el grupo.</p>
                                     <br>
-                                    <select id="4lgrupos">
+                                    <input class="btn btn-success" id="btngetpartidos" type="button" value="Get" >
+                                    <select id="2lgrupos">
                                         <option value="A">A</option>
                                         <option value="B">B</option>
                                         <option value="C">C</option>
@@ -205,8 +260,20 @@
                                         <option value="H">H</option>
                                         
                                     </select>
+                                    <br>
+                                    <br>
+                                    <div id="divbtnspartidos">
+                                    
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <div id="divbtnscontenido">
+                                    
+                                    </div>
                                                                
                                 </div>
+                                
+                                
                                 <div class="content-text content-text-gallery">
                                     
                                     
@@ -214,24 +281,14 @@
                                     <div class="flexslider-wrapper">
 
                                         <div id="slider" class="flexslider">
-                                            <ul class="slides">
-                                                <li><div>DIV1</div></li>
-                                                <li><div>DIV2</div></li>
-                                                <li><div>DIV3</div></li>
-                                                <li><div>DIV4</div></li>
-                                                <li><div>DIV5</div></li>
-                                                <li><div>DIV6</div></li>
+                                            <ul class="slides" id="marcadoresslides">
+                                                
                                             </ul>
                                         </div> <!-- #slider -->
                                       
                                         <div id="carousel" class="flexslider">
                                             <ul class="slides">
-                                                <li><h3>EQ1 vrs EQ2</h3></li>
-                                                <li><h3>EQ1 vrs EQ2</h3></li>
-                                                <li><h3>EQ1 vrs EQ2</h3></li>
-                                                <li><h3>EQ1 vrs EQ2</h3></li>
-                                                <li><img src="../Template1/img/slider/thumb5.jpg" alt="Thumbnail 5" /></li>
-                                                <li><img src="../Template1/img/slider/thumb6.jpg" alt="Thumbnail 6" /></li>
+                                               
                                             </ul>
                                         </div>  <!-- #carousel -->
 
@@ -321,6 +378,10 @@
                                 </div>
                                 <div class="content-text">
                                     
+                                    
+                                    
+                                    
+                                    
                                 </div>
 
                             </section> <!-- #crea partidos -->
@@ -333,9 +394,9 @@
                 <footer class="row footer js-footer">
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-                        <p class="copyright-text">Copyright &copy; 2016 Company Name 
+                        <p class="copyright-text">Copyright &copy; 2016 | Walter and Byron Productions
                         
-                        | Design: <a href="http://www.templatemo.com/tm-480-story" target="_parent" title="Story Bootstrap Theme">The Story</a></p>  
+                          
 
                     </div>                
                 </footer>

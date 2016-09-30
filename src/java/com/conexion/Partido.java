@@ -30,7 +30,11 @@ public class Partido {
     private int codU;
     
     public Partido(){}
-    
+    public void MakePartidos(char grupo){
+        //ESTE METODOS ES EL ENCARGADO DE CREAR LAS COMBINACIONES DE
+        //TODOS LOS DIFERENTES PARTIDOS DE UN GRUPO DETERMINADO
+        
+    }
     public Partido(Rival rival1, Rival rival2, int codPartido, int codU, boolean crear){
         this.rival1 = rival1;
         this.rival2 = rival2;

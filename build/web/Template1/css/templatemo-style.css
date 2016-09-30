@@ -57,10 +57,11 @@ p:last-child { margin-bottom: 0; }
 	overflow: auto; 
 }
 
-.content-wrapper { margin-top: 200px; }
+.content-wrapper { margin-top: 100px;margin-left:0px; 
+                    }
 
 .content {
-	max-width: 800px;
+	max-width: 900px;
 	margin-left: auto;
 	margin-right: 0;
 }
