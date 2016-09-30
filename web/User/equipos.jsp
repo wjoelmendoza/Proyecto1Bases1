@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <%@include file="../WEB-INF/jspf/headeru.jspf" %> href
+        <%@include file="../WEB-INF/jspf/headeru.jspf" %>
         <title>Equipos</title>
         
         <script>
@@ -21,10 +21,10 @@
                 
                 var c = document.getElementById('divjumbo').getElementsByTagName("a");
                 //var num = document.getElementById('divjumbo').childNodes.length;
-                var mess=""
+                var mess="";
                 for(var i=0; i<c.length; i++)
                 {
-                     if (c[i].id == idd)
+                     if (c[i].id === idd)
                         {
                             document.getElementById(c[i].id).className = "list-group-item active";
                         }
@@ -69,6 +69,9 @@
                         <%=grupo%>
                         </h2>
                         <br>
+                        <strong>Seleccione un Equipo para ver su plantilla</strong>
+                        <br>
+                        <br>
                         <div class="list-group">
                  <%
                         for(int i = 0; i<equipos.size(); i++){
@@ -102,16 +105,18 @@
                 <%
                     }
                 %>
+                <hr>
+                <hr>
                         <div id="divplantilla">
                             
-                            dasdsadsadsadsadsadas
+                            
                         </div>
             </div>
         </div>
         <%@include file="../WEB-INF/jspf/scriptsu.jspf" %>
     </body>
 </html>
-
+<%--
 <%!
 private String escribirPlantilla(Equipo e){
 /**falta colocar la posicion*/
@@ -149,3 +154,4 @@ private String escribirPlantilla(Equipo e){
     return salida.toString();
 }
 %>
+--%>

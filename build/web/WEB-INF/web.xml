@@ -29,6 +29,10 @@
         <servlet-name>LlenarMarcador</servlet-name>
         <servlet-class>servlet.LlenarMarcador</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FormularioQ</servlet-name>
+        <servlet-class>servlet.FormularioQ</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
@@ -56,6 +60,10 @@
     <servlet-mapping>
         <servlet-name>LlenarMarcador</servlet-name>
         <url-pattern>/LlenarMarcador</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FormularioQ</servlet-name>
+        <url-pattern>/FormularioQ</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

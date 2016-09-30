@@ -20,6 +20,7 @@ public class Jugador {
     private float peso;
     private String nombre;
     private String equipo;
+    private String posicion;
     
     public Jugador(ResultSet result){
         if(result !=null){
@@ -30,6 +31,7 @@ public class Jugador {
                 peso = result.getFloat(4);
                 nombre = result.getString(5);
                 equipo = result.getString(6);
+                posicion = result.getString(7); 
             } catch (SQLException ex) {
                 Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -47,5 +49,7 @@ public class Jugador {
     public String getNombre(){return nombre;}
     
     public String getEquipo(){ return equipo;}
+    
+    public String getPosicion(){ return posicion;}
     
 }
