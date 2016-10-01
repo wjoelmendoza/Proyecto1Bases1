@@ -66,7 +66,39 @@ public class Pais {
     }
     
     
-    
+    public ArrayList<Pais> getPaisesConCod()
+    {
+        try {
+            conexion = new Conexion();
+            lpaises = new ArrayList<>();
+            clstm = conexion.getConexion().prepareCall("{call get_paises(?)}");
+            clstm.registerOutParameter(1, oracle.jdbc.OracleTypes.CURSOR);
+            clstm.execute();
+            rset =(ResultSet)clstm.getObject(1);
+            while(rset.next())
+                lpaises.add(new Pais(rset.getInt("cod_pais"),rset.getString("nombre")));
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            if(stm!=null){
+                try {
+                    stm.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if(rset!=null){
+                try {
+                    rset.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+        return lpaises;
+    }
     public ArrayList<String> getPaises(){
         try {
             conexion = new Conexion();

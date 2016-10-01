@@ -119,6 +119,7 @@ public class Equipo {
     }
     
     public void buscarEquipo(String grupo, int codEq){
+        System.out.println("EN buscarEquipo: equipo:"+codEq+" grupo:"+grupo);
         conexion = new Conexion();
         try {
             clstm = conexion.getConexion().prepareCall("{call buscar_equipo_cod(?,?,?)}");

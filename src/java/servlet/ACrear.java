@@ -5,6 +5,7 @@
  */
 package servlet;
 
+import com.conexion.Arbitro;
 import com.conexion.Confederacion;
 import com.conexion.Equipo;
 import com.conexion.Pais;
@@ -94,7 +95,12 @@ public class ACrear extends HttpServlet {
             System.out.println("ENTROO");
             response.setContentType( "text/html; charset=iso-8859-1" );
             PrintWriter out = response.getWriter();
-            out.println("<h3>RESPUESTA DESDE aCrear,u did it</h3>");
+            String nombreconf = request.getParameter("nombre");
+            String acroconf = request.getParameter("acronimo");
+            Confederacion confe = new Confederacion();
+            confe.set_confederacion(nombreconf, acroconf);
+            
+            out.println("Confederacion creada satisfactoriamente");
             
 
 
@@ -129,7 +135,7 @@ public class ACrear extends HttpServlet {
             out.println("<table cellpadding=\"5\" >");
             out.println("       <tr>");
             out.println("           <td>Nombre</td>");
-            out.println("           <td><input name=\"nombre\" type=\"text\" value=\""+confe.getNombre()+"\" id=\"txtnomconfe\"></td>");
+            out.println("           <td><input name=\"nombre\" type=\"text\" value=\""+confe.getNombre()+"\" id=\"txtnombreconf\"></td>");
             out.println("        </tr>");
             
             out.println("       <tr>");
@@ -141,20 +147,38 @@ public class ACrear extends HttpServlet {
             out.println("       <tr>");
             out.println("           <td></td>");
             out.println("           <td>");
-            out.println("               <input value=\"Modificar\" class=\"btn btn-success\" type=\"button\" id=\"btnmodconfe\">");
-            out.println("               <input value=\"Eliminar\" class=\"btn btn-danger\" type=\"button\"  id=\"btnelimconfe\">");
+            out.println("               <input value=\"Modificar\" class=\"btn btn-success\" type=\"button\" id=\"btnmodconfe\"  onclick=\"javascript:jsMEconfe('M');\" >");
+            out.println("               <input value=\"Eliminar\" class=\"btn btn-danger\" type=\"button\"  id=\"btnelimconfe\" onclick=\"javascript:jsMEconfe('E');\">");
             out.println("           </td>");
             out.println("       </tr>");
             out.println("</table>");
             out.println("</form>");
             
         }
-        else if(flag.equals("confederaelim"))
+        else if(flag.equals("Econfe"))
         {
+            response.setContentType( "text/html; charset=iso-8859-1" );
+            PrintWriter out = response.getWriter();
+            //out.println(" <select id=\"selectconfederas\" name=\"selectconfederas\" multiple=\"multiple\">");
+            int cod = Integer.valueOf(request.getParameter("codeconfe"));
+            Confederacion confederacion = new Confederacion();
+            confederacion.Elim_confederacion(cod);
+            out.println("Confederacion Eliminada");
+            
             
         }
-        else if(flag.equals("confederamodi"))
+        else if(flag.equals("Mconfe"))
         {
+            response.setContentType( "text/html; charset=iso-8859-1" );
+            PrintWriter out = response.getWriter();
+            //out.println(" <select id=\"selectconfederas\" name=\"selectconfederas\" multiple=\"multiple\">");
+            int cod = Integer.valueOf(request.getParameter("codeconfe"));
+            String nomconfe = request.getParameter("nomconfe");
+            String acroconfe = request.getParameter("acroconfe");
+            System.out.println(""+nomconfe+","+acroconfe+","+cod);
+            Confederacion confederacion = new Confederacion();
+            confederacion.Mod_confederacion(cod,nomconfe,acroconfe);
+            out.println("Confederacion Eliminada");
             
         }
         
@@ -201,53 +225,7 @@ public class ACrear extends HttpServlet {
             ArrayList<Equipo> lista = equipo.getEquiposGrupo(group.charAt(0));//devuelve una lista de equipos
             StringBuilder builder = new StringBuilder();
             System.out.println("tam de equipos: "+lista.size());
-            //out.write("HOLA DESDE OUT");
-            //builder.append("HOLA QUE RARO ESTO");
-           
-           
             
-                    /*
-                    out.println("<table align=\"center\">");
-                    out.println("<tr>");
-                    out.println("<th>");
-                    out.println("<input value=\""+lista.get(0).getCodEquipo()+"\" type=\"hidden\" >");
-                    out.println("</th>");
-                    out.println("<th></th>");
-                    out.println("<th>");
-                    out.println("<input value=\""+lista.get(1).getCodEquipo()+"\" type=\"hidden\">");
-                    out.println("</th>");
-                    out.println(" </tr>");
-                    out.println("<tr>");
-                    out.println("<th><h3>"+lista.get(0).getPais()+"</h3></th>");
-                    out.println("<th></th>");
-                    out.println("<th><h3>"+lista.get(1).getPais()+"</h3></th>");
-                    out.println("</tr>");
-                    out.println("<tr>");
-                    out.println("<td rowspan=\"2\">");
-                    out.println("<input value=\"0\" size=\"2\">");
-                    out.println("</td>");
-                    out.println(" <td></td>");
-                    out.println("<td rowspan=\"2\">");
-                    out.println("<input value=\"0\" size=\"2\">");
-                    out.println("</td>");
-                    out.println("</tr>");
-                    out.println("<tr>");
-                    out.println("<td></td>"); 
-                    out.println("</tr>");
-                    out.println("<tr>");
-                    out.println("<td colspan=\"3\">");
-                    out.println("Fecha: <input type=\"date\">");
-                    out.println("</td>");
-                    out.println("</tr>");
-                    out.println("<tr>");
-                    out.println("<td colspan=\"3\">");
-                    out.println("Hora: <input type=\"time\">");
-                    out.println("</td>");
-                    out.println("</tr>");
-                    out.println("</table>");
-                    out.println("</div>");
-                    out.println("</li>");
-            */
             out.println("<table align=\"left\">");
             out.println("<tr>");
             
@@ -264,51 +242,7 @@ public class ACrear extends HttpServlet {
                     out.println("<th>");
                     out.println("<input class=\"btn btn-success\" id=\"btnz"+lista.get(z).getCodEquipo()+"z"+lista.get(x+1).getCodEquipo()+"z\" type=\"button\" value=\""+lista.get(z).getPais()+"vrs"+lista.get(x+1).getPais()+"\" style=\"font-size : 11px; width:100%; height:30px;>\" onclick=\"javascript:jsbtnpartido('"+lista.get(z).getCodEquipo()+"','"+lista.get(x+1).getCodEquipo()+"','"+group.charAt(0)+"');\"");
                     out.println("</th>");
-                /*
-                    out.println("<li>");
-                    out.println("<div>");
-                    
-                    out.println("<table align=\"center\">");
-                    out.println("<tr>");
-                    out.println("<th>");
-                    out.println("<input value=\""+lista.get(z).getCodEquipo()+"\" type=\"hidden\" >");
-                    out.println("</th>");
-                    out.println("<th></th>");
-                    out.println("<th>");
-                    out.println("<input value=\""+lista.get(x+1).getCodEquipo()+"\" type=\"hidden\">");
-                    out.println("</th>");
-                    out.println(" </tr>");
-                    out.println("<tr>");
-                    out.println("<th><h3>"+lista.get(z).getPais()+"</h3></th>");
-                    out.println("<th></th>");
-                    out.println("<th><h3>"+lista.get(x+1).getPais()+"</h3></th>");
-                    out.println("</tr>");
-                    out.println("<tr>");
-                    out.println("<td rowspan=\"2\">");
-                    out.println("<input value=\"0\" size=\"2\">");
-                    out.println("</td>");
-                    out.println(" <td></td>");
-                    out.println("<td rowspan=\"2\">");
-                    out.println("<input value=\"0\" size=\"2\">");
-                    out.println("</td>");
-                    out.println("</tr>");
-                    out.println("<tr>");
-                    out.println("<td></td>"); 
-                    out.println("</tr>");
-                    out.println("<tr>");
-                    out.println("<td colspan=\"3\">");
-                    out.println("Fecha: <input type=\"date\">");
-                    out.println("</td>");
-                    out.println("</tr>");
-                    out.println("<tr>");
-                    out.println("<td colspan=\"3\">");
-                    out.println("Hora: <input type=\"time\">");
-                    out.println("</td>");
-                    out.println("</tr>");
-                    out.println("</table>");
-                    out.println("</div>");
-                    out.println("</li>");
-                */
+                
                 }
                 
                 x=y;
@@ -396,8 +330,117 @@ public class ACrear extends HttpServlet {
             
         }
         
-        
-        
+        else if(flag.equals("lpaises"))
+        {
+            System.out.println("ENTRO A lpaises");
+            response.setContentType( "text/html; charset=iso-8859-1" );
+            PrintWriter out = response.getWriter();
+            Pais pais = new Pais();
+            ArrayList<Pais> lista = pais.getPaisesConCod();
+            Iterator<Pais> it = lista.iterator();
+            while(it.hasNext())
+            {
+                Pais p = it.next();
+                out.println("<option value=\""+p.getCodpais()+"\">"+p.getNombre()+"</option>");
+            }
+        }
+        else if(flag.equals("submitarbitro"))
+        {
+            System.out.println("ENTRO A submitarbitro");
+            String nombre = request.getParameter("nombre");
+            int codigop = Integer.valueOf(request.getParameter("codigop"));
+            response.setContentType( "text/html; charset=iso-8859-1" );
+            PrintWriter out = response.getWriter();
+            out.println("Arbitro creado");
+            
+        }
+        else if(flag.equals("Earbitro"))
+        {
+            System.out.println("ENTRO A Earbitro");
+            int coda = Integer.valueOf(request.getParameter("codarbitro"));
+            Arbitro arbi = new Arbitro();
+            arbi.EArbitro(coda);
+            response.setContentType( "text/html; charset=iso-8859-1" );
+            PrintWriter out = response.getWriter();
+            out.println("Arbitro eliminado");
+            
+        }
+        else if(flag.equals("Marbitro"))
+        {
+            System.out.println("ENTRO A Marbitro");
+            int coda = Integer.valueOf(request.getParameter("codarbitro"));
+            String nom = request.getParameter("nombre");
+            int cop = Integer.valueOf(request.getParameter("codpais"));
+            Arbitro arbi = new Arbitro();
+            arbi.MArbitro(coda, nom, cop);
+            response.setContentType( "text/html; charset=iso-8859-1" );
+            PrintWriter out = response.getWriter();
+            out.println("Arbitro Modificado");
+        }
+        else if(flag.equals("larbitros"))
+        {
+            System.out.println("ENTRO A larbitros");
+            response.setContentType( "text/html; charset=iso-8859-1" );
+            PrintWriter out = response.getWriter();
+            Arbitro arbitro = new Arbitro();
+            ArrayList<Arbitro> lista = arbitro.get_arbitros();
+            Iterator<Arbitro> it = lista.iterator();
+            while(it.hasNext())
+            {
+                Arbitro temp = it.next();
+                out.println("<option value=\""+temp.getCod()+"\">"+temp.getNombre()+"</option>");
+            }
+        }
+        else if(flag.equals("infoarbitro"))
+        {
+            System.out.println("ENTRO A infoarbitro");
+            //Se obtiene la info del arbitro
+            int coda = Integer.valueOf(request.getParameter("codigoarbitro"));
+            Arbitro arbitro = new Arbitro();
+            arbitro.get_arbitro(coda);
+            
+            //SE EMPIEZA A ARMAR LA TABLA EN DONDE SE VAN A PRESENTAR ESTOS DATOS
+            response.setContentType( "text/html; charset=iso-8859-1" );
+            PrintWriter out = response.getWriter();
+            
+            out.println("<form id=\"formarbitro\">");
+            out.println("<table cellpadding=\"5\" >");
+            out.println("       <tr>");
+            out.println("           <td>Nombre:</td>");
+            out.println("           <td><input name=\"nombre\" type=\"text\" value=\""+arbitro.getNombre()+"\" id=\"txtnombrearbitro\"></td>");
+            out.println("        </tr>");
+            
+            out.println("       <tr>");
+            out.println("           <td><input name=\"codarbitro\" type=\"hidden\" value=\""+arbitro.getCod()+"\" id=\"txtcodarbitro\"></td>");
+            out.println("        </tr>");
+            out.println("       <tr>");
+            out.println("<td>");
+            out.println("<select id=\"selectarbpaiact\">");
+            //se obtiene la lista de paises Y se deja como seleccionado el pais que tiene actualmente
+            Pais pais = new Pais();
+            ArrayList<Pais> lista = pais.getPaisesConCod();
+            Iterator<Pais> it = lista.iterator();
+            while(it.hasNext())
+            {
+                Pais p = it.next();
+                if(p.getCodpais()==arbitro.getCodpais())
+                    out.println("<option value=\""+p.getCodpais()+"\" selected>"+p.getNombre()+"</option>");
+                else
+                    out.println("<option value=\""+p.getCodpais()+"\" >"+p.getNombre()+"</option>");
+            }
+            out.println("</select>");
+            out.println("</td>");        
+            out.println("        </tr>");
+             out.println("       <tr>");
+            out.println("           <td></td>");
+            out.println("           <td>");
+            out.println("               <input value=\"Modificar\" class=\"btn btn-success\" type=\"button\" id=\"btnmodarbitro\"  onclick=\"javascript:jsMEarbitro('M');\" >");
+            out.println("               <input value=\"Eliminar\" class=\"btn btn-danger\" type=\"button\"  id=\"btnelimarbitro\" onclick=\"javascript:jsMEarbitro('E');\">");
+            out.println("           </td>");
+            out.println("       </tr>");
+            out.println("        </table>");
+            out.println("        </form>");
+        }
         else
         {
             System.out.println("");

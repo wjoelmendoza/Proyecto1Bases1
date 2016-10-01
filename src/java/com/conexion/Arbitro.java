@@ -17,172 +17,37 @@ import java.util.logging.Logger;
  *
  * @author byron
  */
-public class Confederacion {
-    
-    private ArrayList<Confederacion> confederas;
-    private Conexion conexion;
-    private Statement stm;
-    private ResultSet rset;
-    CallableStatement cstmt;
+public class Arbitro {
     
     private int cod;
     private String nombre;
-    private String acronimo;
+    private int codpais;
+    private Conexion conexion;
+    private Statement stm;
+    private ResultSet rset;
+    private CallableStatement clstm;
     
     
-    public Confederacion(){}
-    public Confederacion(int co,String nom,String acro){this.cod = co;this.nombre=nom;this.acronimo=acro;}
     
-    public void Mod_confederacion(int cod,String nombre,String acro)
+    public Arbitro(){}
+    public Arbitro(int co,String nom,int cop){this.cod=co;this.nombre=nom;this.codpais=cop;}
+    
+    public void get_arbitro(int coda)
     {
+        Arbitro arbitro = null;
         try {
             conexion = new Conexion();
-            cstmt = conexion.getConexion().prepareCall("{call M_confederacion(?,?,?)}");
-            cstmt.setInt(1,cod);
-            cstmt.setString(2, nombre);
-            cstmt.setString(3, acro);
-            cstmt.execute();
-            
-                      
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
-            if(stm!=null){
-                try {
-                    stm.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            if(rset!=null){
-                try {
-                    rset.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-    }
-    
-    
-    public void Elim_confederacion(int cod)
-    {
-        try {
-            conexion = new Conexion();
-            cstmt = conexion.getConexion().prepareCall("{call E_confederacion(?)}");
-            cstmt.setInt(1,cod);
-            cstmt.execute();
-            
-                      
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
-            if(stm!=null){
-                try {
-                    stm.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            if(rset!=null){
-                try {
-                    rset.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-    }
-    public void set_confederacion(String nom,String acro)
-    {
-        try {
-            conexion = new Conexion();
-            cstmt = conexion.getConexion().prepareCall("{call set_confederacion(?,?)}");
-            cstmt.setString(1,nom);
-            cstmt.setString(2,acro);
-            cstmt.execute();
-            
-                      
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
-            if(stm!=null){
-                try {
-                    stm.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            if(rset!=null){
-                try {
-                    rset.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-    }
-    public Confederacion getconfederacion(int cod)
-    {
-        Confederacion confe = null;
-        try {
-            conexion = new Conexion();
-            cstmt = conexion.getConexion().prepareCall("{call get_confederacion2(?,?)}");
-            cstmt.registerOutParameter(1,oracle.jdbc.OracleTypes.CURSOR);
-            cstmt.setInt(2, cod);
-            cstmt.execute();
-            
-            rset = (ResultSet)cstmt.getObject(1);
-            System.err.println("NUMERO DE FILA: "+rset.getRow());
+            clstm = conexion.getConexion().prepareCall("{call get_Arbitro(?,?)}");
+            clstm.registerOutParameter(1, oracle.jdbc.OracleTypes.CURSOR);
+            clstm.setInt(2,coda);
+            clstm.execute();
+            rset = (ResultSet)clstm.getObject(1);
             rset.next();
-            System.err.println("NUMERO DE FILA: "+rset.getRow());
-            confe = new Confederacion(rset.getInt("cod"),rset.getString("nombre"),rset.getString("acronimo"));
+            this.setCod(rset.getInt("cod_arb"));
+            this.setNombre(rset.getString("nombre"));
+            this.setCodpais(rset.getInt("cod_pais"));
             
-            
-           
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
-            if(stm!=null){
-                try {
-                    stm.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            if(rset!=null){
-                try {
-                    rset.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        return confe;
-    }
-    
-    public ArrayList<Confederacion> getConfederaciones(){
-        try {
-            conexion = new Conexion();
-            
-            confederas = new ArrayList<>();
-            
-            cstmt = conexion.getConexion().prepareCall("{call get_confederacion(?)}");
-            cstmt.registerOutParameter(1,oracle.jdbc.OracleTypes.CURSOR);
-           
-            cstmt.execute();
-            rset = (ResultSet)cstmt.getObject(1);
-            //rset = cstmt.getResultSet();
-            //System.out.println(rset.getCursorName());
-            while(rset.next())
-            {
                 
-              confederas.add(new Confederacion(rset.getInt("cod"),rset.getString("nombre"),rset.getString("acronimo")));
-            }
             
         } catch (SQLException ex) {
             Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
@@ -203,9 +68,130 @@ public class Confederacion {
             }
         }
         
-        return confederas;
     }
-
+    
+    public ArrayList<Arbitro> get_arbitros()
+    {
+        ArrayList<Arbitro> lista =new ArrayList<>();
+        try {
+            conexion = new Conexion();
+            clstm = conexion.getConexion().prepareCall("{call get_Arbitros(?)}");
+            clstm.registerOutParameter(1, oracle.jdbc.OracleTypes.CURSOR);
+            clstm.execute();
+            rset = (ResultSet)clstm.getObject(1);
+            while(rset.next())
+                lista.add(new Arbitro(rset.getInt("cod_arb"),rset.getString("nombre"),rset.getInt("cod_pais")));
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            if(stm!=null){
+                try {
+                    stm.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if(rset!=null){
+                try {
+                    rset.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return lista;
+        
+    }
+    public void MArbitro(int coda,String nom,int codp)
+    {
+        try {
+            conexion = new Conexion();
+            clstm = conexion.getConexion().prepareCall("{call M_arbitro(?,?,?)}");
+            clstm.setInt(1,coda);
+            clstm.setString(2, nom);
+            clstm.setInt(3,codp);
+            clstm.execute();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            if(stm!=null){
+                try {
+                    stm.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if(rset!=null){
+                try {
+                    rset.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+    public void EArbitro(int coda)
+    {
+        try {
+            conexion = new Conexion();
+            clstm = conexion.getConexion().prepareCall("{call E_arbitro(?)}");
+            clstm.setInt(1,coda);
+            clstm.execute();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            if(stm!=null){
+                try {
+                    stm.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if(rset!=null){
+                try {
+                    rset.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+    public void set_Arbitro(String nom,int codp)
+    {
+        try {
+            conexion = new Conexion();
+            clstm = conexion.getConexion().prepareCall("{call set_arbitro(?,?)}");
+            clstm.setString(1,nom);
+            clstm.setInt(2, codp);
+            clstm.execute();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            if(stm!=null){
+                try {
+                    stm.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if(rset!=null){
+                try {
+                    rset.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+            
+    
+    
+    
+    
     /**
      * @return the cod
      */
@@ -235,17 +221,17 @@ public class Confederacion {
     }
 
     /**
-     * @return the acronimo
+     * @return the codpais
      */
-    public String getAcronimo() {
-        return acronimo;
+    public int getCodpais() {
+        return codpais;
     }
 
     /**
-     * @param acronimo the acronimo to set
+     * @param codpais the codpais to set
      */
-    public void setAcronimo(String acronimo) {
-        this.acronimo = acronimo;
+    public void setCodpais(int codpais) {
+        this.codpais = codpais;
     }
     
 }

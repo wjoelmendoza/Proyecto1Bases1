@@ -21,10 +21,12 @@
 	$(document).ready(function() {
 		$('#submitconf').click(function(event) {
 			var nom = $('#nombreconf').val();
+                        var acro = $('#acronimoconf').val();
                         var fl = $('#flagconf').val();
 			// Si en vez de por post lo queremos hacer por get, cambiamos el $.post por $.get
 			$.post('/Apuestas/ACrear', {
 				nombre : nom,
+                                acronimo:acro,
                                 flaa : fl
 				
 			}, function(responseText) {
@@ -96,6 +98,10 @@
 			});
 
 		});
+         
+                
+                
+                
 	});
             
         </script>
@@ -130,6 +136,138 @@
 			});
             }
         </script>
+        <script>
+            $(document).ready(function() {
+                $('#btnrefreshconfe').click(function(event) {
+			
+                        var fl = 'lconfederas';
+			// Si en vez de por post lo queremos hacer por get, cambiamos el $.post por $.get
+			$.post('/Apuestas/ACrear', {
+				flaa : fl
+				
+			}, function(responseText) {
+				$('#selectconfederas').html(responseText);
+			});
+
+		});
+                
+            });
+        </script>
+        <script>
+            $(document).ready(function() {
+                
+                 $('#btnconfederaciones').click(function(event) {
+			
+                        var fl = 'lconfederas';
+			// Si en vez de por post lo queremos hacer por get, cambiamos el $.post por $.get
+			$.post('/Apuestas/ACrear', {
+				flaa : fl
+				
+			}, function(responseText) {
+				$('#selectconfederas').html(responseText);
+			});
+		});
+                
+            });
+           
+	
+        </script>
+        <script>
+            $(document).ready(function() {
+
+                $( "#selectconfederas" ).change(function () {
+                var str = "";
+                $( "select option:selected" ).each(function() {
+                str += $( this ).val() + "";
+                var fl='confederainfo';
+                $.post('/Apuestas/ACrear', {
+				flaa : fl,
+                                codconfe : str
+				
+			}, function(responseText) {
+                            	$("#confederadiv").html(responseText);
+			});
+      
+      
+                });
+    
+                })  
+                .change();
+        
+        
+        
+                 
+   
+            }); 
+            
+            
+            
+            
+        </script>
+        <script>
+            function jsMEconfe(wflag) {
+                alert("HOLAA");
+                var fle = 'Econfe';
+                var flm = 'Mconfe';
+                
+                var codeconfe =document.getElementById('selectconfederas').value;
+                if(wflag=="E")
+                {
+                    $.post('/Apuestas/ACrear', {
+				flaa : fle,
+                                codeconfe :codeconfe
+				
+			}, function(responseText) {
+                            	$("#divEMconfe").html(responseText);
+			});
+                }
+                else if(wflag=="M")
+                {
+                    var nomconfe =$('#txtnombreconf').val();
+                    var acroconfe =$('#txtacroconfe').val();
+                    $.post('/Apuestas/ACrear', {
+				flaa : flm,
+                                codeconfe :codeconfe,
+                                nomconfe : nomconfe,
+                                acroconfe : acroconfe
+				
+			}, function(responseText) {
+                            	$("#divEMconfe").html(responseText);
+			});
+                }
+                
+            }
+        </script>
+        <!--      ---------------funciones para los arbitros-----------------------  -->
+        <script>
+            $(document).ready(function() {
+                
+                 $('#btnarbitros').click(function(event) {
+			alert("btnarbitros")
+                        var fl = 'lpaises';
+                        var fl2 = 'larbitros'
+			// Si en vez de por post lo queremos hacer por get, cambiamos el $.post por $.get
+			$.post('/Apuestas/ACrear', {
+				flaa : fl
+				
+			}, function(responseText) {
+				$('#lallpaises').html(responseText);
+			});
+                        
+                        $.post('/Apuestas/ACrear', {
+				flaa : fl2
+				
+			}, function(responseText) {
+				$('#5selectlarbitros').html(responseText);
+			});
+                        
+		});
+                
+            });
+           
+	
+        </script>
+        
         
     </head>
     
@@ -142,7 +280,8 @@
                 <img src="../Template1/img/background.jpg" id="page-1-img" class="main-img" alt="Confederaciones">
                 <img src="../Template1/img/background.jpg" id="page-2-img" alt="Paises">
                 <img src="../Template1/img/background.jpg" id="page-3-img" alt="Selecciones">
-                <img src="../Template1/img/background.jpg" id="page-4-img" alt="Grupos">                            
+                <img src="../Template1/img/background.jpg" id="page-4-img" alt="Grupos"> 
+                <img src="../Template1/img/background.jpg" id="page-5-img" alt="Arbitros"> 
                
             
             </div>
@@ -188,9 +327,9 @@
                                             <span>Paises</span>
                                         </a>
                                     </li>
-                                    <li data-nav-item-id="page-5" class="box-nav-item js-nav-item pull-xs-left">
+                                    <li data-nav-item-id="page-5" class="box-nav-item js-nav-item pull-xs-left" id="btnarbitros">
                                         <a href="#page-5">
-                                            <span>Marcadores</span>
+                                            <span>Arbitros</span>
                                         </a>
                                     </li>
 
@@ -206,15 +345,19 @@
                             <section data-page-id="page-1" class="content js-content">
                                 
                                 <header class="box box-black margin-b-20">
-                                    <h2 class="box-text page-title-text">Crea las confederaciones</h2>
+                                    <h2 class="box-text page-title-text">Confederaciones</h2>
                                 </header>
                                 
                                 <div class="content-text">
                                     <form id="form1">
                                         <table cellpadding="5" >
                                             <tr>
-                                                <td>Nombre</td>
+                                                <td>Nombre:</td>
                                                 <td><input id="nombreconf" type="text" maxlength="50" required></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Acronimo:</td>
+                                                <td><input id="acronimoconf" type="text" maxlength="50" required></td>
                                             </tr>
                                             <tr>
                                                 <td></td>
@@ -230,8 +373,27 @@
                                                 </td>
                                             </tr>
                                         </table>
+                                    </form>
                                          <div id="respconf">
                                     
+                                        </div>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <input class="btn btn-success" id="btnrefreshconfe" type="button" value="Get" >
+                                        <div>
+                                            
+                                            <select name="selectconfederas" id="selectconfederas"multiple="multiple">
+  
+                                            </select>
+                                    
+                                        </div>
+                                        <br>
+                                        <div id="confederadiv">
+                                            fgftftft
+                                        
+                                    
+                                        </div>
                                         </div>
                                     </form>
                                 </div>
@@ -379,6 +541,60 @@
                                 <div class="content-text">
                                     
                                     
+                                    
+                                    
+                                    
+                                </div>
+
+                            </section> <!-- #crea partidos -->
+                            <section data-page-id="page-5" class="content js-content">
+                                
+                                <header class="box box-black margin-b-20">
+                                    <h2 class="box-text page-title-text">Crea Los Arbitros</h2>
+                                </header>
+                                
+                                <div class="content-text">
+                                   <form id="form1">
+                                        <table cellpadding="5" >
+                                            <tr>
+                                                <td>Nombre:</td>
+                                                <td><input id="nombreconf" type="text" maxlength="50" required></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Pais:</td>
+                                                <td>
+                                                        <select id="lallpaises">
+                                                            
+                                                            
+                                                    
+                                                        </select>
+                                                
+                                                </td>
+                                            </tr>
+                                                                  
+                                            <tr>
+                                                
+                                                <td></td>
+                                                <td>
+                                                <input class="btn btn-success" id="btnsubmitarbitro" type="button" value="Crear" >
+                                                
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </form>
+                                                           
+                                </div>
+                                
+                                <div class="content-text">
+                                    
+                                    <br>
+                                    <h5>Modificacion y Eliminacion</h5>
+                                    <br>
+                                    <input class="btn btn-success" id="btngetarbitros" type="button" value="Get" >
+                                    <input class="btn btn-success" id="btnshowarbitro" type="button" value="Show" >
+                                    <select id="5selectlarbitros">
+                                        
+                                    </select>
                                     
                                     
                                     
