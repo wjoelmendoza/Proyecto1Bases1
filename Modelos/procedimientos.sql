@@ -253,15 +253,18 @@ BEGIN
   END IF;
 END;
 
---PROCEDIMIENTOS DE ADMINISTRADOR
+---------------------------PROCEDIMIENTOS DE ADMINISTRADOR-------------------------------------------------
+
+
+--------------------------------CRUD CONFEDERACIONES-----------------------------------
+---PROCEDIMIENTO PARA CREAR UNA CONFDERACION, ME RETORNA UN MENSAJE DE VALIDACION
 CREATE OR REPLACE PROCEDURE set_confederacion(nom IN varchar2,acro IN varchar2)
 AS
 BEGIN
   INSERT INTO confederacion(nombre,acronimo)values(nom,acro);
 END set_confederacion;
 
-
------------------------------------------------------------
+-- PROCEDIMIENTO PARA OBTENER TODOS LA CONFEDERACIONES
 
 CREATE OR REPLACE PROCEDURE get_confederacion(cursor1 OUT SYS_REFCURSOR)
 AS
@@ -270,7 +273,7 @@ BEGIN
   select * from CONFEDERACION;
 END get_confederacion;
 
------------------------------------------------------------
+--PROCEDIMIENTO PARA TRAER INFO DE UNA CONFEDERACION EN ESPECIFICO
 
 CREATE OR REPLACE PROCEDURE get_confederacion2(cursor1 OUT SYS_REFCURSOR,codd IN INTEGER)
 AS
@@ -278,8 +281,8 @@ BEGIN
   OPEN cursor1 FOR
   select * from CONFEDERACION WHERE cod=codd;
 END get_confederacion2;
-
-----------------------------------------------------------
+-----
+-----PROCEDIMIENTO PARA ELIMINAR UNA CONFEDERACION
 CREATE OR REPLACE PROCEDURE E_confederacion(codigo IN INTEGER)
 AS
 BEGIN
@@ -287,7 +290,7 @@ BEGIN
   WHERE  COD=codigo;
 END E_confederacion;
 
--------------------------------------------
+--PROCEDIMIENTO PARA MODIFICAR UNA CONFEERACION
 
 CREATE OR REPLACE PROCEDURE M_confederacion(codigo IN INTEGER,nom IN VARCHAR2,acronim IN VARCHAR2)
 AS
@@ -296,27 +299,157 @@ BEGIN
   SET nombre=nom,acronimo=acronim
   WHERE cod=codigo;
 END M_confederacion;
-----------------------------------------------
-CREATE OR REPLACE PROCEDURE set_pais(nom IN varchar2,codconf IN integer,mess OUT varchar2)
+--------------------------------------------
+
+
+
+
+
+--------------------------------CRUD PARTIDOS---------------------------------
+--ESTE PROCEDIMIENTO ME INDICA SI EL ADMIN YA CREO CON ANTERIORIDAD UN PARTIDO PARA LOS DOS EQUIPO INDICADOS,
+--  SI ENCUENTRA UN PARTIDO ME RETORNA TODA LA INFO DE ESTE(ES MAS QUE TODO PARA DEPLEGAR LA INFO PARA LA MODIFICACION Y ELIMINACION DE ELLA)
+create or replace PROCEDURE get_info_partido(codeq1 IN INTEGER,codeq2 IN INTEGER,mess OUT varchar2,cursorr OUT SYS_REFCURSOR)
+AS
+cursor cursor1(codeqq1 INTEGER) is select cod_equipo,cod_part from rivales where cod_equipo=codeqq1;  
+cursor cursor2(codeqq2 INTEGER) is select cod_equipo,cod_part from rivales where cod_equipo=codeqq2;
+flagw INTEGER;
+codigoparti INTEGER;
+BEGIN
+  flagw :=0;
+  FOR equipo1 IN cursor1(codeq1)
+  LOOP
+    FOR equipo2 IN cursor2(codeq2)
+    LOOP
+      --dbms_output.put_line(equipo1.cod_part);
+      IF equipo1.cod_part = equipo2.cod_part THEN--YA TIENE CREADO UN PARTIDO. se recupera el codigo de partido para buscar el codigo de ciudad
+        flagw :=1;
+        OPEN cursorr FOR
+        select * from partido where CODIGO = equipo1.cod_part;
+        mess :='SI';
+      END IF;
+      
+      IF flagw=1 THEN
+        EXIT;
+      END IF;
+      
+    END LOOP;
+    
+    IF flagw=1 THEN
+      EXIT;
+    END IF;
+    
+  END LOOP;
+  IF flagw=0 THEN--SI NO LO ENCONTRO
+    mess :='NO';
+  END IF;
+  
+END get_info_partido;
+-- ESTE METODO ME RETORNA TODA LA INFORMACION DE LA CIUDAD A LA QUE EL PARTIDO FUE ASIGNADO,(IGUAL SOLO PARA FINES DE MOSTRARLO EN PANTALLA 
+--  Y MODIFICAR O ELIMINAR)
+create or replace PROCEDURE get_ciudad_partido(codciu IN INTEGER,cursorr OUT SYS_REFCURSOR)
+AS
+BEGIN
+  OPEN cursorr for
+    select * from ciudad where COD_CIUDAD=codciu;
+END get_ciudad_partido;
+-- ESTE METODO ME RETORNA TODA LA INFORMACION DE LOS MARCADORES PARA UN PARTIDO ASOCIADO,(IGUAL SOLO PARA FINES
+--  DE MOSTRARLO EN PANTALLA   Y MODIFICAR O ELIMINAR)
+create or replace PROCEDURE get_marcador_partido(codparti IN INTEGER,cursorr OUT SYS_REFCURSOR)
+AS
+BEGIN
+  open cursorr for
+    select goles,cod_equipo from marcador where tipo='A' and cod_part=codparti;
+END;
+
+
+
+
+create or replace PROCEDURE set_partido(codeq1 IN INTEGER,codeq2 IN INTEGER,goleq1 IN INTEGER,goleq2 IN INTEGER,grr IN char,fecc IN DATE,codciudad IN integer,flag IN char,codu IN INTEGER, mess OUT VARCHAR2)
 AS
 
- cursor1 SYS_REFCURSOR;
+cursor cursor1(codeqq1 INTEGER) is select cod_equipo,cod_part from rivales where cod_equipo=codeqq1;  
+cursor cursor2(codeqq2 INTEGER) is select cod_equipo,cod_part from rivales where cod_equipo=codeqq2;
+flagw INTEGER;
+type ididp IS RECORD(codigooo PARTIDO.CODIGO%TYPE);
+idparti ididp;
 BEGIN
-    OPEN cursor1 FOR
-    SELECT cod_pais,nombre from pais where lower(nombre)=lower(nom);
-    IF cursor1%FOUND THEN
-      mess := nom||'YA ES UN PAIS QUE EXISTE EN DB';
+  flagw :=0;
+  FOR equipo1 IN cursor1(codeq1)
+  LOOP
+    FOR equipo2 IN cursor2(codeq2)
+    LOOP
+      --dbms_output.put_line(equipo1.cod_part);
+      IF equipo1.cod_part = equipo2.cod_part THEN--YA TIENE CREADO UN PARTIDO
+        flagw :=1;
+        IF flag='G' THEN--SE TIENE QUE HACER UN UPDATE
+                update marcador
+                set goles=goleq1
+                WHERE cod_equipo=codeq1 and tipo='A' and cod_part=equipo1.cod_part;
+            
+                update marcador
+                set goles=goleq2
+                WHERE cod_equipo=codeq2 and tipo='A' and cod_part=equipo2.cod_part;
+            
+                update partido
+                set fecha = fecc,hora_inicio=fecc,cod_ciudad=codciudad
+                where codigo = equipo1.cod_part;
+                exit;
+                mess :='SE HISO LA ACTUALIZACION DEL MARCADOR';
+                
+        ELSIF flag='E' THEN-- SE TIENE QUE UN DELETE
+                DELETE FROM marcador mar  where mar.cod_part = equipo1.cod_part;
+                DELETE FROM rivales riv where riv.cod_part = equipo1.cod_part;
+                delete from partido  where codigo = equipo1.cod_part;
+                mess :='SE ELIMINO EL MARCADOR';
+                exit;
+        ELSE
+          mess :='FLAG INCORRECTA';
+          EXIT;
+          
+        END IF;
+        
+      
+      END IF;
+      
+    END LOOP;
+    IF flagw=1 THEN
+      EXIT;
+    END IF;
+  END LOOP;
+  IF flagw=0 THEN--SI NO LO ENCONTRO
+    IF flag='G' THEN--NO EXISTE EN RIVALES ASI QUE ES LA PRIMERA VES QUE SE CREA ESE MARCADOR
+      insert into partido(fecha,hora_inicio,cod_ciudad)values(fecc,fecc,codciudad)returning codigo into idparti.codigooo;
+      insert into rivales(cod_equipo,cod_part)values(codeq1,idparti.codigooo);
+      insert into rivales(cod_equipo,cod_part)values(codeq2,idparti.codigooo);
+      insert into marcador(goles,cod_equipo,cod_part,tipo,cod_usuario)values(goleq1,codeq1,idparti.codigooo,'A',codu);
+      insert into marcador(goles,cod_equipo,cod_part,tipo,cod_usuario)values(goleq2,codeq2,idparti.codigooo,'A',codu);
+      mess :='SE CREO EL PARTIDO POR PRIMERA VEZ';
+    ELSIF flag='E' THEN
+      mess :='NO SE PUEDE ELIMINAR UN PARTIDO O MARCADOR QUE NO SE A CREADO';
     ELSE
-      INSERT INTO pais(nombre,cod_conf)VALUES(nom,codconf);
-      mess := nom||'PAIS CREADO SATISFACTORIAMENTE';
+      mess :='FLAG INCORRECTA';
+    
+      
+    END IF;
   END IF;
-  commit;
-END set_pais;
-
------------------------------------------------------------------------------------------------------------------------------
+  
+END set_partido;
 
 
-CREATE OR REPLACE PROCEDURE set_Equipo(direc IN VARCHAR2,codpais IN SMALLINT,grrr char,mess OUT VARCHAR2)
+
+
+-------------------------------CRUD SELECCIONES------------------
+CREATE OR REPLACE PROCEDURE get_PaisesDisponibles(cursor1 OUT SYS_REFCURSOR)
+AS
+BEGIN
+  OPEN cursor1 FOR
+  SELECT pais.cod_pais,pais.nombre FROM pais
+  WHERE pais.cod_pais NOT IN(SELECT equipo.COD_PAIS FROM equipo);
+  
+END get_PaisesDisponibles;
+
+
+create or replace PROCEDURE set_Equipo(direc IN VARCHAR2,codpais IN SMALLINT,grrr char,mess OUT VARCHAR2)
 AS
   cantidad integer;
   cursor1 SYS_REFCURSOR;
@@ -353,31 +486,103 @@ BEGIN
       
   END IF;  
 END set_Equipo;
-
-----------------------------------------------------------------------------------------------------------
-
-CREATE OR REPLACE PROCEDURE get_GruposDisponibles(cursor1 OUT SYS_REFCURSOR)
+----------------------CRUD PAISES----------------------------------
+create or replace PROCEDURE set_pais(nom IN varchar2,codconf IN integer,mess OUT varchar2)
 AS
 BEGIN
-  OPEN cursor1 FOR
-  select se.grupo
-FROM
-(
-  select grupo, count(*) as sumass from equipo
-  group by grupo
-)se
-where se.sumass<3;
-END get_GruposDisponibles;
-
------------------------------------------------------------------------------------------------------------------------------
-
-CREATE OR REPLACE PROCEDURE get_PaisesDisponibles(cursor1 OUT SYS_REFCURSOR)
-AS
-BEGIN
-  OPEN cursor1 FOR
-  SELECT pais.cod_pais,pais.nombre FROM pais
-  WHERE pais.cod_pais NOT IN(SELECT equipo.COD_PAIS FROM equipo);
+   
+      INSERT INTO pais(nombre,cod_conf)VALUES(nom,codconf);
+      mess := nom||'PAIS CREADO SATISFACTORIAMENTE';
   
-END get_PaisesDisponibles;
+  commit;
+END set_pais;
 
+--DEVULVE TODOS LOS PAISES CON NOMBRE Y CODIGO.
+create or replace PROCEDURE get_paises(
+  paises OUT SYS_REFCURSOR
+)
+IS 
+BEGIN
+  OPEN paises FOR
+    SELECT P.cod_pais,P.nombre
+    FROM pais P
+    ORDER BY P.nombre;
+END;
+
+
+
+CREATE OR REPLACE PROCEDURE get_infopais(codp IN integer,cursor1 OUT SYS_REFCURSOR)
+AS
+BEGIN
+  open cursor1 FOR
+    select * from pais where cod_pais=codp;
+END;
+
+CREATE OR REPLACE PROCEDURE E_pais(codp IN integer)
+AS
+BEGIN
+  DELETE FROM pais where cod_pais=codp;
+END;
+
+CREATE OR REPLACE PROCEDURE M_pais(codp IN integer,nom IN varchar,codconfe IN integer)
+AS
+BEGIN
+  UPDATE pais
+  SET nombre=nom,cod_conf=codconfe
+  WHERE cod_pais=codp;
+END;
+
+
+--------------------------------------CRUD Arbitros-----------------------
+
+create or replace procedure set_arbitro(nom IN varchar,codp IN integer)
+AS
+BEGIN
+  INSERT INTO arbitro(nombre,cod_pais)values(nom,codp);
+  commit;
+END set_arbitro;
+
+create or replace procedure E_arbitro(coda IN INTEGER)
+AS
+BEGIN
+  DELETE FROM asig WHERE COD_ARB = coda;
+  DELETE FROM arbitro where COD_ARB=coda;
+  commit;
+END E_arbitro;
+
+create or replace procedure M_arbitro(coda IN integer,nom IN varchar,codp IN integer)
+AS
+BEGIN
+  UPDATE arbitro set nombre=nom,COD_PAIS=codp
+  WHERE COD_ARB = coda;
+  commit;
+END M_arbitro;
+
+
+CREATE OR REPLACE PROCEDURE get_Arbitros(cursor1 OUT SYS_REFCURSOR)
+AS
+BEGIN
+  OPEN cursor1 FOR
+  SELECT * from arbitro;
+END get_Arbitros;
+
+CREATE OR REPLACE PROCEDURE get_Arbitro(cursor1 OUT SYS_REFCURSOR,coda IN INTEGER)
+AS
+BEGIN
+  OPEN cursor1 FOR
+  SELECT * from arbitro where cod_arb=coda;
+END get_Arbitro;
+
+--------------------------CRUD JUJADORES----------------------------
+
+
+
+
+-------------------CRUD CIUDADES--------------
+create or replace procedure get_ciudades(cursor1 OUT SYS_REFCURSOR)
+AS
+BEGIN
+  OPEN cursor1 for
+    SELECT * from ciudad;
+END get_ciudades;
 commit;

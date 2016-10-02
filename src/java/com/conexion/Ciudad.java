@@ -27,24 +27,22 @@ public class Ciudad {
     private ResultSet rset;
     private Conexion conexion;
     private CallableStatement clstm;
-    public void get_ciudad_partido(int codeq1,int codeq2)
+    public void get_ciudad_partido(int codciu)
     {
         try {
             //get_ciudad_partido(codeq1 IN INTEGER,codeq2 IN INTEGER,mess OUT varchar2,codciudad OUT INTEGER,nomciudad OUT varchar2 )
             conexion = new Conexion();
-            clstm = conexion.getConexion().prepareCall("{call get_ciudad_partido(?,?,?,?,?)}");
-            clstm.registerOutParameter(3,oracle.jdbc.OracleTypes.VARCHAR);
-            clstm.registerOutParameter(4,oracle.jdbc.OracleTypes.INTEGER);
-            clstm.registerOutParameter(5,oracle.jdbc.OracleTypes.VARCHAR);
-            clstm.setInt(1,codeq1);
-            clstm.setInt(2,codeq2);
+            clstm = conexion.getConexion().prepareCall("{call get_ciudad_partido(?,?)}");
+            
+            clstm.registerOutParameter(2,oracle.jdbc.OracleTypes.CURSOR);
+            clstm.setInt(1,codciu);
+            
             clstm.execute();
-            
-            mensaje = clstm.getString(3);
-            this.setCodigo(clstm.getInt(4));
-            this.setNombre(clstm.getString(5));
-            
-            System.out.println("MENSAJE DE LA BASE DE DATOS: "+mensaje);          
+            rset = (ResultSet)clstm.getObject(2);
+            rset.next();
+            this.setCodigo(codciu);
+            this.setNombre(rset.getString("nombre"));
+                   
             
         } catch (SQLException ex) {
             Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
