@@ -8,4 +8,5 @@
 <script src="../Template1/js/jquery-1.11.3.min.js"></script> 
 <script src="../Template1/js/jquery.flexslider-min.js"></script> 
 <script src="../Template1/js/jquery.backstretch.min.js"></script>
-<script src="../Template1/js/templatemo-script.js"></script> 
+<script src="../Template1/js/templatemo-script.js"></script>
+<script src="../Admin/javascriptadmin.js"></script>

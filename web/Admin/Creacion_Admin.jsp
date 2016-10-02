@@ -16,257 +16,6 @@
         <script src="http://code.jquery.com/jquery-latest.js">
 
         </script>
- 
-        <script>
-	$(document).ready(function() {
-		$('#submitconf').click(function(event) {
-			var nom = $('#nombreconf').val();
-                        var acro = $('#acronimoconf').val();
-                        var fl = $('#flagconf').val();
-			// Si en vez de por post lo queremos hacer por get, cambiamos el $.post por $.get
-			$.post('/Apuestas/ACrear', {
-				nombre : nom,
-                                acronimo:acro,
-                                flaa : fl
-				
-			}, function(responseText) {
-				$('#respconf').html(responseText);
-			});
-		});
-	});
-        </script>
-        
-        
-         <script>
-            $(document).ready(function() {
-		$('#btnselecciones').click(function(event) {
-			
-                        var fl = 'lpaisesdispo';
-			// Si en vez de por post lo queremos hacer por get, cambiamos el $.post por $.get
-			$.post('/Apuestas/ACrear', {
-				flaa : fl
-				
-			}, function(responseText) {
-				$('#selectpaisesdispo').html(responseText);
-			});
-                        $('#divselesubmit').html(" ");
-		});
-	});
-                  
-        </script>
-        <script>
-           
-            $(document).ready(function() {
-		$('#submitseles').click(function(event) {
-			
-                        var fl = 'submitseles';
-                        var codpais = $('#selectpaisesdispo').val();
-                        var grup = $('#selectlgrupos').val();
-                        var dirsele = $('#dirsele').val();
-			// Si en vez de por post lo queremos hacer por get, cambiamos el $.post por $.get
-			$.post('/Apuestas/ACrear', {
-				flaa : fl,
-                                codp : codpais,
-                                grup : grup,
-                                dir: dirsele
-				
-			}, function(responseText) {
-				$('#divselesubmit').html(responseText);
-			});
-
-		});
-	});
-            
-        </script>
-        
-        <script>
-           
-            $(document).ready(function() {
-		$('#btngetpartidos').click(function(event) {
-			
-                       var fl='creapartidos';
-                       var grupo =document.getElementById('2lgrupos').value;
-                       
-			// Si en vez de por post lo queremos hacer por get, cambiamos el $.post por $.get
-			$.post('/Apuestas/ACrear', {
-				flaa : fl,
-                                grupo : grupo
-                                				
-			}, function(responseText) {
-                                alert(responseText);
-				$('#divbtnspartidos').html(responseText);
-			});
-
-		});
-         
-                
-                
-                
-	});
-            
-        </script>
-        
-        <script>
-            function jsbtnpartido(eq1,eq2,grp) {
-                var fl = 'creapartidos2';
-                alert("BOTONASO");                
-                $.post('/Apuestas/ACrear', {
-				flaa : fl,
-                                codeq1 : eq1,
-                                codeq2 : eq2,
-                                grupo : grp
-				
-			}, function(responseText) {
-                            	$("#divbtnscontenido").html(responseText);
-			});
-            }
-        </script>
-         <script>
-            function jsGrabarPartido() {
-                var fl = 'creapartidos2';
-                alert("BOTONASO");                
-                $.post('/Apuestas/ACrear', {
-				flaa : fl,
-                                codeq1 : eq1,
-                                codeq2 : eq2,
-                                grupo : grp
-				
-			}, function(responseText) {
-                            	$("#divbtnscontenido").html(responseText);
-			});
-            }
-        </script>
-        <script>
-            $(document).ready(function() {
-                $('#btnrefreshconfe').click(function(event) {
-			
-                        var fl = 'lconfederas';
-			// Si en vez de por post lo queremos hacer por get, cambiamos el $.post por $.get
-			$.post('/Apuestas/ACrear', {
-				flaa : fl
-				
-			}, function(responseText) {
-				$('#selectconfederas').html(responseText);
-			});
-
-		});
-                
-            });
-        </script>
-        <script>
-            $(document).ready(function() {
-                
-                 $('#btnconfederaciones').click(function(event) {
-			
-                        var fl = 'lconfederas';
-			// Si en vez de por post lo queremos hacer por get, cambiamos el $.post por $.get
-			$.post('/Apuestas/ACrear', {
-				flaa : fl
-				
-			}, function(responseText) {
-				$('#selectconfederas').html(responseText);
-			});
-		});
-                
-            });
-           
-	
-        </script>
-        <script>
-            $(document).ready(function() {
-
-                $( "#selectconfederas" ).change(function () {
-                var str = "";
-                $( "select option:selected" ).each(function() {
-                str += $( this ).val() + "";
-                var fl='confederainfo';
-                $.post('/Apuestas/ACrear', {
-				flaa : fl,
-                                codconfe : str
-				
-			}, function(responseText) {
-                            	$("#confederadiv").html(responseText);
-			});
-      
-      
-                });
-    
-                })  
-                .change();
-        
-        
-        
-                 
-   
-            }); 
-            
-            
-            
-            
-        </script>
-        <script>
-            function jsMEconfe(wflag) {
-                alert("HOLAA");
-                var fle = 'Econfe';
-                var flm = 'Mconfe';
-                
-                var codeconfe =document.getElementById('selectconfederas').value;
-                if(wflag=="E")
-                {
-                    $.post('/Apuestas/ACrear', {
-				flaa : fle,
-                                codeconfe :codeconfe
-				
-			}, function(responseText) {
-                            	$("#divEMconfe").html(responseText);
-			});
-                }
-                else if(wflag=="M")
-                {
-                    var nomconfe =$('#txtnombreconf').val();
-                    var acroconfe =$('#txtacroconfe').val();
-                    $.post('/Apuestas/ACrear', {
-				flaa : flm,
-                                codeconfe :codeconfe,
-                                nomconfe : nomconfe,
-                                acroconfe : acroconfe
-				
-			}, function(responseText) {
-                            	$("#divEMconfe").html(responseText);
-			});
-                }
-                
-            }
-        </script>
-        <!--      ---------------funciones para los arbitros-----------------------  -->
-        <script>
-            $(document).ready(function() {
-                
-                 $('#btnarbitros').click(function(event) {
-			alert("btnarbitros")
-                        var fl = 'lpaises';
-                        var fl2 = 'larbitros'
-			// Si en vez de por post lo queremos hacer por get, cambiamos el $.post por $.get
-			$.post('/Apuestas/ACrear', {
-				flaa : fl
-				
-			}, function(responseText) {
-				$('#lallpaises').html(responseText);
-			});
-                        
-                        $.post('/Apuestas/ACrear', {
-				flaa : fl2
-				
-			}, function(responseText) {
-				$('#5selectlarbitros').html(responseText);
-			});
-                        
-		});
-                
-            });
-           
-	
-        </script>
         
         
     </head>
@@ -310,7 +59,7 @@
                                         </a>
                                     </li>
 
-                                    <li data-nav-item-id="page-2" class="box-nav-item js-nav-item pull-xs-left" id="btnpaises">
+                                    <li data-nav-item-id="page-2" class="box-nav-item js-nav-item pull-xs-left" id="btnpartidos">
                                         <a href="#page-2">
                                             <span>Partidos</span>
                                         </a>
@@ -322,7 +71,7 @@
                                         </a>
                                     </li>
 
-                                    <li data-nav-item-id="page-4" class="box-nav-item js-nav-item pull-xs-left">
+                                    <li data-nav-item-id="page-4" class="box-nav-item js-nav-item pull-xs-left" id="btnpaises">
                                         <a href="#page-4">
                                             <span>Paises</span>
                                         </a>
@@ -519,32 +268,65 @@
                             <section data-page-id="page-4" class="content js-content">
                                 
                                 <header class="box box-black margin-b-20">
-                                    <h2 class="box-text page-title-text">Crea Los Partidos</h2>
+                                    <h2 class="box-text page-title-text">Crea Los Paises</h2>
                                 </header>
                                 
                                 <div class="content-text">
-                                    <p>Escoje el grupo.</p>
+                                  
+                                    
+                                    <form id="formarbitros">
+                                        <table cellpadding="5" >
+                                            <tr>
+                                                <td>Nombre:</td>
+                                                <td><input id="nombrepais" type="text" maxlength="50" required></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Confederacion:</td>
+                                                <td>
+                                                        <select id="4lallconfederas">
+                                                            
+                                                            
+                                                    
+                                                        </select>
+                                                
+                                                </td>
+                                            </tr>
+                                                                  
+                                            <tr>
+                                                
+                                                <td></td>
+                                                <td>
+                                                <input class="btn btn-success" id="btnsubmitpais" type="button" value="Crear" >
+                                                
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </form>
+                                    <div id="divrespsubmitpais">
+                                        
+                                    </div>
                                     <br>
-                                    <select id="4lgrupos">
-                                        <option value="A">A</option>
-                                        <option value="B">B</option>
-                                        <option value="C">C</option>
-                                        <option value="D">D</option>
-                                        <option value="E">E</option>
-                                        <option value="F">F</option>
-                                        <option value="G">G</option>
-                                        <option value="H">H</option>
+                                    <h5>Modificacion y Eliminacion</h5>
+                                    <br>
+                                    <input class="btn btn-success" id="btngetpaises" type="button" value="Get" >
+                                    <input class="btn btn-success" id="btnshowpais" type="button" value="Show" >
+                                    <select id="4selectlpaises">
                                         
                                     </select>
+                                    <br>
+                                    <br>
+                                    <div id="divpaisinfo">
+                                        
+                                    </div>                       
+                                    <div id="divEMpais">
+                                        
+                                    </div>
+                                    
+                                    
+                                    
                                                                
                                 </div>
-                                <div class="content-text">
-                                    
-                                    
-                                    
-                                    
-                                    
-                                </div>
+                                
 
                             </section> <!-- #crea partidos -->
                             <section data-page-id="page-5" class="content js-content">
@@ -554,11 +336,11 @@
                                 </header>
                                 
                                 <div class="content-text">
-                                   <form id="form1">
+                                   <form id="formarbitros">
                                         <table cellpadding="5" >
                                             <tr>
                                                 <td>Nombre:</td>
-                                                <td><input id="nombreconf" type="text" maxlength="50" required></td>
+                                                <td><input id="nombrearbitro" type="text" maxlength="50" required></td>
                                             </tr>
                                             <tr>
                                                 <td>Pais:</td>
@@ -582,11 +364,8 @@
                                             </tr>
                                         </table>
                                     </form>
-                                                           
-                                </div>
-                                
-                                <div class="content-text">
-                                    
+                                    <div id="divrespsubmitarbitro"></div>
+                                         
                                     <br>
                                     <h5>Modificacion y Eliminacion</h5>
                                     <br>
@@ -595,8 +374,14 @@
                                     <select id="5selectlarbitros">
                                         
                                     </select>
-                                    
-                                    
+                                    <br>
+                                    <br>
+                                    <div id="divarbitroinfo">
+                                        
+                                    </div>                       
+                                    <div id="divEMarbitro">
+                                        
+                                    </div>
                                     
                                 </div>
 
