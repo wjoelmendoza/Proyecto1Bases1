@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class Arbitro {
     
     private int cod;
-    private String nombre;
+    private String nombre,posicion;
     private int codpais;
     private Conexion conexion;
     private Statement stm;
@@ -30,6 +30,7 @@ public class Arbitro {
     
     
     public Arbitro(){}
+    public Arbitro(int co,String nom,String pos){this.cod=co;this.nombre=nom;this.posicion=pos;}
     public Arbitro(int co,String nom,int cop){this.cod=co;this.nombre=nom;this.codpais=cop;}
     
     public void get_arbitro(int coda)
@@ -70,6 +71,7 @@ public class Arbitro {
         
     }
     
+    
     public ArrayList<Arbitro> get_arbitros()
     {
         ArrayList<Arbitro> lista =new ArrayList<>();
@@ -103,6 +105,8 @@ public class Arbitro {
         return lista;
         
     }
+    
+    
     public void MArbitro(int coda,String nom,int codp)
     {
         try {
@@ -232,6 +236,20 @@ public class Arbitro {
      */
     public void setCodpais(int codpais) {
         this.codpais = codpais;
+    }
+
+    /**
+     * @return the posicion
+     */
+    public String getPosicion() {
+        return posicion;
+    }
+
+    /**
+     * @param posicion the posicion to set
+     */
+    public void setPosicion(String posicion) {
+        this.posicion = posicion;
     }
     
 }

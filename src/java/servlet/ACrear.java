@@ -278,21 +278,22 @@ public class ACrear extends HttpServlet {
             
             Partido partido = new Partido();
             partido.get_InfoPartido(code1,code2);
+            //System.out.println(""+partido.getFecha());
             if(partido.mensaje.equals("SI"))
             {
                 //SI TIENE UN PARTIDO YA CREADO
                 Ciudad ciudad = new Ciudad();
-                ciudad.get_ciudad_partido(partido.getCodPartido());
+                ciudad.get_ciudad_partido(partido.getCodciudad());
                 partido.get_marcador_partido(partido.getCodPartido());
                 
                 out.println("<table align=\"center\" id=\"tablainfopartido\"> ");
                     out.println("<tr>");
                     out.println("<th>");
-                    out.println("<input value=\""+equipo1.getCodEquipo()+"\" type=\"hidden\" id=\"txtcodq1\">");
+                    out.println("<input value=\""+code1+"\" type=\"hidden\" id=\"txtcodq1\">");
                     out.println("</th>");
                     out.println("<th></th>");
                     out.println("<th>");
-                    out.println("<input value=\""+equipo2.getCodEquipo()+"\" type=\"hidden\" id=\"txtcodq2\">");
+                    out.println("<input value=\""+code2+"\" type=\"hidden\" id=\"txtcodq2\">");
                     out.println("</th>");
                     out.println(" </tr>");
                     out.println("<tr>");
@@ -302,19 +303,43 @@ public class ACrear extends HttpServlet {
                     out.println("</tr>");
                     out.println("<tr>");
                     out.println("<td rowspan=\"2\">");
-                    if(equipo1.getCodEquipo()==partido.getRival1().getCodigo())
+                    if(partido.marcador_mensaje.equals("SI"))
                     {
-                        out.println("<input value=\""+partido.getRival1().getGoles()+"\" size=\"2\" id=\"txtgolq1\">");
+                        if(equipo1.getCodEquipo()==partido.getRival1().getCodigo())
+                        {
+                            out.println("<input value=\""+partido.getRival1().getGoles()+"\" size=\"2\" id=\"txtgolq1\">");
+                        }
+                        else
+                        {
+                            out.println("<input value=\""+partido.getRival2().getGoles()+"\" size=\"2\" id=\"txtgolq1\">");
+                        }
+                                
                     }
                     else
                     {
-                        out.println("<input value=\""+partido.getRival2().getGoles()+"\" size=\"2\" id=\"txtgolq1\">");
+                         out.println("<input value=\"0\" size=\"2\" id=\"txtgolq1\">");
                     }
+                    
                     
                     out.println("</td>");
                     out.println(" <td></td>");
                     out.println("<td rowspan=\"2\">");
-                    out.println("<input value=\"0\" size=\"2\" id=\"txtgolq2\">");
+                    if(partido.marcador_mensaje.equals("SI"))
+                    {
+                        if(equipo2.getCodEquipo()==partido.getRival1().getCodigo())
+                        {
+                            out.println("<input value=\""+partido.getRival1().getGoles()+"\" size=\"2\" id=\"txtgolq2\">");
+                        }
+                        else
+                        {
+                            out.println("<input value=\""+partido.getRival2().getGoles()+"\" size=\"2\" id=\"txtgolq2\">");
+                        }
+
+                    }
+                    else
+                    {
+                         out.println("<input value=\"0\" size=\"2\" id=\"txtgolq2\">");
+                    }
                     out.println("</td>");
                     out.println("</tr>");
                     out.println("<tr>");
@@ -322,12 +347,26 @@ public class ACrear extends HttpServlet {
                     out.println("</tr>");
                     out.println("<tr>");
                     out.println("<td colspan=\"3\">");
-                    out.println("Fecha: <input type=\"date\" id=\"txtfecpartido\">");
+                    String infofh[] = partido.getFecha().split(" ");
+                    System.out.println(infofh[0]);
+                    System.out.println(infofh[1]);
+                    String info2[] = infofh[1].split(":");
+                    System.out.println(info2.length);
+                    String hour="";
+                    for(int i=0;i<info2.length-1;i++)
+                    {
+                        hour = hour +info2[i]+ ":";
+                    }
+                    hour = hour+"00";
+                    System.out.println(hour);
+   
+                    out.println("Fecha: <input type=\"date\"  value=\""+infofh[0]+"\"id=\"txtfecpartido\">");
                     out.println("</td>");
                     out.println("</tr>");
                     out.println("<tr>");
                     out.println("<td colspan=\"3\">");
-                    out.println("Hora: <input type=\"time\" id=\"txthorapartido\">");
+                    //String info2[] = infofh[1].split(".");
+                    out.println("Hora: <input type=\"time\" value=\""+hour+"\" id=\"txthorapartido\">");
                     out.println("</td>");
                     out.println("</tr>");
                     
@@ -360,6 +399,17 @@ public class ACrear extends HttpServlet {
                     out.println("--------");
                     out.println("</td>");
                     out.println("</tr>");
+                    //LO DE LOS ARBITROS
+                    out.println("<tr>");
+                    out.println("<td colspan=\"3\">");
+                    
+                    out.println("Central: <select id=\"selectarbitro1\"");
+                    Arbitro arbi = new Arbitro();
+                    ArrayList<Arbitro> larbitros = arbi.get_arbitros();
+                    
+                    out.println("</td>");
+                    out.println("</tr>");
+                    
                     out.println("<tr>");
                     out.println("<td colspan=\"3\">");
                     out.println("<input class=\"btn btn-success\" id=\"btngrabarpartido\" type=\"button\" value=\"Guardar\" style=\"font-size : 11px; width:100%; height:30px;>\" onclick=\"javascript:jsGrabarPartido('G');\"");

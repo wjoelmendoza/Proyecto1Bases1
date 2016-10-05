@@ -31,6 +31,8 @@
                 <img src="../Template1/img/background.jpg" id="page-3-img" alt="Selecciones">
                 <img src="../Template1/img/background.jpg" id="page-4-img" alt="Grupos"> 
                 <img src="../Template1/img/background.jpg" id="page-5-img" alt="Arbitros"> 
+                <img src="../Template1/img/background.jpg" id="page-6-img" alt="Plantillas">
+                <img src="../Template1/img/background.jpg" id="page-7-img" alt="Ciudades">
                
             
             </div>
@@ -79,6 +81,16 @@
                                     <li data-nav-item-id="page-5" class="box-nav-item js-nav-item pull-xs-left" id="btnarbitros">
                                         <a href="#page-5">
                                             <span>Arbitros</span>
+                                        </a>
+                                    </li>
+                                    <li data-nav-item-id="page-6" class="box-nav-item js-nav-item pull-xs-left" id="btnarbitros">
+                                        <a href="#page-6">
+                                            <span>Plantillas</span>
+                                        </a>
+                                    </li>
+                                    <li data-nav-item-id="page-7" class="box-nav-item js-nav-item pull-xs-left" id="btnarbitros">
+                                        <a href="#page-7">
+                                            <span>Ciudades</span>
                                         </a>
                                     </li>
 
@@ -385,7 +397,151 @@
                                     
                                 </div>
 
-                            </section> <!-- #crea partidos -->
+                            </section> <!-- #crea ARBITROS -->
+                            
+                            <section data-page-id="page-6" class="content js-content">
+                                
+                                <header class="box box-black margin-b-20">
+                                    <h2 class="box-text page-title-text">Ingresa los jugadores a sus Selecciones</h2>
+                                </header>
+                                
+                                <div class="content-text">
+                                   <form id="formarbitros">
+                                        <table cellpadding="5" >
+                                            <tr>
+                                                <td>Camiseta:</td>
+                                                <td><input id="nombrearbitro" type="number" maxlength="50" required></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Fecha Nacimiento:</td>
+                                                <td><input id="nombrearbitro" type="date" maxlength="50" required></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Estatura:</td>
+                                                <td><input type="number" step="0.01"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Peso:</td>
+                                                <td><input type="number" step="0.01"></td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td>Nombre:</td>
+                                                <td><input id="nombrearbitro" type="text" maxlength="50" required></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Equipo:</td>
+                                                <td><input id="nombrearbitro" type="text" maxlength="50" required></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Posicion:</td>
+                                                <td><input id="nombrearbitro" type="text" maxlength="50" required></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Seleccion:</td>
+                                                <td>
+                                                        <select id="6lallselecciones">
+                                                            
+                                                            
+                                                    
+                                                        </select>
+                                                
+                                                </td>
+                                            </tr>
+                                                                  
+                                            <tr>
+                                                
+                                                <td></td>
+                                                <td>
+                                                <input class="btn btn-success" id="btnsubmitarbitro" type="button" value="Crear" >
+                                                
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </form>
+                                    <div id="divrespsubmitarbitro"></div>
+                                         
+                                    <br>
+                                    <h5>Modificacion y Eliminacion</h5>
+                                    <br>
+                                    <input class="btn btn-success" id="btngetarbitros" type="button" value="Get" >
+                                    <input class="btn btn-success" id="btnshowarbitro" type="button" value="Show" >
+                                    <select id="5selectlarbitros">
+                                        
+                                    </select>
+                                    <br>
+                                    <br>
+                                    <div id="divarbitroinfo">
+                                        
+                                    </div>                       
+                                    <div id="divEMarbitro">
+                                        
+                                    </div>
+                                    
+                                </div>
+
+                            </section> <!-- #crea ARBITROS -->
+                            <section data-page-id="page-7" class="content js-content">
+                                
+                                <header class="box box-black margin-b-20">
+                                    <h2 class="box-text page-title-text">Crea las Ciudades</h2>
+                                </header>
+                                
+                                <div class="content-text">
+                                    <form id="form1">
+                                        <table cellpadding="5" >
+                                            <tr>
+                                                <td>Nombre:</td>
+                                                <td><input id="nombreconf" type="text" maxlength="50" required></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Acronimo:</td>
+                                                <td><input id="acronimoconf" type="text" maxlength="50" required></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td><input    id="flagconf" type="hidden" value="confederacion" ></td>
+                                            </tr>
+                        
+                                            <tr>
+                                                
+                                                <td></td>
+                                                <td>
+                                                <input class="btn btn-success" id="submitconf" type="button" value="Crear" >
+                                                
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </form>
+                                         <div id="respconf">
+                                    
+                                        </div>
+                                        <br>
+                                        <br>
+                                        <br>
+                                        <input class="btn btn-success" id="btnrefreshconfe" type="button" value="Get" >
+                                        <div>
+                                            
+                                            <select name="selectconfederas" id="selectconfederas"multiple="multiple">
+  
+                                            </select>
+                                    
+                                        </div>
+                                        <br>
+                                        <div id="confederadiv">
+                                            fgftftft
+                                        
+                                    
+                                        </div>
+                                        </div>
+                                    </form>
+                                </div>
+                               
+
+                            </section> <!-- #about -->
+
+                            
+                            
                         </div>
                     </div>
 
