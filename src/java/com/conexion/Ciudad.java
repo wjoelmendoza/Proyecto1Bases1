@@ -30,18 +30,24 @@ public class Ciudad {
     public void get_ciudad_partido(int codciu)
     {
         try {
-            //get_ciudad_partido(codeq1 IN INTEGER,codeq2 IN INTEGER,mess OUT varchar2,codciudad OUT INTEGER,nomciudad OUT varchar2 )
+            //get_ciudad_partido(codciu IN INTEGER,cursorr OUT SYS_REFCURSOR)
+            System.out.println("ENTRO a get_ciudad_partido");
+            System.out.println("cod:"+codciu);
             conexion = new Conexion();
             clstm = conexion.getConexion().prepareCall("{call get_ciudad_partido(?,?)}");
-            
+            System.out.println("");
             clstm.registerOutParameter(2,oracle.jdbc.OracleTypes.CURSOR);
             clstm.setInt(1,codciu);
             
             clstm.execute();
             rset = (ResultSet)clstm.getObject(2);
-            rset.next();
-            this.setCodigo(codciu);
-            this.setNombre(rset.getString("nombre"));
+            if(rset.next())
+            {
+                
+                this.setCodigo(codciu);
+                this.setNombre(rset.getString("nombre"));
+            }
+            
                    
             
         } catch (SQLException ex) {

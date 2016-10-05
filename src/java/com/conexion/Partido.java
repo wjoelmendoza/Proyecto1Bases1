@@ -30,32 +30,95 @@ public class Partido {
     private boolean valido;
     private boolean crear;
     private int codU;
+    public Arbitro central,asistente1,asistente2;
+    public String marcador_mensaje="";
     
     public String mensaje;
     
     public Partido(){}
-    public void MakePartidos(char grupo){
-        //ESTE METODOS ES EL ENCARGADO DE CREAR LAS COMBINACIONES DE
-        //TODOS LOS DIFERENTES PARTIDOS DE UN GRUPO DETERMINADO
+    
+    
+    public void get_arbitros_partido(int codparti)
+    {
+        ArrayList<Arbitro> lista =new ArrayList<>();
+        try {
+            //get_arbitros_partido(codparti IN INTEGER, cursor1 OUT SYS_REFCURSOR)
+            conexion = new Conexion();
+            clstm = conexion.getConexion().prepareCall("{call get_arbitros_partido(?,?)}");
+            clstm.registerOutParameter(2, oracle.jdbc.OracleTypes.CURSOR);
+            clstm.setInt(1,codparti);
+            clstm.execute();
+            rset = (ResultSet)clstm.getObject(1);
+            while(rset.next())
+            {
+                if(rset.getString("posicion").equals("central"))
+                {
+                    this.central = new Arbitro(rset.getInt("cod_arb"),rset.getString("nombre"),rset.getString("posicion"));
+                }
+                else if(rset.getString("posicion").equals("asistente1"))
+                {
+                    this.asistente1 = new Arbitro(rset.getInt("cod_arb"),rset.getString("nombre"),rset.getString("posicion"));
+                }
+                else
+                {
+                    this.asistente2 = new Arbitro(rset.getInt("cod_arb"),rset.getString("nombre"),rset.getString("posicion"));
+                    
+                }
+                    
+            }
+                
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            if(clstm!=null){
+                try {
+                    clstm.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if(rset!=null){
+                try {
+                    rset.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
         
     }
+    
     public void get_marcador_partido(int codparti)
     {
         try {
             //get_info_partido(codeq1 IN INTEGER,codeq2 IN INTEGER,mess OUT varchar2,cursorr OUT SYS_REFCURSOR)
+            System.out.println("ENTRO A get_marcador_partido "+codparti);
             conexion = new Conexion();
-            clstm = conexion.getConexion().prepareCall("{call get_marcador_partido(?,?)");
+            clstm = conexion.getConexion().prepareCall("{call get_marcador_partido_a(?,?)");
             clstm.setInt(1,codparti);
             clstm.registerOutParameter(2,oracle.jdbc.OracleTypes.CURSOR);
                       
             clstm.execute();
             
             rset = (ResultSet)clstm.getObject(2);
-            while(rset.next())
+            if(rset.next())
             {
+                System.out.println("marcador_mensaje = \"SI\"");
+                marcador_mensaje = "SI";
                 rival1 = new Rival(rset.getInt("cod_equipo"),rset.getInt("goles"));
-                
+                rset.next();
+                rival2 = new Rival(rset.getInt("cod_equipo"),rset.getInt("goles"));
+                System.out.println("GolEq1: "+rival1.getGoles());
+                System.out.println("GolEq2: "+rival2.getGoles());
             }
+            else
+            {
+                System.out.println(marcador_mensaje = "NO");
+                marcador_mensaje = "NO";
+            }
+            
         
             
         } catch (SQLException ex) {
@@ -81,6 +144,9 @@ public class Partido {
     {
         try {
             //get_info_partido(codeq1 IN INTEGER,codeq2 IN INTEGER,mess OUT varchar2,cursorr OUT SYS_REFCURSOR)
+            System.out.println("ENTRO a get_InfoPartido");
+            System.out.println("codeq1:"+codeq1);
+            System.out.println("codeq2:"+codeq2);
             conexion = new Conexion();
             clstm = conexion.getConexion().prepareCall("{call get_info_partido(?,?,?,?)");
             clstm.setInt(1,codeq1);
@@ -89,16 +155,21 @@ public class Partido {
             clstm.registerOutParameter(4,oracle.jdbc.OracleTypes.CURSOR);
                       
             clstm.execute();
-            
-            rset = (ResultSet)clstm.getObject(4);
-            rset.next();
-            this.setCodPartido(rset.getInt("codigo"));
-            this.setFecha(rset.getTimestamp("fecha").toString());
-            this.setCodciudad(rset.getInt("cod_ciudad"));
-            
-            mensaje = clstm.getString(3);
+             mensaje = clstm.getString(3);
             
             System.out.println("MENSAJE DE LA BASE DE DATOS get_infoPartido: "+mensaje);          
+            rset = (ResultSet)clstm.getObject(4);
+            if(rset.next())
+            {
+                
+                
+                this.setCodPartido(rset.getInt("codigo"));
+                this.setFecha(rset.getTimestamp("fecha").toString());
+                this.setCodciudad(rset.getInt("cod_ciudad"));
+            
+            }
+            
+           
             
         } catch (SQLException ex) {
             Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
