@@ -44,7 +44,7 @@ public class Partido {
         try {
             //get_info_partido(codeq1 IN INTEGER,codeq2 IN INTEGER,mess OUT varchar2,cursorr OUT SYS_REFCURSOR)
             conexion = new Conexion();
-            clstm = conexion.getConexion().prepareCall("{call get_marcador_partido(?,?)");
+            clstm = conexion.getConexion().prepareCall("{call get_marcador_partido_a(?,?)");
             clstm.setInt(1,codparti);
             clstm.registerOutParameter(2,oracle.jdbc.OracleTypes.CURSOR);
                       
@@ -89,16 +89,22 @@ public class Partido {
             clstm.registerOutParameter(4,oracle.jdbc.OracleTypes.CURSOR);
                       
             clstm.execute();
-            
-            rset = (ResultSet)clstm.getObject(4);
-            rset.next();
-            this.setCodPartido(rset.getInt("codigo"));
-            this.setFecha(rset.getTimestamp("fecha").toString());
-            this.setCodciudad(rset.getInt("cod_ciudad"));
-            
             mensaje = clstm.getString(3);
             
             System.out.println("MENSAJE DE LA BASE DE DATOS get_infoPartido: "+mensaje);          
+            
+            rset = (ResultSet)clstm.getObject(4);
+            
+            if(rset!=null)
+            {
+                rset.next();
+                this.setCodPartido(rset.getInt("codigo"));
+                this.setFecha(rset.getTimestamp("fecha").toString());
+                this.setCodciudad(rset.getInt("cod_ciudad"));
+            }
+            
+            
+            
             
         } catch (SQLException ex) {
             Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
@@ -232,23 +238,24 @@ public class Partido {
         }
     }
     
-    public void buscarPartido(int codPartido, String grupo){
+    public void buscarPartido(int codPartido, int codUsuario, String grupo){
         try {
             conexion = new Conexion();
-            clstm = conexion.getConexion().prepareCall("{call get_marcador_partido(?,?,?,?)}");
+            clstm = conexion.getConexion().prepareCall("{call get_marcador_partido(?,?,?,?,?)}");
             clstm.setString(1, grupo);
             clstm.setInt(2, codPartido);
-            clstm.registerOutParameter(3, OracleTypes.CURSOR);
-            clstm.registerOutParameter(4,OracleTypes.CURSOR);
+            clstm.setInt(3, codUsuario);
+            clstm.registerOutParameter(4, OracleTypes.CURSOR);
+            clstm.registerOutParameter(5,OracleTypes.CURSOR);
             clstm.execute();
-            rset =(ResultSet) clstm.getObject(4);
+            rset =(ResultSet) clstm.getObject(5);
             if(rset.next()){
                 crear = false;
                 valido = true;
                 cargarMarcador(rset);
             }else{
                 crear = true;
-                rset = (ResultSet) clstm.getObject(3);
+                rset = (ResultSet) clstm.getObject(4);
                 if(rset.next()){
                     valido = true;
                     cargarRivales(rset);

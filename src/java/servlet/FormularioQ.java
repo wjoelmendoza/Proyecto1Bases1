@@ -37,7 +37,7 @@ public class FormularioQ extends HttpServlet {
         String salida;
         
         int codPart;
-        
+        int codUsuario =(int) request.getSession().getAttribute("id");
         if(idreq.equals("formq")){
             response.setContentType("text/html; charset=utf8");
             PrintWriter out = response.getWriter();
@@ -45,7 +45,7 @@ public class FormularioQ extends HttpServlet {
             part = request.getParameter("partido");
             p = new Partido();
             codPart = Integer.parseInt(part);
-            p.buscarPartido(codPart, grupo);
+            p.buscarPartido(codPart,codUsuario, grupo);
             if(p.crearMarcador()){
                 salida = getFormL(p);
                 out.print(salida);

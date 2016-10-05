@@ -207,6 +207,7 @@ END;
 CREATE OR REPLACE PROCEDURE get_marcador_partido(
   grupo_cons IN VARCHAR2,
   codigo_partido IN INTEGER,
+  codigo_usuario IN INTEGER,
   partido OUT SYS_REFCURSOR,
   marcador OUT SYS_REFCURSOR
 )
@@ -222,7 +223,7 @@ BEGIN
     SELECT E.COD_EQUIPO,P.NOMBRE, M.GOLES, M.COD_PART
     FROM marcador M, pais P, equipo E
     WHERE M.COD_EQUIPO = E.COD_EQUIPO AND E.COD_PAIS = P.COD_PAIS
-    AND E.GRUPO = grupo_cons AND M.COD_PART = codigo_partido;
+    AND E.GRUPO = grupo_cons AND M.COD_PART = codigo_partido AND M.COD_USUARIO = codigo_usuario;
 END;
 
 
@@ -354,7 +355,7 @@ BEGIN
 END get_ciudad_partido;
 -- ESTE METODO ME RETORNA TODA LA INFORMACION DE LOS MARCADORES PARA UN PARTIDO ASOCIADO,(IGUAL SOLO PARA FINES
 --  DE MOSTRARLO EN PANTALLA   Y MODIFICAR O ELIMINAR)
-create or replace PROCEDURE get_marcador_partido(codparti IN INTEGER,cursorr OUT SYS_REFCURSOR)
+create or replace PROCEDURE get_marcador_partido_a(codparti IN INTEGER,cursorr OUT SYS_REFCURSOR)
 AS
 BEGIN
   open cursorr for
@@ -524,13 +525,13 @@ BEGIN
   DELETE FROM pais where cod_pais=codp;
 END;
 
-CREATE OR REPLACE PROCEDURE M_pais(codp IN integer,nom IN varchar,codconfe IN integer)
-AS
-BEGIN
-  UPDATE pais
-  SET nombre=nom,cod_conf=codconfe
-  WHERE cod_pais=codp;
-END;
+  CREATE OR REPLACE PROCEDURE M_pais(codp IN integer,nom IN varchar,codconfe IN integer)
+  AS
+  BEGIN
+    UPDATE pais
+    SET nombre=nom,cod_conf=codconfe
+    WHERE cod_pais=codp;
+  END;
 
 
 --------------------------------------CRUD Arbitros-----------------------
