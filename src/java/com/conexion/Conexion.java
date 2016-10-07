@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  */
 public class Conexion {
     private Connection con = null;
-    private final String cliente="jdbc:oracle:thin:@10.42.0.1:1521:XE";
+    private final String cliente="jdbc:oracle:thin:@localhost:1521:XE";
     //private final String cliente="jdbc:oracle:thin:@localhost:1521:XE";
     private final String user = "PBD1";
     private final String password = "123456";

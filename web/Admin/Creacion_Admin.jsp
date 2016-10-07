@@ -7,15 +7,16 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
+        <!--<meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">-->
         
         <title>Admin-CreationCenter</title>
         <%@include file="../WEB-INF/jspf/headera.jspf" %>
-        <script src="http://code.jquery.com/jquery-latest.js">
+       <!-- <script src="http://code.jquery.com/jquery-latest.js">
 
         </script>
+       -->
         
         
     </head>
@@ -144,7 +145,7 @@
                                         <input class="btn btn-success" id="btnrefreshconfe" type="button" value="Get" >
                                         <div>
                                             
-                                            <select name="selectconfederas" id="selectconfederas"multiple="multiple">
+                                            <select name="selectconfederas" id="selectconfederas" multiple="multiple">
   
                                             </select>
                                     
@@ -522,7 +523,7 @@
                                         <input class="btn btn-success" id="btnrefreshconfe" type="button" value="Get" >
                                         <div>
                                             
-                                            <select name="selectconfederas" id="selectconfederas"multiple="multiple">
+                                            <select name="selectconfederas" id="selectconfederas" multiple="multiple">
   
                                             </select>
                                     
