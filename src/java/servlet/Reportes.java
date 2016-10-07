@@ -78,6 +78,46 @@ public class Reportes extends HttpServlet {
                     out.println("<h2>Top 5 de Partidos con mas goles</h2>");
                     out.print(this.reporte10(repB));
                     break;
+                case "Reporte 11":
+                    out.println("<h2>Promedio de edad de los usuarios por pais</h2>");
+                    out.print(this.reporte11(repB));
+                    break;
+                case "Reporte 12":
+                    out.println("<h2>Top 10 de las personas con mas punteos</h2>");
+                    out.print(this.reporte12(repB));
+                    break;
+                case "Reporte 13":
+                    out.println("<h2>Ciudad con mayor cantidad de partidos Asignados</h2>");
+                    out.print(this.reporte13(repB));
+                    break;
+                case "Reporte 14":
+                    out.println("<h2>Total de puntos por edad</h2>");
+                    out.print(this.reporte14(repB));
+                    break;
+                case "Reporte 15":
+                    out.println("<h2>Confederacion con mas usuarios</h2>");
+                    out.print(this.reporte15(repB));
+                    break;
+                case "Reporte 16":
+                    out.println("<h2>Total de usuarios que pagaron por quinielas</h2>");
+                    out.print(this.reporte16(repB));
+                    break;
+                case "Reporte 17":
+                    out.println("<h2>LIstado de usuarios que no pagaron</h2>");
+                    out.print(this.reporte17(repB));
+                    break;
+                case "Reporte 18":
+                    out.println("<h2>Confedarion con mayor numero de usuarios que pagaron</h2>");
+                    out.print(this.reporte18(repB));
+                    break;
+                case "Reporte 19":
+                    out.println("<h2>Equipo con menos goles en contra</h2>");
+                    out.print(this.reporte19(repB));
+                    break;
+                case "Reporte 20":
+                    out.println("<h2>Equipo mas goleado</h2>");
+                    out.print(this.reporte20(repB));
+                    break;
                 default:
                     out.println("<h2>Desconocido</h2>");
             }
@@ -514,4 +554,364 @@ public class Reportes extends HttpServlet {
         }
         return srep.toString();
     }
+    
+    private String reporte11(Reporte rep){
+        StringBuilder srep = new StringBuilder();
+        String[] result;
+        ArrayList<String[]> resultado;
+        resultado = rep.reporte11();
+        if(rep.esValido()){
+            
+            srep.append("<table class='table table-striped'>")
+                    .append("\t<thead>\n")
+                    .append("<tr>")
+                    .append("\t\t<th>Nombre</th>")
+                    .append("\t\t<th>Edad</th>")
+                    .append("\t</thead>")
+                    .append("\t</tr>\n\t<tbody>");
+            for(int i=0; i<resultado.size(); i++){
+                result = resultado.get(i);
+                srep.append("\t\t<tr>")
+                    .append("\t\t<td>")
+                    .append(result[0])
+                    .append("\t\t</td/>")
+                    .append("\t\t<td>")
+                    .append(result[1])
+                    .append("\t\t</td/>")
+                    .append("\t\t</tr>");
+            }
+            
+            srep.append("\t</tbody>")
+                    .append("</table>");
+        }else{
+            srep.append("Ha Ocurrido un problema recuperando los datos.");
+        }
+        return srep.toString();
+    }
+    private String reporte12(Reporte rep){
+        StringBuilder srep = new StringBuilder();
+        String[] result;
+        ArrayList<String[]> resultado;
+        resultado = rep.reporte12();
+        if(rep.esValido()){
+            
+            srep.append("<table class='table table-striped'>")
+                    .append("\t<thead>\n")
+                    .append("<tr>")
+                    .append("\t\t<th>Codigo</th>")
+                    .append("\t\t<th>Nombre</th>")
+                    .append("\t\t<th>Puntos</th>")
+                    .append("\t</thead>")
+                    .append("\t</tr>\n\t<tbody>");
+            for(int i=0; i<resultado.size(); i++){
+                result = resultado.get(i);
+                srep.append("\t\t<tr>")
+                    .append("\t\t<td>")
+                    .append(result[0])
+                    .append("\t\t</td/>")
+                    .append("\t\t<td>")
+                    .append(result[1])
+                    .append("\t\t</td/>")
+                    .append("\t\t<td>")
+                    .append(result[2])
+                    .append("\t\t</td/>")
+                    .append("\t\t</tr>");
+            }
+            
+            srep.append("\t</tbody>")
+                    .append("</table>");
+        }else{
+            srep.append("Ha Ocurrido un problema recuperando los datos.");
+        }
+        return srep.toString();
+    }
+    private String reporte13(Reporte rep){
+        StringBuilder srep = new StringBuilder();
+        String[] result;
+        ArrayList<String[]> resultado;
+        resultado = rep.reporte13();
+        if(rep.esValido()){
+            
+            srep.append("<table class='table table-striped'>")
+                    .append("\t<thead>\n")
+                    .append("<tr>")
+                    .append("\t\t<th>Codigo</th>")
+                    .append("\t\t<th>Nombre Ciudad</th>")
+                    .append("\t\t<th>Cantidad Partidos</th>")
+                    .append("\t</thead>")
+                    .append("\t</tr>\n\t<tbody>");
+            for(int i=0; i<resultado.size(); i++){
+                result = resultado.get(i);
+                srep.append("\t\t<tr>")
+                    .append("\t\t<td>")
+                    .append(result[0])
+                    .append("\t\t</td/>")
+                    .append("\t\t<td>")
+                    .append(result[1])
+                    .append("\t\t</td/>")
+                    .append("\t\t<td>")
+                    .append(result[2])
+                    .append("\t\t</td/>")
+                    .append("\t\t</tr>");
+            }
+            
+            srep.append("\t</tbody>")
+                    .append("</table>");
+        }else{
+            srep.append("Ha Ocurrido un problema recuperando los datos.");
+        }
+        return srep.toString();
+    }
+    private String reporte14(Reporte rep){
+        StringBuilder srep = new StringBuilder();
+        String[] result;
+        ArrayList<String[]> resultado;
+        resultado = rep.reporte14();
+        if(rep.esValido()){
+            
+            srep.append("<table class='table table-striped'>")
+                    .append("\t<thead>\n")
+                    .append("<tr>")
+                    .append("\t\t<th>Edad</th>")
+                    .append("\t\t<th>Puntos</th>")
+                    
+                    .append("\t</thead>")
+                    .append("\t</tr>\n\t<tbody>");
+            for(int i=0; i<resultado.size(); i++){
+                result = resultado.get(i);
+                srep.append("\t\t<tr>")
+                    .append("\t\t<td>")
+                    .append(result[0])
+                    .append("\t\t</td/>")
+                    .append("\t\t<td>")
+                    .append(result[1])
+                    .append("\t\t</td/>")
+                    .append("\t\t</tr>");
+            }
+            
+            srep.append("\t</tbody>")
+                    .append("</table>");
+        }else{
+            srep.append("Ha Ocurrido un problema recuperando los datos.");
+        }
+        return srep.toString();
+    }
+    
+    private String reporte15(Reporte rep){
+        StringBuilder srep = new StringBuilder();
+        String[] result;
+        ArrayList<String[]> resultado;
+        resultado = rep.reporte15();
+        if(rep.esValido()){
+            
+            srep.append("<table class='table table-striped'>")
+                    .append("\t<thead>\n")
+                    .append("<tr>")
+                    .append("\t\t<th>Codigo</th>")
+                    .append("\t\t<th>Nombre</th>")
+                    .append("\t\t<th>Cantidad usuarios</th>")
+                    
+                    .append("\t</thead>")
+                    .append("\t</tr>\n\t<tbody>");
+            for(int i=0; i<resultado.size(); i++){
+                result = resultado.get(i);
+                srep.append("\t\t<tr>")
+                    .append("\t\t<td>")
+                    .append(result[0])
+                    .append("\t\t</td/>")
+                    .append("\t\t<td>")
+                    .append(result[1])
+                    .append("\t\t</td/>")
+                    .append("\t\t<td>")
+                    .append(result[2])
+                    .append("\t\t</td/>")
+                    .append("\t\t</tr>");
+            }
+            
+            srep.append("\t</tbody>")
+                    .append("</table>");
+        }else{
+            srep.append("Ha Ocurrido un problema recuperando los datos.");
+        }
+        return srep.toString();
+    }
+    
+    private String reporte16(Reporte rep){
+        StringBuilder srep = new StringBuilder();
+        String[] result;
+        ArrayList<String[]> resultado;
+        resultado = rep.reporte16();
+        if(rep.esValido()){
+            
+            srep.append("<table class='table table-striped'>")
+                    .append("\t<thead>\n")
+                    .append("<tr>")
+                    .append("\t\t<th>Cantidad de Usuarios</th>")
+                    
+                    .append("\t</thead>")
+                    .append("\t</tr>\n\t<tbody>");
+            for(int i=0; i<resultado.size(); i++){
+                result = resultado.get(i);
+                srep.append("\t\t<tr>")
+                    .append("\t\t<td>")
+                    .append(result[0])
+                    .append("\t\t</td/>")
+                    .append("\t\t</tr>");
+            }
+            
+            srep.append("\t</tbody>")
+                    .append("</table>");
+        }else{
+            srep.append("Ha Ocurrido un problema recuperando los datos.");
+        }
+        return srep.toString();
+    }
+    private String reporte17(Reporte rep){
+        StringBuilder srep = new StringBuilder();
+        String[] result;
+        ArrayList<String[]> resultado;
+        resultado = rep.reporte17();
+        if(rep.esValido()){
+            
+            srep.append("<table class='table table-striped'>")
+                    .append("\t<thead>\n")
+                    .append("<tr>")
+                    .append("\t\t<th>Codigo</th>")
+                    .append("\t\t<th>Nombre</th>")
+                    
+                    .append("\t</thead>")
+                    .append("\t</tr>\n\t<tbody>");
+            for(int i=0; i<resultado.size(); i++){
+                result = resultado.get(i);
+                srep.append("\t\t<tr>")
+                    .append("\t\t<td>")
+                    .append(result[0])
+                    .append("\t\t</td/>")
+                    .append("\t\t<td>")
+                    .append(result[1])
+                    .append("\t\t</td/>")
+                    .append("\t\t</tr>");
+            }
+            
+            srep.append("\t</tbody>")
+                    .append("</table>");
+        }else{
+            srep.append("Ha Ocurrido un problema recuperando los datos.");
+        }
+        return srep.toString();
+    }
+    
+    private String reporte18(Reporte rep){
+        StringBuilder srep = new StringBuilder();
+        String[] result;
+        ArrayList<String[]> resultado;
+        resultado = rep.reporte18();
+        if(rep.esValido()){
+            
+            srep.append("<table class='table table-striped'>")
+                    .append("\t<thead>\n")
+                    .append("<tr>")
+                    .append("\t\t<th>Codigo</th>")
+                    .append("\t\t<th>Nombre Confederacion</th>")
+                    .append("\t\t<th>Cantidad de Usuarios</th>")
+                    .append("\t</thead>")
+                    .append("\t</tr>\n\t<tbody>");
+            for(int i=0; i<resultado.size(); i++){
+                result = resultado.get(i);
+                srep.append("\t\t<tr>")
+                    .append("\t\t<td>")
+                    .append(result[0])
+                    .append("\t\t</td/>")
+                    .append("\t\t<td>")
+                    .append(result[1])
+                    .append("\t\t</td/>")
+                    .append("\t\t<td>")
+                    .append(result[2])
+                    .append("\t\t</td/>")
+                    .append("\t\t</tr>");
+            }
+            
+            srep.append("\t</tbody>")
+                    .append("</table>");
+        }else{
+            srep.append("Ha Ocurrido un problema recuperando los datos.");
+        }
+        return srep.toString();
+    }
+    private String reporte19(Reporte rep){
+        StringBuilder srep = new StringBuilder();
+        String[] result;
+        ArrayList<String[]> resultado;
+        resultado = rep.reporte19();
+        if(rep.esValido()){
+            
+            srep.append("<table class='table table-striped'>")
+                    .append("\t<thead>\n")
+                    .append("<tr>")
+                    .append("\t\t<th>Codigo</th>")
+                    .append("\t\t<th>Nombre</th>")
+                    .append("\t\t<th>Goles en contra</th>")
+                    .append("\t</thead>")
+                    .append("\t</tr>\n\t<tbody>");
+            for(int i=0; i<resultado.size(); i++){
+                result = resultado.get(i);
+                srep.append("\t\t<tr>")
+                    .append("\t\t<td>")
+                    .append(result[0])
+                    .append("\t\t</td/>")
+                    .append("\t\t<td>")
+                    .append(result[1])
+                    .append("\t\t</td/>")
+                    .append("\t\t<td>")
+                    .append(result[2])
+                    .append("\t\t</td/>")
+                    .append("\t\t</tr>");
+            }
+            
+            srep.append("\t</tbody>")
+                    .append("</table>");
+        }else{
+            srep.append("Ha Ocurrido un problema recuperando los datos.");
+        }
+        return srep.toString();
+    }
+    private String reporte20(Reporte rep){
+        StringBuilder srep = new StringBuilder();
+        String[] result;
+        ArrayList<String[]> resultado;
+        resultado = rep.reporte20();
+        if(rep.esValido()){
+            
+            srep.append("<table class='table table-striped'>")
+                    .append("\t<thead>\n")
+                    .append("<tr>")
+                    .append("\t\t<th>Codigo</th>")
+                    .append("\t\t<th>Nombre</th>")
+                    .append("\t\t<th>Goles en contra</th>")
+                    .append("\t</thead>")
+                    .append("\t</tr>\n\t<tbody>");
+            for(int i=0; i<resultado.size(); i++){
+                result = resultado.get(i);
+                srep.append("\t\t<tr>")
+                    .append("\t\t<td>")
+                    .append(result[0])
+                    .append("\t\t</td/>")
+                    .append("\t\t<td>")
+                    .append(result[1])
+                    .append("\t\t</td/>")
+                    .append("\t\t<td>")
+                    .append(result[2])
+                    .append("\t\t</td/>")
+                    .append("\t\t</tr>");
+            }
+            
+            srep.append("\t</tbody>")
+                    .append("</table>");
+        }else{
+            srep.append("Ha Ocurrido un problema recuperando los datos.");
+        }
+        return srep.toString();
+    }
+    
+    
 }

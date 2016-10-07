@@ -269,4 +269,239 @@ public class Reporte {
         }
         return resultado;
     }
+    
+    public ArrayList<String[]> reporte11(){
+        conexion = new Conexion();
+        resultado = new ArrayList<>();
+        String[] res;
+        valido=true;
+        try {
+            clstm = conexion.getConexion().prepareCall("{ call reporte_11(?)}");
+            clstm.registerOutParameter(1, OracleTypes.CURSOR);
+            clstm.execute();
+            rset =(ResultSet) clstm.getObject(1);
+            while(rset.next()){
+                res = new String[2];
+                res[0] = rset.getString(1);
+                res[1] = String.valueOf(rset.getInt(2));
+                resultado.add(res);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Reporte.class.getName()).log(Level.SEVERE, null, ex);
+            valido = false;
+        }
+        return resultado;
+    }
+    
+    public ArrayList<String[]> reporte12(){
+        conexion = new Conexion();
+        resultado = new ArrayList<>();
+        String[] res;
+        valido=true;
+        try {
+            clstm = conexion.getConexion().prepareCall("{ call reporte_12(?)}");
+            clstm.registerOutParameter(1, OracleTypes.CURSOR);
+            clstm.execute();
+            rset =(ResultSet) clstm.getObject(1);
+            while(rset.next()){
+                res = new String[3];
+                res[0] = String.valueOf(rset.getInt(1));
+                res[1] = rset.getString(2);
+                res[2] = String.valueOf(rset.getInt(3));
+                resultado.add(res);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Reporte.class.getName()).log(Level.SEVERE, null, ex);
+            valido = false;
+        }
+        return resultado;
+    }
+    
+    public ArrayList<String[]> reporte13(){
+        conexion = new Conexion();
+        resultado = new ArrayList<>();
+        String[] res;
+        valido=true;
+        try {
+            clstm = conexion.getConexion().prepareCall("{ call reporte_13(?)}");
+            clstm.registerOutParameter(1, OracleTypes.CURSOR);
+            clstm.execute();
+            rset =(ResultSet) clstm.getObject(1);
+            while(rset.next()){
+                res = new String[3];
+                res[0] = String.valueOf(rset.getInt(1));
+                res[1] = rset.getString(2);
+                res[2] = String.valueOf(rset.getInt(3));
+                resultado.add(res);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Reporte.class.getName()).log(Level.SEVERE, null, ex);
+            valido = false;
+        }
+        return resultado;
+    }
+    
+     public ArrayList<String[]> reporte14(){
+        conexion = new Conexion();
+        resultado = new ArrayList<>();
+        String[] res;
+        valido=true;
+        try {
+            clstm = conexion.getConexion().prepareCall("{ call reporte_14(?)}");
+            clstm.registerOutParameter(1, OracleTypes.CURSOR);
+            clstm.execute();
+            rset =(ResultSet) clstm.getObject(1);
+            while(rset.next()){
+                res = new String[2];
+                res[0] = String.valueOf(rset.getInt(1));
+                res[1] = String.valueOf(rset.getInt(2));
+                resultado.add(res);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Reporte.class.getName()).log(Level.SEVERE, null, ex);
+            valido = false;
+        }
+        return resultado;
+    }
+     
+     public ArrayList<String[]> reporte15(){
+        conexion = new Conexion();
+        resultado = new ArrayList<>();
+        String[] res;
+        valido=true;
+        try {
+            clstm = conexion.getConexion().prepareCall("{ call reporte_15(?)}");
+            clstm.registerOutParameter(1, OracleTypes.CURSOR);
+            clstm.execute();
+            rset =(ResultSet) clstm.getObject(1);
+            while(rset.next()){
+                res = new String[3];
+                res[0] = String.valueOf(rset.getInt(1));
+                res[1] = rset.getString(2);
+                res[2] = String.valueOf(rset.getInt(3));
+                resultado.add(res);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Reporte.class.getName()).log(Level.SEVERE, null, ex);
+            valido = false;
+        }
+        return resultado;
+    }
+     
+      public ArrayList<String[]> reporte16(){
+        conexion = new Conexion();
+        resultado = new ArrayList<>();
+        String[] res;
+        valido=true;
+        try {
+            clstm = conexion.getConexion().prepareCall("{ call reporte_16(?)}");
+            clstm.registerOutParameter(1, OracleTypes.CURSOR);
+            clstm.execute();
+            rset =(ResultSet) clstm.getObject(1);
+            while(rset.next()){
+                res = new String[1];
+                res[0] = String.valueOf(rset.getInt(1));
+                
+                resultado.add(res);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Reporte.class.getName()).log(Level.SEVERE, null, ex);
+            valido = false;
+        }
+        return resultado;
+    }
+      public ArrayList<String[]> reporte17(){
+        conexion = new Conexion();
+        resultado = new ArrayList<>();
+        String[] res;
+        valido=true;
+        try {
+            clstm = conexion.getConexion().prepareCall("{ call reporte_17(?)}");
+            clstm.registerOutParameter(1, OracleTypes.CURSOR);
+            clstm.execute();
+            rset =(ResultSet) clstm.getObject(1);
+            while(rset.next()){
+                res = new String[2];
+                res[0] = String.valueOf(rset.getInt(1));
+                res[1] = rset.getString(2);
+                
+                resultado.add(res);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Reporte.class.getName()).log(Level.SEVERE, null, ex);
+            valido = false;
+        }
+        return resultado;
+    }
+    public ArrayList<String[]> reporte18(){
+        conexion = new Conexion();
+        resultado = new ArrayList<>();
+        String[] res;
+        valido=true;
+        try {
+            clstm = conexion.getConexion().prepareCall("{ call reporte_18(?)}");
+            clstm.registerOutParameter(1, OracleTypes.CURSOR);
+            clstm.execute();
+            rset =(ResultSet) clstm.getObject(1);
+            while(rset.next()){
+                res = new String[3];
+                res[0] = String.valueOf(rset.getInt(1));
+                res[1] = rset.getString(2);
+                res[2] = String.valueOf(rset.getInt(3));
+                resultado.add(res);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Reporte.class.getName()).log(Level.SEVERE, null, ex);
+            valido = false;
+        }
+        return resultado;
+    }
+    public ArrayList<String[]> reporte19(){
+        conexion = new Conexion();
+        resultado = new ArrayList<>();
+        String[] res;
+        valido=true;
+        try {
+            clstm = conexion.getConexion().prepareCall("{ call reporte_19(?)}");
+            clstm.registerOutParameter(1, OracleTypes.CURSOR);
+            clstm.execute();
+            rset =(ResultSet) clstm.getObject(1);
+            while(rset.next()){
+                res = new String[3];
+                res[0] = String.valueOf(rset.getInt(1));
+                res[1] = rset.getString(2);
+                res[2] = String.valueOf(rset.getInt(3));
+                resultado.add(res);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Reporte.class.getName()).log(Level.SEVERE, null, ex);
+            valido = false;
+        }
+        return resultado;
+    }
+    public ArrayList<String[]> reporte20(){
+        conexion = new Conexion();
+        resultado = new ArrayList<>();
+        String[] res;
+        valido=true;
+        try {
+            clstm = conexion.getConexion().prepareCall("{ call reporte_20(?)}");
+            clstm.registerOutParameter(1, OracleTypes.CURSOR);
+            clstm.execute();
+            rset =(ResultSet) clstm.getObject(1);
+            while(rset.next()){
+                res = new String[3];
+                res[0] = String.valueOf(rset.getInt(1));
+                res[1] = rset.getString(2);
+                res[2] = String.valueOf(rset.getInt(3));
+                resultado.add(res);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Reporte.class.getName()).log(Level.SEVERE, null, ex);
+            valido = false;
+        }
+        return resultado;
+    }
+     
+     
 }

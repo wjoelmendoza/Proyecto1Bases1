@@ -729,3 +729,151 @@ BEGIN
     GROUP BY P.CODIGO, P.FECHA, C.NOMBRE) R
     WHERE ROWNUM < 6;
 END;
+
+---------REPORTE 11(PROMEDIO DE EDAD DDE LOS USUARIOS POR PAIS)
+CREATE OR REPLACE PROCEDURE reporte_11(REPORT OUT SYS_REFCURSOR)
+AS
+BEGIN
+  OPEN REPORT FOR
+    SELECT PA.nombre,trunc(AVG(trunc((TRUNC (SYSDATE) - U.fecha_nac)/365))) as edad 
+    FROM usuario U INNER JOIN pais PA ON U.cod_pais=PA.COD_PAIS
+    group by PA.nombre;
+END;
+
+-- REPORTE 12 (top 10 de las personas con mas punteos)
+CREATE OR REPLACE PROCEDURE reporte_12(REPORT OUT SYS_REFCURSOR)
+AS
+BEGIN
+  OPEN REPORT FOR
+    SELECT cod_usuario,nombre,puntos FROM usuario
+	WHERE ROWNUM<11
+	ORDER BY puntos DESC;
+END;
+
+-- REPORTE 13(ciudad con mayor cantidad de partidos asignados)
+CREATE OR REPLACE PROCEDURE reporte_13(REPORT OUT SYS_REFCURSOR)
+AS
+BEGIN
+  OPEN REPORT FOR
+	select * from
+	(
+		select CI.cod_ciudad as cod_ciudad,Ci.NOMBRE as nombre,count(PAR.codigo) as conteo
+		FROM ciudad CI INNER JOIN partido PAR ON PAR.COD_CIUDAD=CI.COD_CIUDAD
+		GROUP BY CI.COD_CIUDAD,CI.NOMBRE
+		order by conteo DESC
+	)
+	WHERE ROWNUM<2;
+END;
+
+--REPORTE 14 (puntos por edad)
+CREATE OR REPLACE PROCEDURE reporte_14(REPORT OUT SYS_REFCURSOR)
+AS
+BEGIN
+  OPEN REPORT FOR
+	select TA.edad,SUM(TA.puntos) as puntos from
+	(
+		select trunc((TRUNC (SYSDATE) - U.fecha_nac)/365) edad,U.puntos
+		FROM usuario U 
+	) TA
+	group BY TA.edad;
+END;
+--REPORTE 15(confederacion con mas usuarios)
+CREATE OR REPLACE PROCEDURE reporte_15(REPORT OUT SYS_REFCURSOR)
+AS
+BEGIN
+  OPEN REPORT FOR
+	select * FROM
+	(
+		select CO.COD,CO.NOMBRE,count(U.COD_USUARIO) as usuarios
+		from confederacion CO INNER JOIN pais ON CO.COD=pais.COD_CONF
+		INNER JOIN usuario U ON pais.COD_PAIS=U.COD_PAIS
+
+		GROUP BY CO.COD,CO.NOMBRE
+
+		ORDER BY usuarios DESC
+
+	)
+	where ROWNUM <2;
+END;
+
+--REPORTE 16(total de usuarios que pagaron por las quinielas)
+CREATE OR REPLACE PROCEDURE reporte_16(REPORT OUT SYS_REFCURSOR)
+AS
+BEGIN
+  OPEN REPORT FOR
+	select count(usuario.cod_usuario) as Usuarios_que_pagaron
+	FROM usuario where PAGO='S';
+END;
+----REPORTE 17(listado de usuarios que no pagaron)
+CREATE OR REPLACE PROCEDURE reporte_17(REPORT OUT SYS_REFCURSOR)
+AS
+BEGIN
+  OPEN REPORT FOR
+	select usuario.cod_usuario,usuario.nombre from usuario where pago='N'and TIPO<>'A';
+END;
+--REPORTE 18(confederacion con mayor numero de usuarios que pagaron)
+CREATE OR REPLACE PROCEDURE reporte_18(REPORT OUT SYS_REFCURSOR)
+AS
+BEGIN
+  OPEN REPORT FOR
+	select * FROM
+	(
+		select CO.COD,CO.NOMBRE,count(U.cod_usuario) as cantidad
+		FROM confederacion CO INNER JOIN pais ON pais.COD_CONF=CO.COD
+  		INNER JOIN usuario U ON U.COD_PAIS = pais.COD_PAIS
+		WHERE U.PAGO='S'
+		GROUP BY CO.COD,CO.NOMBRE
+		ORDER BY cantidad DESC
+	) TA
+	WHERE ROWNUM<2;
+END;
+--REPORTE 19(equipo con menos goles en contra)
+CREATE OR REPLACE PROCEDURE reporte_19(REPORT OUT SYS_REFCURSOR)
+AS
+BEGIN
+  OPEN REPORT FOR
+	select * from
+	(
+		SELECT E.COD_EQUIPO, P.NOMBRE, 
+		SUM(CASE WHEN E.COD_EQUIPO=RM.EQ1 THEN RM.G2 ELSE 0 END) AS GC 
+		FROM
+		(
+			SELECT M1.COD_PART, M1.COD_EQUIPO AS EQ1, M1.GOLES AS G1, 
+			M2.COD_EQUIPO AS EQ2 , M2.GOLES AS G2
+			FROM MARCADOR M1 , MARCADOR M2
+			WHERE M1.COD_PART = M1.COD_PART AND M2.TIPO = 'A' AND M2.TIPO = M1.TIPO
+			AND M1.COD_PART = M2.COD_PART AND M1.COD_EQUIPO <> M2.COD_EQUIPO
+		) RM,EQUIPO E, PAIS P
+		WHERE P.COD_PAIS = E.COD_PAIS AND RM.EQ1 = E.COD_EQUIPO
+		GROUP BY P.NOMBRE, E.COD_EQUIPO
+		ORDER BY GC ASC
+	) TA
+	WHERE ROWNUM<2;
+END;
+
+--REPORTE 20(equipo mas goleado)
+CREATE OR REPLACE PROCEDURE reporte_20(REPORT OUT SYS_REFCURSOR)
+AS
+BEGIN
+  OPEN REPORT FOR
+	select * from
+	(
+		SELECT E.COD_EQUIPO, P.NOMBRE, 
+		SUM(CASE WHEN E.COD_EQUIPO=RM.EQ1 THEN RM.G2 ELSE 0 END) AS GC  
+		FROM
+		(
+			SELECT M1.COD_PART, M1.COD_EQUIPO AS EQ1, M1.GOLES AS G1, 
+			M2.COD_EQUIPO AS EQ2 , M2.GOLES AS G2
+			FROM MARCADOR M1 , MARCADOR M2
+			WHERE M1.COD_PART = M1.COD_PART AND M2.TIPO = 'A' AND M2.TIPO = M1.TIPO
+			AND M1.COD_PART = M2.COD_PART AND M1.COD_EQUIPO <> M2.COD_EQUIPO
+		) RM,EQUIPO E, PAIS P
+		WHERE P.COD_PAIS = E.COD_PAIS AND RM.EQ1 = E.COD_EQUIPO
+		GROUP BY P.NOMBRE, E.COD_EQUIPO
+		ORDER BY GC DESC
+	) TA
+	WHERE ROWNUM<2;
+END;
+
+
+

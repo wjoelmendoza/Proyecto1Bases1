@@ -46,6 +46,16 @@
                         <option>Reporte 8</option>
                         <option>Reporte 9</option>
                         <option>Reporte 10</option>
+                        <option>Reporte 11</option>
+                        <option>Reporte 12</option>
+                        <option>Reporte 13</option>
+                        <option>Reporte 14</option>
+                        <option>Reporte 15</option>
+                        <option>Reporte 16</option>
+                        <option>Reporte 17</option>
+                        <option>Reporte 18</option>
+                        <option>Reporte 19</option>
+                        <option>Reporte 20</option>
                         <!--resto de reportes-->
                     </select>
                     <input type="button" value="Ver" class="btn btn-primary" onclick="jsReporte()">
