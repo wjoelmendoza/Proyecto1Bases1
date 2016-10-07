@@ -155,29 +155,10 @@ public class Partido {
             clstm.registerOutParameter(4,oracle.jdbc.OracleTypes.CURSOR);
                       
             clstm.execute();
-<<<<<<< HEAD
-            mensaje = clstm.getString(3);
-            
-            System.out.println("MENSAJE DE LA BASE DE DATOS get_infoPartido: "+mensaje);          
-=======
-             mensaje = clstm.getString(3);
->>>>>>> 36c88ff6f969a521ffb8f7d6263e3464d27d6337
+mensaje = clstm.getString(3);
             
             System.out.println("MENSAJE DE LA BASE DE DATOS get_infoPartido: "+mensaje);          
             rset = (ResultSet)clstm.getObject(4);
-<<<<<<< HEAD
-            
-            if(rset!=null)
-            {
-                rset.next();
-                this.setCodPartido(rset.getInt("codigo"));
-                this.setFecha(rset.getTimestamp("fecha").toString());
-                this.setCodciudad(rset.getInt("cod_ciudad"));
-            }
-            
-            
-            
-=======
             if(rset.next())
             {
                 
@@ -188,8 +169,6 @@ public class Partido {
             
             }
             
-           
->>>>>>> 36c88ff6f969a521ffb8f7d6263e3464d27d6337
             
         } catch (SQLException ex) {
             Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);
