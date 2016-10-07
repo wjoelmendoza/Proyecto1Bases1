@@ -33,6 +33,7 @@ public class logout extends HttpServlet {
         sesion.removeAttribute("id");
         sesion.removeAttribute("nombre");
         sesion.removeAttribute("rol");
+        sesion.invalidate();
         response.sendRedirect("/Apuestas");
     }
 

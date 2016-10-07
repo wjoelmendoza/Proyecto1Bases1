@@ -155,13 +155,16 @@ public class Partido {
             clstm.registerOutParameter(4,oracle.jdbc.OracleTypes.CURSOR);
                       
             clstm.execute();
-mensaje = clstm.getString(3);
+       
+             mensaje = clstm.getString(3);
             
             System.out.println("MENSAJE DE LA BASE DE DATOS get_infoPartido: "+mensaje);          
             rset = (ResultSet)clstm.getObject(4);
+            
+            
+
             if(rset.next())
             {
-                
                 
                 this.setCodPartido(rset.getInt("codigo"));
                 this.setFecha(rset.getTimestamp("fecha").toString());
@@ -169,6 +172,7 @@ mensaje = clstm.getString(3);
             
             }
             
+
             
         } catch (SQLException ex) {
             Logger.getLogger(Pais.class.getName()).log(Level.SEVERE, null, ex);

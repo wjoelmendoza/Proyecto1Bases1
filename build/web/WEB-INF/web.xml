@@ -33,6 +33,10 @@
         <servlet-name>FormularioQ</servlet-name>
         <servlet-class>servlet.FormularioQ</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Reportes</servlet-name>
+        <servlet-class>servlet.Reportes</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
@@ -64,6 +68,10 @@
     <servlet-mapping>
         <servlet-name>FormularioQ</servlet-name>
         <url-pattern>/FormularioQ</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Reportes</servlet-name>
+        <url-pattern>/Reportes</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
