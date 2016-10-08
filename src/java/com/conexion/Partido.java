@@ -34,6 +34,7 @@ public class Partido {
     public String marcador_mensaje="";
     
     public String mensaje;
+    public String mensaje_arbitro;
     
     public Partido(){}
     
@@ -48,9 +49,11 @@ public class Partido {
             clstm.registerOutParameter(2, oracle.jdbc.OracleTypes.CURSOR);
             clstm.setInt(1,codparti);
             clstm.execute();
-            rset = (ResultSet)clstm.getObject(1);
+            rset = (ResultSet)clstm.getObject(2);
+            mensaje_arbitro="NO";
             while(rset.next())
             {
+                mensaje_arbitro = "SI";
                 if(rset.getString("posicion").equals("central"))
                 {
                     this.central = new Arbitro(rset.getInt("cod_arb"),rset.getString("nombre"),rset.getString("posicion"));
@@ -66,6 +69,7 @@ public class Partido {
                 }
                     
             }
+            System.out.println(mensaje_arbitro);
                 
             
         } catch (SQLException ex) {
@@ -162,7 +166,7 @@ public class Partido {
             rset = (ResultSet)clstm.getObject(4);
             
             
-
+            if(!mensaje.equals("NO"))
             if(rset.next())
             {
                 
@@ -193,13 +197,13 @@ public class Partido {
             }
         }
     }
-    public String set_Partido(int codeq1,int codeq2,int goleq1,int goleq2,char grr,String hora,String fecc,int codciudad,char flag,int codu )
+    public String set_Partido(int codeq1,int codeq2,int goleq1,int goleq2,char grr,String hora,String fecc,int codciudad,char flag,int codu,int codarb1,int codarb2,int codarb3 )
     {
         //set_partido(codu IN INTEGER, mess OUT VARCHAR2)
         try {
             //get_ciudades(cursor1 OUT SYS_REFCURSOR)
             conexion = new Conexion();
-            clstm = conexion.getConexion().prepareCall("{call set_partido(?,?,?,?,?,?,?,?,?,?)}");
+            clstm = conexion.getConexion().prepareCall("{call set_partido(?,?,?,?,?,?,?,?,?,?,?,?,?)}");
             clstm.setInt(1,codeq1);
             clstm.setInt(2,codeq2);
             clstm.setInt(3,goleq1);
@@ -210,7 +214,9 @@ public class Partido {
             clstm.setString(8,String.valueOf(flag));
             clstm.setInt(9, codu);
             clstm.registerOutParameter(10,oracle.jdbc.OracleTypes.VARCHAR);
-                      
+            clstm.setInt(11,codarb1);
+            clstm.setInt(12,codarb2);
+            clstm.setInt(13,codarb3);
             clstm.execute();
             mensaje = clstm.getString(10);
             /*rset = (ResultSet)clstm.getObject(1);

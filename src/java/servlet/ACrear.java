@@ -9,6 +9,7 @@ import com.conexion.Arbitro;
 import com.conexion.Ciudad;
 import com.conexion.Confederacion;
 import com.conexion.Equipo;
+import com.conexion.Jugador;
 import com.conexion.Pais;
 import com.conexion.Partido;
 import java.io.IOException;
@@ -216,6 +217,141 @@ public class ACrear extends HttpServlet {
             PrintWriter out = response.getWriter();
             out.println(mess);
         }
+        else if(flag.equals("lselecciones"))
+        {
+            response.setContentType( "text/html; charset=iso-8859-1" );
+            PrintWriter out = response.getWriter();
+            Equipo eq = new Equipo();
+            ArrayList<Equipo> lista = eq.get_Selecciones();
+            Iterator<Equipo> it = lista.iterator();
+            while(it.hasNext())
+            {
+                Equipo eqq = it.next();
+                out.println("<option value=\""+eqq.getCodEquipo()+"\">"+eqq.getPais()+"</option>");
+                
+            }
+        }
+        else if(flag.equals("infoseleccion"))
+        {
+            int codeq = Integer.valueOf(request.getParameter("codseleccion"));
+            System.out.println("CODIGO DE equipo: "+codeq);
+            Equipo eq = new Equipo();
+            eq.get_infoEquipo(codeq);
+            response.setContentType( "text/html; charset=iso-8859-1" );
+            PrintWriter out = response.getWriter();
+            out.println("<form id=\"formseleccion\">");
+            out.println("<table cellpadding=\"5\" >");
+            
+            out.println("       <tr>");
+            out.println("           <td>Nombre:</td>");
+            out.println("           <td><input name=\"nombre\" type=\"text\" value=\""+eq.getPais()+"\" id=\"txtnombreseleccion\"></td>");
+            out.println("        </tr>");
+            
+            out.println("       <tr>");
+            out.println("           <td>Director</td>");
+            out.println("           <td><input name=\"acronimo\" type=\"text\" value=\""+eq.getDirector()+"\" id=\"txtdirector\"></td>");
+            out.println("        </tr>");
+            
+            out.println("       <tr>");
+            out.println("           <td>Grupo</td>");
+            out.println("           <td>");
+            out.println("<select id=selectgrrrequipo>");
+                if(eq.getGrupo().charAt(0)=='A')
+                    out.println("<option value='A' selected>A</option>");
+                else if(eq.getGrupo().charAt(0)=='B')
+                    out.println("<option value='B' selected>B</option>");
+                else if(eq.getGrupo().charAt(0)=='C')
+                    out.println("<option value='C' selected>C</option>");
+                if(eq.getGrupo().charAt(0)=='D')
+                    out.println("<option value='D' selected>D</option>");
+                if(eq.getGrupo().charAt(0)=='E')
+                    out.println("<option value='E' selected>E</option>");
+                if(eq.getGrupo().charAt(0)=='F')
+                    out.println("<option value='F' selected>F</option>");
+                if(eq.getGrupo().charAt(0)=='G')
+                    out.println("<option value='G' selected>G</option>");
+                if(eq.getGrupo().charAt(0)=='H')
+                    out.println("<option value='H' selected>H</option>");
+                /*
+                if(eq.getGrupo().charAt(0)=='A')
+                    out.println("<option value='A' selected>A</option>");
+                else
+                    out.println("<option value='A'>A</option>");
+                
+                if(eq.getGrupo().charAt(0)=='B')
+                    out.println("<option value='B' selected>B</option>");
+                else
+                    out.println("<option value='B'>B</option>");
+                
+                if(eq.getGrupo().charAt(0)=='C')
+                    out.println("<option value='C' selected>C</option>");
+                else
+                    out.println("<option value='C'>C</option>");
+                
+                if(eq.getGrupo().charAt(0)=='D')
+                    out.println("<option value='D' selected>D</option>");
+                else
+                    out.println("<option value='D'>D</option>");
+                
+                if(eq.getGrupo().charAt(0)=='E')
+                    out.println("<option value='E' selected>E</option>");
+                else
+                    out.println("<option value='E'>E</option>");
+                if(eq.getGrupo().charAt(0)=='F')
+                    out.println("<option value='F' selected>F</option>");
+                else
+                    out.println("<option value='F'>F</option>");
+                
+                if(eq.getGrupo().charAt(0)=='G')
+                    out.println("<option value='G' selected>G</option>");
+                else
+                    out.println("<option value='G'>G</option>");
+                
+                if(eq.getGrupo().charAt(0)=='H')
+                    out.println("<option value='H' selected>H</option>");
+                else
+                    out.println("<option value='H'>H</option>");
+            */
+            out.println("</select>");
+            out.println("           </td>");
+            out.println("        </tr>");
+            
+            out.println("       <tr>");
+            out.println("           <td></td>");
+            out.println("           <td>");
+            out.println("               <input value=\"Modificar\" class=\"btn btn-success\" type=\"button\" id=\"btnmodseleccion\"  onclick=\"javascript:jsMEseleccion('M');\" >");
+            out.println("               <input value=\"Eliminar\" class=\"btn btn-danger\" type=\"button\"  id=\"btnelimseleccion\" onclick=\"javascript:jsMEseleccion('E');\">");
+            out.println("           </td>");
+            out.println("       </tr>");
+            out.println("</table>");
+            out.println("</form>");
+        }
+        else if(flag.equals("Eseleccion"))
+        {
+            System.out.println("ENTRO A Eseleccion");
+            int codeq = Integer.valueOf(request.getParameter("codeq"));
+            Equipo eq = new Equipo();
+            eq.E_Equipo(codeq);
+            response.setContentType( "text/html; charset=iso-8859-1" );
+            PrintWriter out = response.getWriter();
+            out.println("Seleccion eliminada correctamente");
+            
+        }
+        else if(flag.equals("Mseleccion"))
+        {
+            System.out.println("ENTRO A Mseleccion");
+            int codeq = Integer.valueOf(request.getParameter("codeq"));
+            String director = request.getParameter("director");
+            String grupo = request.getParameter("grupo");
+            Equipo eq = new Equipo();
+            String mess = eq.M_Equipo(codeq, director, grupo);
+            System.out.println("mensaje en Mseleccion: "+mess);
+            response.setContentType( "text/html; charset=iso-8859-1" );
+            PrintWriter out = response.getWriter();
+            out.println(mess);
+            
+        }
+       
         else if(flag.equals("creapartidos"))
         {
             response.setContentType( "text/html; charset=iso-8859-1" );
@@ -399,16 +535,145 @@ public class ACrear extends HttpServlet {
                     out.println("--------");
                     out.println("</td>");
                     out.println("</tr>");
-                    //LO DE LOS ARBITROS
+                    //LO DE LOS ARBITROS CENTRAL
                     out.println("<tr>");
                     out.println("<td colspan=\"3\">");
                     
-                    out.println("Central: <select id=\"selectarbitro1\"");
+                    out.println("Central: <select id=\"selectarbitro1\">");
                     Arbitro arbi = new Arbitro();
                     ArrayList<Arbitro> larbitros = arbi.get_arbitros();
-                    
+                    partido.get_arbitros_partido(partido.getCodPartido());
+                    System.out.println("mensaje_arbitro: "+partido.mensaje_arbitro);
+                    if(partido.mensaje_arbitro=="SI")
+                    {
+                        Iterator<Arbitro> itt = larbitros.iterator();
+                        while(itt.hasNext())
+                        {
+                            Arbitro arbb = itt.next();
+                            if(partido.central!=null)
+                            {
+                                if(arbb.getCod()==partido.central.getCod())
+                                {
+                                    out.println("<option value=\""+arbb.getCod()+"\" selected>"+arbb.getNombre()+"<option>");
+                                }
+                                
+                            }
+                            
+                            else
+                            {
+                                out.println("<option value=\""+arbb.getCod()+"\">"+arbb.getNombre()+"<option>");
+                            }
+                            
+                        }
+                        
+                    }
+                    else
+                    {
+                        Iterator<Arbitro> itt = larbitros.iterator();
+                        while(itt.hasNext())
+                        {
+                            Arbitro arbb = itt.next();
+                            out.println("<option value=\""+arbb.getCod()+"\">"+arbb.getNombre()+"<option>");
+                            
+                            
+                        }
+                    }
+                    out.println("</select>");
                     out.println("</td>");
                     out.println("</tr>");
+                    
+                    
+                    //LO DE LOS ARBITROS ASISTENTE1
+                    out.println("<tr>");
+                    out.println("<td colspan=\"3\">");
+                    
+                    out.println("Asistente1: <select id=\"selectarbitro2\">");
+                    
+                    if(partido.mensaje_arbitro=="SI")
+                    {
+                        Iterator<Arbitro> itt = larbitros.iterator();
+                        while(itt.hasNext())
+                        {
+                            Arbitro arbb = itt.next();
+                            if(partido.asistente1!=null)
+                            {
+                                if(arbb.getCod()==partido.asistente1.getCod())
+                                {
+                                    out.println("<option value=\""+arbb.getCod()+"\" selected>"+arbb.getNombre()+"<option>");
+                                }
+                                    
+                                
+                            }
+                                                        
+                            else
+                            {
+                                out.println("<option value=\""+arbb.getCod()+"\">"+arbb.getNombre()+"<option>");
+                            }
+                            
+                        }
+                        
+                    }
+                    else
+                    {
+                        Iterator<Arbitro> itt = larbitros.iterator();
+                        while(itt.hasNext())
+                        {
+                            Arbitro arbb = itt.next();
+                            out.println("<option value=\""+arbb.getCod()+"\">"+arbb.getNombre()+"<option>");
+                            
+                            
+                        }
+                    }
+                    out.println("</select>");
+                    out.println("</td>");
+                    out.println("</tr>");
+
+                    
+                    //LO DE LOS ARBITROS ASISTENTE2
+                    out.println("<tr>");
+                    out.println("<td colspan=\"3\">");
+                    
+                    out.println("Asistente2: <select id=\"selectarbitro3\">");
+                    if(partido.mensaje_arbitro=="SI")
+                    {
+                        Iterator<Arbitro> itt = larbitros.iterator();
+                        while(itt.hasNext())
+                        {
+                            Arbitro arbb = itt.next();
+                            if(partido.asistente2!=null)
+                            {
+                                if(arbb.getCod()==partido.asistente2.getCod())
+                                {
+                                    out.println("<option value=\""+arbb.getCod()+"\" selected>"+arbb.getNombre()+"<option>");
+                                }
+                                
+                            }
+                            
+                            else
+                            {
+                                out.println("<option value=\""+arbb.getCod()+"\">"+arbb.getNombre()+"<option>");
+                            }
+                            
+                        }
+                        
+                    }
+                    else
+                    {
+                        Iterator<Arbitro> itt = larbitros.iterator();
+                        while(itt.hasNext())
+                        {
+                            Arbitro arbb = itt.next();
+                            out.println("<option value=\""+arbb.getCod()+"\">"+arbb.getNombre()+"<option>");
+                            
+                            
+                        }
+                    }
+                    out.println("</select>");
+                    out.println("</td>");
+                    out.println("</tr>");
+
+                    
+                    
                     
                     out.println("<tr>");
                     out.println("<td colspan=\"3\">");
@@ -494,6 +759,69 @@ public class ACrear extends HttpServlet {
                     out.println("--------");
                     out.println("</td>");
                     out.println("</tr>");
+                    
+                    //LO DE LOS ARBITROS CENTRAL
+                    out.println("<tr>");
+                    out.println("<td colspan=\"3\">");
+                    
+                    out.println("Central: <select id=\"selectarbitro1\">");
+                    Arbitro arbi = new Arbitro();
+                    ArrayList<Arbitro> larbitros = arbi.get_arbitros();
+                   
+                        Iterator<Arbitro> itt = larbitros.iterator();
+                        while(itt.hasNext())
+                        {
+                            Arbitro arbb = itt.next();
+                            out.println("<option value=\""+arbb.getCod()+"\">"+arbb.getNombre()+"<option>");
+                            
+                            
+                        }
+                    
+                    out.println("</select>");
+                    out.println("</td>");
+                    out.println("</tr>");
+                    
+                    
+                    //LO DE LOS ARBITROS ASISTENTE1
+                    out.println("<tr>");
+                    out.println("<td colspan=\"3\">");
+                    
+                    out.println("Asistente1: <select id=\"selectarbitro2\">");
+                    Iterator<Arbitro> ittt = larbitros.iterator();
+                        while(ittt.hasNext())
+                        {
+                            Arbitro arbb = ittt.next();
+                            out.println("<option value=\""+arbb.getCod()+"\">"+arbb.getNombre()+"<option>");
+                            
+                            
+                        }
+                    
+                    out.println("</select>");
+                    out.println("</td>");
+                    out.println("</tr>");
+
+                    
+                    //LO DE LOS ARBITROS ASISTENTE2
+                    out.println("<tr>");
+                    out.println("<td colspan=\"3\">");
+                    
+                    out.println("Asistente2: <select id=\"selectarbitro3\">");
+                   
+                    
+                        Iterator<Arbitro> itttt = larbitros.iterator();
+                        while(itttt.hasNext())
+                        {
+                            Arbitro arbb = itttt.next();
+                            out.println("<option value=\""+arbb.getCod()+"\">"+arbb.getNombre()+"<option>");
+                            
+                            
+                        }
+                    
+                    out.println("</select>");
+                    out.println("</td>");
+                    out.println("</tr>");
+
+                    
                     out.println("<tr>");
                     out.println("<td colspan=\"3\">");
                     out.println("<input class=\"btn btn-success\" id=\"btngrabarpartido\" type=\"button\" value=\"Guardar\" style=\"font-size : 11px; width:100%; height:30px;>\" onclick=\"javascript:jsGrabarPartido('G');\"");
@@ -530,7 +858,9 @@ public class ACrear extends HttpServlet {
             char flagw = request.getParameter("flagw").charAt(0);
             int codciudad = Integer.valueOf(request.getParameter("codciudad"));
             int oid=(int) request.getSession().getAttribute("id");
-            
+            int codarb1 = Integer.valueOf(request.getParameter("codarb1"));
+            int codarb2 = Integer.valueOf(request.getParameter("codarb2"));
+            int codarb3 = Integer.valueOf(request.getParameter("codarb3"));
             System.out.println("cod1:"+cod1);
             System.out.println("cod2:"+cod2);
             System.out.println("goleq1:"+goleq1);
@@ -542,7 +872,7 @@ public class ACrear extends HttpServlet {
             System.out.println("codciudad:"+codciudad);
             System.out.println("oid:"+oid);
             Partido partido = new Partido();
-            partido.set_Partido(cod1,cod2,goleq1,goleq2,grr,hora,fecha,codciudad,flagw,oid);
+            partido.set_Partido(cod1,cod2,goleq1,goleq2,grr,hora,fecha,codciudad,flagw,oid,codarb1,codarb2,codarb3);
             
             
         }
@@ -633,8 +963,9 @@ public class ACrear extends HttpServlet {
             out.println("           <td><input name=\"codarbitro\" type=\"hidden\" value=\""+arbitro.getCod()+"\" id=\"txtcodarbitro\"></td>");
             out.println("        </tr>");
             out.println("       <tr>");
+            out.println("           <td>Pais:</td>");
             out.println("<td>");
-            out.println("<select id=\"selectarbpaiact\">");
+            out.println(" <select id=\"selectarbpaiact\">");
             //se obtiene la lista de paises Y se deja como seleccionado el pais que tiene actualmente
             Pais pais = new Pais();
             ArrayList<Pais> lista = pais.getPaisesConCod();
@@ -714,7 +1045,7 @@ public class ACrear extends HttpServlet {
             out.println("</select>");
             out.println("</td>");        
             out.println("        </tr>");
-             out.println("       <tr>");
+            out.println("       <tr>");
             out.println("           <td></td>");
             out.println("           <td>");
             out.println("               <input value=\"Modificar\" class=\"btn btn-success\" type=\"button\" id=\"btnmodpais\"  onclick=\"javascript:jsMEpais('M');\" >");
@@ -748,6 +1079,114 @@ public class ACrear extends HttpServlet {
             PrintWriter out = response.getWriter();
             out.println("Pais modificado");
             
+        }
+        else if(flag.equals("submitjugador"))
+        {
+            //METODO set_Jugador(int camiseta,String fecnac,float estatura,float peso,String nombre,String equipo,String posicion, int codeq)
+            int camiseta = Integer.valueOf(request.getParameter("camiseta"));
+            String fecnac = request.getParameter("fecnac");
+            float estatura = Float.valueOf(request.getParameter("estatura"));
+            float peso = Float.valueOf(request.getParameter("peso"));
+            String nombre= request.getParameter("nombre");
+            String equipo= request.getParameter("equipo");
+            String posicion = request.getParameter("posicion");
+            int codeq = Integer.valueOf(request.getParameter("codeq"));
+            Equipo eq = new Equipo();
+            String mensaje = eq.set_Jugador(camiseta, fecnac, estatura, peso, nombre, equipo, posicion, codeq);
+            PrintWriter out = response.getWriter();
+            out.println(mensaje);
+        }
+        else if(flag.equals("ljugadores"))
+        {
+            int codeq = Integer.valueOf(request.getParameter("codeq"));
+            Equipo equipo = new Equipo();
+            equipo.setCodeq(codeq);
+            equipo.cargarJugadores();
+            ArrayList<Jugador> lista = equipo.getJugadores();
+            Iterator<Jugador> it = lista.iterator();
+            response.setContentType( "text/html; charset=iso-8859-1" );
+            PrintWriter out = response.getWriter();
+            while(it.hasNext())
+            {
+                Jugador jug = it.next();
+                out.println("<option value=\""+jug.getCamiseta()+"\">"+jug.getCamiseta()+","+jug.getNombre()+"</option>");
+            }
+        }
+        
+        else if(flag.equals("infojugador"))
+        {
+            //equipo.get_jugador(int camiseta, int codeq)
+             int camiseta = Integer.valueOf(request.getParameter("camiseta"));
+             int codeq = Integer.valueOf(request.getParameter("codeq"));
+             Equipo equipo = new Equipo();
+             Jugador jug = equipo.get_jugador(camiseta, codeq);
+             
+            response.setContentType( "text/html; charset=iso-8859-1" );
+            PrintWriter out = response.getWriter();
+            out.println("<form id=\"formjugadoresinfo\">");
+            out.println("<table cellpadding=\"5\" >");
+            out.println("<tr>");
+            out.println("<td>Fecha Nacimiento:</td>");
+            out.println("<td><input id=\"txtfechajugador\" type=\"date\" maxlength=\"50\" value=\""+jug.getFechaNac().toString()+"\"></td>");
+            out.println("</tr>");
+            out.println("<tr>");
+            out.println("<td>Estatura:</td>");
+            out.println("<td><input id=\"txtestaturajugador\"  type=\"number\" step=\"0.01\" value=\""+jug.getEstatura()+"\"></td>");
+            out.println("</tr>");
+            out.println("<tr>");
+            out.println("<td>Peso:</td>");
+            out.println("<td><input id=\"txtpesojugador\" type=\"number\" step=\"0.01\" value=\""+jug.getPeso()+"\"></td>");
+            out.println("</tr>");
+            out.println("<tr>");
+            out.println("<td>Nombre:</td>");
+            out.println("<td><input id=\"txtnombrejugador\" type=\"text\" maxlength=\"50\" value=\""+jug.getNombre()+"\"></td>");
+            out.println("</tr>");
+            out.println("<tr>");
+            out.println("<td>Equipo:</td>");
+            out.println("<td><input id=\"txtequipojugador\" type=\"text\" maxlength=\"50\" value=\""+jug.getEquipo()+"\"></td>");
+            out.println("</tr>");
+            out.println("<tr>");
+            out.println("<td>Posicion:</td>");
+            out.println("<td><input id=\"txtposicionjugador\" type=\"text\" maxlength=\"50\" value=\""+jug.getPosicion()+"\"></td>");
+            out.println("</tr>");
+            out.println("       <tr>");
+            out.println("           <td></td>");
+            out.println("           <td>");
+            out.println("               <input value=\"Modificar\" class=\"btn btn-success\" type=\"button\" id=\"btnmodjugador\"  onclick=\"javascript:jsMEjugador('M');\" >");
+            out.println("               <input value=\"Eliminar\" class=\"btn btn-danger\" type=\"button\"  id=\"btnelimjugador\" onclick=\"javascript:jsMEjugador('E');\">");
+            out.println("           </td>");
+            
+            out.println("</table>");
+            out.println("</form>");
+             
+             
+        }
+        else if(flag.equals("Ejugador"))
+        {
+            int camiseta = Integer.valueOf(request.getParameter("camiseta"));
+            int codeq = Integer.valueOf(request.getParameter("codeq"));
+            Equipo eq = new Equipo();
+            eq.E_jugador(camiseta, codeq);
+            response.setContentType( "text/html; charset=iso-8859-1" );
+            PrintWriter out = response.getWriter();
+            out.write("jugador eliminado correctamente");
+        }
+        else if(flag.equals("Mjugador"))
+        {
+            //equipo.M_jugador(int camiseta,String fecnac,float estatura,float peso,String nombre,String equipo,String posicion, int codeq)
+            int camiseta = Integer.valueOf(request.getParameter("camiseta"));
+            String fecnac = request.getParameter("fecnac");
+            float estatura = Float.valueOf(request.getParameter("estatura"));
+            float peso = Float.valueOf(request.getParameter("peso"));
+            String nombre= request.getParameter("nombre");
+            String equipo= request.getParameter("equipo");
+            String posicion = request.getParameter("posicion");
+            int codeq = Integer.valueOf(request.getParameter("codeq"));
+            Equipo eq = new Equipo();
+            eq.M_jugador(camiseta, fecnac, estatura, peso, nombre, equipo, posicion, codeq);
+            response.setContentType( "text/html; charset=iso-8859-1" );
+            PrintWriter out = response.getWriter();
+            out.write("jugador modificado correctamente");
         }
         
        

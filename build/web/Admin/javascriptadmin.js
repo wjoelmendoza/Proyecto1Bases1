@@ -39,8 +39,7 @@
 		});
 	});
                   
-       
-             
+       /* LO DE LAS SELECCIONES*/             
             $(document).ready(function() {
 		$('#submitseles').click(function(event) {
 			
@@ -60,7 +59,88 @@
 			});
 
 		});
+                $('#btnselecciones').click(function(event) {
+			
+                       var fl = 'lselecciones';
+                        
+			$.post('/Apuestas/ACrear', {
+				flaa : fl,
+                                
+			}, function(responseText) {
+				$('#3selectlselecciones').html(responseText);
+			});
+
+		});
+                
+                $('#btngetselecciones').click(function(event) {
+			alert("btngetselecciones");
+                        var fl = 'lselecciones';
+                        
+			$.post('/Apuestas/ACrear', {
+				flaa : fl,
+                                
+			}, function(responseText) {
+				$('#3selectlselecciones').html(responseText);
+			});
+
+		});
+                
+                
+                $( "#3selectlselecciones" ).change(function () {
+                
+               alert("btngetselecciones");
+                var coda= $( this ).val()+'';
+                var fl='infoseleccion';
+                $.post('/Apuestas/ACrear', {
+				flaa : fl,
+                                codseleccion : coda
+				
+			}, function(responseText) {
+                            	$("#divseleccioninfo").html(responseText);
+			});
+      
+      
+                
+    
+                }).change();
+                
+                
+                
 	});
+        function jsMEseleccion(flagw) {
+                var flm = 'Mseleccion';
+                var fle = 'Eseleccion';
+                alert("BOTONASO jsMEseleccion");
+                if(flagw=='E')
+                {
+                    var codeq = $('#3selectlselecciones').val();
+                    $.post('/Apuestas/ACrear', {
+				flaa : fle,
+                                codeq : codeq
+			}, function(responseText) {
+                            	$("#divEMseleccion").html(responseText);
+			});
+                    
+                }
+                else if(flagw=='M')
+                {
+                    var codeq = $('#3selectlselecciones').val();
+                    var director = $('#txtdirector').val();
+                    var grupo = $('#selectgrrrequipo').val();
+                    $.post('/Apuestas/ACrear', {
+				flaa : flm,
+                                codeq : codeq,
+                                director : director,
+                                grupo :grupo
+			}, function(responseText) {
+                            	$("#divEMseleccion").html(responseText);
+			});
+                    
+                    
+                }
+                
+            }
+        //---------------------------------------
             
       
            
@@ -113,8 +193,12 @@
                 var grr = $('#2lgrupos').val();
                 var flagw = wflag;
                 var codciudad = $('#selectciudadpartido').val();
-                    
-                $.post('/Apuestas/ACrear', {
+                var codarb1 = $('#selectarbitro1').val();
+                var codarb2 = $('#selectarbitro2').val();
+                var codarb3 = $('#selectarbitro3').val();
+                if(codarb1!=codarb2 && codarb1!=codarb1!=codarb3 && codarb2!=codarb3)
+                {
+                    $.post('/Apuestas/ACrear', {
 				flaa : fl,
                                 codeq1 : cod1,
                                 codeq2 : cod2,
@@ -124,11 +208,20 @@
                                 hora : hora,
                                 grr : grr,
                                 flagw : flagw,
-                                codciudad : codciudad
+                                codciudad : codciudad,
+                                codarb1 : codarb1,
+                                codarb2 : codarb2,
+                                codarb3 : codarb3
 				
 			}, function(responseText) {
                             	$("#divbtnscontenido").html(responseText);
 			});
+                }
+                else
+                {
+                    $("#divbtnscontenido").html("<h5>No puedes escojer arbitros iguales.</h5>");
+                }
+                
             }
    
             $(document).ready(function() {
@@ -474,6 +567,157 @@
 				
 			}, function(responseText) {
                             	$("#divEMpais").html(responseText);
+			});
+                }
+                
+            }
+        
+        
+        /*METODOS PARA LAS PLANTILLAS*/
+        $(document).ready(function() {
+            
+             $('#btnplantillas').click(function(event) {
+		//alert("btnplantillas");	
+                       var fl = 'lselecciones';
+                        
+			$.post('/Apuestas/ACrear', {
+				flaa : fl,
+                                
+			}, function(responseText) {
+				$('#6lallselecciones').html(responseText);
+			});
+
+		});
+                
+                $('#btnsubmitjugador').click(function(event) {
+		alert("btnplantillas");	
+                       var fl = 'submitjugador';
+                       var camiseta = $('#camisetajugador').val(); 
+                       var fecnac = $('#fechajugador').val();
+                       var estatura = $('#estaturajugador').val();
+                       var peso = $('#pesojugador').val();
+                       var nombre = $('#nombrejugador').val();
+                       var equipo = $('#equipojugador').val();
+                       var posicion = $('#posicionjugador').val();
+                       var codeq = $('#6lallselecciones').val();
+			$.post('/Apuestas/ACrear', {
+				flaa : fl,
+                                camiseta : camiseta,
+                                fecnac : fecnac,
+                                estatura : estatura,
+                                peso : peso,
+                                nombre : nombre,
+                                equipo : equipo,
+                                posicion : posicion,
+                                codeq : codeq
+                                
+			}, function(responseText) {
+				$('#divrespsubmitjugador').html(responseText);
+			});
+
+		});
+                $('#6btngetselecciones').click(function(event) {
+		//alert("btnplantillas");	
+                       var fl = 'lselecciones';
+                        
+			$.post('/Apuestas/ACrear', {
+				flaa : fl,
+                                
+			}, function(responseText) {
+				$('#6selectlselecciones').html(responseText);
+			});
+
+		});
+                
+                
+                $( "#6selectlselecciones" ).change(function () {
+                
+               
+                var codeq= $( this ).val()+'';
+                var fl='ljugadores';
+                $.post('/Apuestas/ACrear', {
+				flaa : fl,
+                                codeq : codeq
+				
+			}, function(responseText) {
+                            	$("#6selectlcamisetas").html(responseText);
+			});
+      
+      
+                
+    
+                }).change();
+                
+                $( "#6selectlcamisetas" ).change(function () {
+                
+               
+                var codeq= $("#6selectlselecciones").val();
+                var camiseta = $( this ).val()+'';
+                var fl='infojugador';
+                $.post('/Apuestas/ACrear', {
+				flaa : fl,
+                                codeq : codeq,
+                                camiseta : camiseta
+				
+			}, function(responseText) {
+                            	$("#divjugadorinfo").html(responseText);
+			});
+      
+      
+                
+    
+                }).change();
+            
+                
+                
+            
+        });
+        
+        
+        function jsMEjugador(wflag) {
+                //alert("HOLAA jsMEarbitro");
+                var fle = 'Ejugador';
+                var flm = 'Mjugador';
+                alert("jsMEjugador "+wflag);
+                
+                if(wflag=="E")
+                {
+                    var codeq= $("#6selectlselecciones").val();
+                    var camiseta = $( "#6selectlcamisetas").val();
+                    
+                    $.post('/Apuestas/ACrear', {
+				flaa : fle,
+                                camiseta : camiseta,
+                                codeq :codeq
+				
+			}, function(responseText) {
+                            	$("#divEMjugador").html(responseText);
+			});
+                }
+                else if(wflag=="M")
+                {
+                       var codeq= $("#6selectlselecciones").val();
+                       var camiseta = $( "#6selectlcamisetas").val();
+                       var fecnac = $('#txtfechajugador').val();
+                       var estatura = $('#txtestaturajugador').val();
+                       var peso = $('#txtpesojugador').val();
+                       var nombre = $('#txtnombrejugador').val();
+                       var equipo = $('#txtequipojugador').val();
+                       var posicion = $('#txtposicionjugador').val();
+                       
+                    $.post('/Apuestas/ACrear', {
+				flaa : flm,
+                                camiseta : camiseta,
+                                fecnac : fecnac,
+                                estatura : estatura,
+                                peso : peso,
+                                nombre : nombre,
+                                equipo : equipo,
+                                posicion : posicion,
+                                codeq : codeq
+				
+			}, function(responseText) {
+                            	$("#divEMjugador").html(responseText);
 			});
                 }
                 

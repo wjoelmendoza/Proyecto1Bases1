@@ -365,7 +365,21 @@ END;
 
 
 
-create or replace PROCEDURE set_partido(codeq1 IN INTEGER,codeq2 IN INTEGER,goleq1 IN INTEGER,goleq2 IN INTEGER,grr IN char,fecc IN DATE,codciudad IN integer,flag IN char,codu IN INTEGER, mess OUT VARCHAR2)
+create or replace PROCEDURE set_partido(
+codeq1 IN INTEGER,
+codeq2 IN INTEGER,
+goleq1 IN INTEGER,
+goleq2 IN INTEGER,
+grr IN char,
+fecc IN DATE,
+codciudad IN integer,
+flag IN char,
+codu IN INTEGER,
+mess OUT VARCHAR2,
+codarb1 IN INTEGER,
+codarb2 IN INTEGER,
+codarb3 IN INTEGER
+)
 AS
 
 cursor cursor1(codeqq1 INTEGER) is select cod_equipo,cod_part from rivales where cod_equipo=codeqq1;  
@@ -394,9 +408,18 @@ BEGIN
                 update partido
                 set fecha = fecc,hora_inicio=fecc,cod_ciudad=codciudad
                 where codigo = equipo1.cod_part;
-                exit;
-                mess :='SE HISO LA ACTUALIZACION DEL MARCADOR';
                 
+                delete from asig
+                where COD_PART=equipo1.cod_part;
+                
+                insert into asig(cod_arb,cod_part,posicion)values(codarb1,equipo1.cod_part,'central');
+                
+                insert into asig(cod_arb,cod_part,posicion)values(codarb2,equipo1.cod_part,'asistente1');
+                
+                insert into asig(cod_arb,cod_part,posicion)values(codarb3,equipo1.cod_part,'asistente2');
+                                
+                mess :='SE HISO LA ACTUALIZACION DEL MARCADOR';
+                exit;
         ELSIF flag='E' THEN-- SE TIENE QUE UN DELETE
                 DELETE FROM marcador mar  where mar.cod_part = equipo1.cod_part;
                 DELETE FROM rivales riv where riv.cod_part = equipo1.cod_part;
@@ -424,6 +447,9 @@ BEGIN
       insert into rivales(cod_equipo,cod_part)values(codeq2,idparti.codigooo);
       insert into marcador(goles,cod_equipo,cod_part,tipo,cod_usuario)values(goleq1,codeq1,idparti.codigooo,'A',codu);
       insert into marcador(goles,cod_equipo,cod_part,tipo,cod_usuario)values(goleq2,codeq2,idparti.codigooo,'A',codu);
+      insert into asig(cod_arb,cod_part,posicion)values(codarb1,idparti.codigooo,'central');
+      insert into asig(cod_arb,cod_part,posicion)values(codarb2,idparti.codigooo,'asistente1');
+      insert into asig(cod_arb,cod_part,posicion)values(codarb3,idparti.codigooo,'asistente2');
       mess :='SE CREO EL PARTIDO POR PRIMERA VEZ';
     ELSIF flag='E' THEN
       mess :='NO SE PUEDE ELIMINAR UN PARTIDO O MARCADOR QUE NO SE A CREADO';
@@ -487,6 +513,99 @@ BEGIN
       
   END IF;  
 END set_Equipo;
+
+create or replace PROCEDURE get_Equipo(codeq IN SMALLINT,cursor1 OUT SYS_REFCURSOR)
+AS
+BEGIN
+  open cursor1 for
+    SELECT E.COD_EQUIPO, P.NOMBRE,E.DIRECTOR,E.GRUPO
+    FROM equipo E, Pais P
+    WHERE E.COD_PAIS = P.COD_PAIS and E.COD_EQUIPO=codeq;
+    
+END get_Equipo;
+---E_Equipo
+create or replace PROCEDURE E_Equipo(codeq IN SMALLINT)
+AS
+cantidad integer;
+cursor cursor1(codeqq1 INTEGER) is select cod_part from rivales where cod_equipo= codeqq1;  
+ BEGIN
+  FOR rival IN cursor1(codeq) LOOP
+      delete from marcador where cod_part=rival.cod_part;
+      delete from rivales where cod_part=rival.cod_part;
+      delete from partido where codigo=rival.cod_part;
+      delete from asig where cod_part=rival.cod_part;
+    
+    
+  END LOOP;
+  
+  
+  delete from jugador where cod_equipo =codeq;
+  delete from equipo where COD_EQUIPO=codeq;
+    
+END E_Equipo;
+
+
+create or replace PROCEDURE M_Equipo(codeq IN SMALLINT,direc IN VARCHAR2,grrr IN char, mess OUT VARCHAR2)
+AS
+grupact char;
+cantidad integer;
+cursor1 SYS_REFCURSOR;
+BEGIN
+  mess :='##';
+  update equipo set DIRECTOR=direc
+  WHERE COD_EQUIPO = codeq;
+  mess :='CAMBIOS REALIZADO CON EXITO';
+  --select  eq.GRUPO into grupact
+    --FROM equipo eq
+    --where eq.COD_EQUIPO=codeq;
+     
+  --IF grrr<>grupact THEN--ES DIFERENTE SU GRUPO ACTUAL HAY QUE HACER OTRAS VALIDACIONES
+  
+      --open cursor1 for
+        ---select sumass
+        --FROM
+        --(
+            --select eq.grupo, count(*) as sumass from equipo eq
+            --where eq.grupo=grrr
+            --group by eq.grupo
+        --);
+  
+  
+      --IF cursor1 IS NOT NULL THEN-- EL GRUPO TIENE SELECCIONES
+      
+          --Select sumass INTO cantidad
+          --FROM
+          --(
+            --select eq.grupo, count(*) as sumass from equipo eq
+            --where eq.grupo=grrr
+            --group by eq.grupo
+          --);
+  
+          --IF cantidad<4 THEN
+              --update equipo set GRUPO=grrr,DIRECTOR=direc
+              --WHERE COD_EQUIPO = codeq;
+              --mess :='CAMBIOS REALIZADO CON EXITO';
+          --ELSE
+              --mess := 'NO SE PUEDE CAMBIAR A ESE GRUPO YA QUE YA TIENE 4 EQUIPOS';
+          --END IF;
+  
+    
+        --ELSE--EL GRUPO NO TINE SELECCIONES
+            --update equipo set GRUPO=grrr,DIRECTOR=direc
+            --WHERE COD_EQUIPO = codeq;
+            --mess :='CAMBIOS REALIZADO CON EXITO';
+    
+        --END IF;
+      --ELSE
+        --update equipo set DIRECTOR=direc
+        --WHERE COD_EQUIPO = codeq;
+        --mess :='CAMBIOS REALIZADO CON EXITO';
+      --END IF;
+  
+END M_Equipo;
+
+
+---------------------------------------------------------------------------------------------
 ----------------------CRUD PAISES----------------------------------
 create or replace PROCEDURE set_pais(nom IN varchar2,codconf IN integer,mess OUT varchar2)
 AS
@@ -575,6 +694,75 @@ BEGIN
 END get_Arbitro;
 
 --------------------------CRUD JUJADORES----------------------------
+create or replace PROCEDURE set_jugador(
+cami IN INTEGER,
+fecnac IN DATE,
+esta IN FLOAT,
+pesso IN FLOAT,
+nom IN VARCHAR2,
+equip IN VARCHAR,
+posi IN VARCHAR2,
+codeq IN INTEGER,
+mess OUT VARCHAR2
+)
+AS
+cantidad integer;
+cursor cursor1(para1 INTEGER,para2 INTEGER) is select * from jugador where camiseta=para1 and cod_equipo=para2;
+
+BEGIN
+  cantidad:=0;
+  FOR jugador1 IN cursor1(cami,codeq) LOOP
+    cantidad:=1;
+  END LOOP;
+  
+  IF cantidad=1 THEN --HAY CAMISETA CON ESE NUMERO EN ESE EQUIPO
+    mess:='Error, ya hay un jugador con esa camiseta actualmente';
+      
+  ELSE --
+    mess:='Se ingreso correctamente';
+    INSERT INTO jugador values(cami,fecnac,esta,pesso,nom,equip,posi,codeq);
+    
+  END IF;
+  
+END set_jugador;
+
+create or replace procedure get_jugador(cami IN integer,codeq IN INTEGER,cursor1 OUT SYS_REFCURSOR)
+AS
+BEGIN
+  OPEN cursor1  FOR
+    select * from jugador where camiseta=cami and cod_equipo=codeq;
+END get_jugador;
+
+create or replace PROCEDURE M_jugador(
+cami IN INTEGER,
+fecnac IN DATE,
+esta IN FLOAT,
+pesso IN FLOAT,
+nom IN VARCHAR2,
+equip IN VARCHAR,
+posi IN VARCHAR2,
+codeq IN INTEGER
+)
+AS
+  
+BEGIN
+ update jugador
+  set fecha_nac=fecnac,estatura=esta,peso=pesso,nombre=nom,equipo=equip,posicion=posi
+  where camiseta=cami and cod_equipo=codeq;
+  
+END M_jugador;
+
+create or replace PROCEDURE E_jugador(
+cami IN INTEGER,
+codeq IN INTEGER
+)
+AS
+  
+BEGIN
+ delete from jugador
+  where camiseta=cami and cod_equipo=codeq;
+  
+END E_jugador;
 
 
 

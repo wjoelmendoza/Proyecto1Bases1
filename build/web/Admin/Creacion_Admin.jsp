@@ -84,12 +84,12 @@
                                             <span>Arbitros</span>
                                         </a>
                                     </li>
-                                    <li data-nav-item-id="page-6" class="box-nav-item js-nav-item pull-xs-left" id="btnarbitros">
+                                    <li data-nav-item-id="page-6" class="box-nav-item js-nav-item pull-xs-left" id="btnplantillas">
                                         <a href="#page-6">
                                             <span>Plantillas</span>
                                         </a>
                                     </li>
-                                    <li data-nav-item-id="page-7" class="box-nav-item js-nav-item pull-xs-left" id="btnarbitros">
+                                    <li data-nav-item-id="page-7" class="box-nav-item js-nav-item pull-xs-left" id="btnciudades">
                                         <a href="#page-7">
                                             <span>Ciudades</span>
                                         </a>
@@ -152,7 +152,7 @@
                                         </div>
                                         <br>
                                         <div id="confederadiv">
-                                            fgftftft
+                                           
                                         
                                     
                                         </div>
@@ -273,6 +273,26 @@
                                     <div id="divselesubmit">
                                         
                                     </div>
+                                    
+                                    <br>
+                                    <h5>Modificacion y Eliminacion</h5>
+                                    <br>
+                                    <input class="btn btn-success" id="btngetselecciones" type="button" value="Get" >
+                                    
+                                    <select id="3selectlselecciones">
+                                        
+                                    </select>
+                                    <br>
+                                    <br>
+                                    <div id="divseleccioninfo">
+                                        
+                                    </div>                       
+                                    <div id="divEMseleccion">
+                                        
+                                    </div>
+                                    
+                                    
+                                    
                                 </div>            
 
                             </section> <!-- #services -->
@@ -407,36 +427,42 @@
                                 </header>
                                 
                                 <div class="content-text">
-                                   <form id="formarbitros">
+                                   <form id="formjugadores">
                                         <table cellpadding="5" >
                                             <tr>
                                                 <td>Camiseta:</td>
-                                                <td><input id="nombrearbitro" type="number" maxlength="50" required></td>
+                                                <td><input id="camisetajugador" type="number" maxlength="50" required></td>
                                             </tr>
                                             <tr>
                                                 <td>Fecha Nacimiento:</td>
-                                                <td><input id="nombrearbitro" type="date" maxlength="50" required></td>
+                                                <td><input id="fechajugador" type="date" maxlength="50" required></td>
                                             </tr>
                                             <tr>
                                                 <td>Estatura:</td>
-                                                <td><input type="number" step="0.01"></td>
+                                                <td><input id="estaturajugador"  type="number" step="0.01"></td>
                                             </tr>
                                             <tr>
                                                 <td>Peso:</td>
-                                                <td><input type="number" step="0.01"></td>
+                                                <td><input id="pesojugador" type="number" step="0.01"></td>
                                             </tr>
                                             
                                             <tr>
                                                 <td>Nombre:</td>
-                                                <td><input id="nombrearbitro" type="text" maxlength="50" required></td>
+                                                <td><input id="nombrejugador" type="text" maxlength="50" required></td>
                                             </tr>
                                             <tr>
                                                 <td>Equipo:</td>
-                                                <td><input id="nombrearbitro" type="text" maxlength="50" required></td>
+                                                <td><input id="equipojugador" type="text" maxlength="50" required></td>
                                             </tr>
                                             <tr>
                                                 <td>Posicion:</td>
-                                                <td><input id="nombrearbitro" type="text" maxlength="50" required></td>
+                                                        <td><select id="posicionjugador">
+                                                                <option value="portero">portero</option>
+                                                                <option value="defensa">defensa</option>
+                                                                <option value="medio">medio</option>
+                                                                <option value="delantero">delantero</option>
+                                                            </select>
+                                                    </td>
                                             </tr>
                                             <tr>
                                                 <td>Seleccion:</td>
@@ -454,28 +480,31 @@
                                                 
                                                 <td></td>
                                                 <td>
-                                                <input class="btn btn-success" id="btnsubmitarbitro" type="button" value="Crear" >
+                                                <input class="btn btn-success" id="btnsubmitjugador" type="button" value="Crear" >
                                                 
                                                 </td>
                                             </tr>
                                         </table>
                                     </form>
-                                    <div id="divrespsubmitarbitro"></div>
+                                    <div id="divrespsubmitjugador"></div>
                                          
                                     <br>
                                     <h5>Modificacion y Eliminacion</h5>
                                     <br>
-                                    <input class="btn btn-success" id="btngetarbitros" type="button" value="Get" >
-                                    <input class="btn btn-success" id="btnshowarbitro" type="button" value="Show" >
-                                    <select id="5selectlarbitros">
+                                    <input class="btn btn-success" id="6btngetselecciones" type="button" value="Get Selecciones" >
+                                    
+                                    <select id="6selectlselecciones">
+                                        
+                                    </select>
+                                    <select id="6selectlcamisetas">
                                         
                                     </select>
                                     <br>
                                     <br>
-                                    <div id="divarbitroinfo">
+                                    <div id="divjugadorinfo">
                                         
                                     </div>                       
-                                    <div id="divEMarbitro">
+                                    <div id="divEMjugador">
                                         
                                     </div>
                                     
