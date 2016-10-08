@@ -14,6 +14,54 @@ BEGIN
   commit;
 END;
 
+--OBTENER LOS DATOS DEL USUARIO SEGUN CODIGO DE USUARIO
+
+CREATE OR REPLACE PROCEDURE get_d_usuario(
+  COD_USER_I IN INTEGER,
+  DATOS_I OUT SYS_REFCURSOR
+)
+IS
+BEGIN
+  OPEN DATOS_I FOR
+    SELECT U.NOMBRE, U.CORREO, U.FECHA_NAC, P.NOMBRE
+    FROM USUARIO U, PAIS P
+    WHERE U.COD_USUARIO = COD_USER_I AND U.COD_PAIS = P.COD_PAIS;
+END;
+
+--REFRESCAR USUARIO
+CREATE OR REPLACE PROCEDURE act_d_usuario(
+  cod_u_i IN INTEGER,
+  nombre_i IN VARCHAR2,
+  correo_i IN VARCHAR2,
+  fecha_i IN DATE,
+  p_nombre_i IN VARCHAR2,
+  c_correo_i IN VARCHAR2
+)
+IS
+  cod_pais_w INTEGER;
+BEGIN
+  SELECT S.COD_PAIS INTO cod_pais_w 
+  FROM PAIS S
+  WHERE S.NOMBRE = p_nombre_i;
+  
+  IF(c_correo_i ='si') THEN
+    UPDATE USUARIO U
+    SET
+      U.CORREO = correo_i,
+      U.NOMBRE = nombre_i,
+      U.FECHA_NAC = fecha_i,
+      U.COD_PAIS = cod_pais_w
+    WHERE U.COD_USUARIO = cod_u_i;
+  ELSE
+    UPDATE USUARIO U
+      SET
+        U.NOMBRE = nombre_i,
+        U.FECHA_NAC = fecha_i,
+        U.COD_PAIS = cod_pais_w
+      WHERE U.COD_USUARIO = cod_u_i;
+  END IF;
+END;
+
 --Lista los paises de la base
 CREATE OR REPLACE PROCEDURE listado_paises(
   paises OUT SYS_REFCURSOR

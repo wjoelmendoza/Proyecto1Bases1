@@ -17,16 +17,79 @@ public class User {
     
     private Conexion conexion;
     private Statement stm;
+    private int cod;
     private ResultSet rset;
     private String nombre ="";
+    private String fecha;
+    private String correo;
+    private String pais;
     private char rol;
     private CallableStatement clstm;
     
     public User(){}
     
+    public User(int cod,String nombre,String fecha, String correo, String pais){
+        this.cod=cod;
+        this.nombre=nombre;
+        this.fecha = fecha;
+        this.correo = correo;
+        this.pais= pais;
+    }
 
     private void nuevaConexion(){
         conexion = new Conexion();
+    }
+    
+    public void cargarDatos(int codUser){
+        conexion = new Conexion();
+        String tmpFecha;
+        String[] divFecha;
+        try {
+            clstm = conexion.getConexion().prepareCall("{ call get_d_usuario(?,?) }");
+            clstm.setInt(1, codUser);
+            clstm.registerOutParameter(2, OracleTypes.CURSOR);
+            clstm.execute();
+            rset = (ResultSet) clstm.getObject(2);
+            rset.next();
+            nombre = rset.getString(1);
+            correo = rset.getString(2);
+            tmpFecha = rset.getDate(3).toString();
+            divFecha = tmpFecha.split("-");
+            fecha = divFecha[2]+"/"+divFecha[1]+"/"+divFecha[0];
+            System.out.println(tmpFecha);
+            pais = rset.getString(4);
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public boolean cambiarDatos(String cambio, char formato){
+        nuevaConexion();
+        Date fecha;
+        String tmpf[];
+        System.out.println(formato);
+        if(formato=='a')
+        {
+            tmpf = this.fecha.split("/");
+            fecha = Date.valueOf(tmpf[2] +"-"+tmpf[1] +"-"+tmpf[0]);
+        }else{
+            fecha = Date.valueOf(this.fecha);
+        }
+        System.out.println(fecha.toString());
+        try {
+            clstm = conexion.getConexion().prepareCall("{ call act_d_usuario(?,?,?,?,?,?) }");
+            clstm.setInt(1,cod);
+            clstm.setString(2, nombre);
+            clstm.setString(3, correo);
+            clstm.setDate(4, fecha);
+            clstm.setString(5, pais);
+            clstm.setString(6, cambio);
+            return !clstm.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return false;
     }
     
     public int nuevoUsuario(String nombre, String fecha, String correo, char pago,
@@ -112,6 +175,17 @@ public class User {
         return rol;
     }
     
+    public String getFecha(){
+        return fecha;
+    }
+    
+    public String getCorreo(){
+        return correo;
+    }
+    
+    public String getPais(){
+        return pais;
+    }
     /**
      * llamar para verificar si el correo no le pertenece a otro usuario
      * que ya esta registrado

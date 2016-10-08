@@ -37,6 +37,10 @@
         <servlet-name>Reportes</servlet-name>
         <servlet-class>servlet.Reportes</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ActDatosU</servlet-name>
+        <servlet-class>servlet.ActDatosU</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
@@ -72,6 +76,10 @@
     <servlet-mapping>
         <servlet-name>Reportes</servlet-name>
         <url-pattern>/Reportes</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ActDatosU</servlet-name>
+        <url-pattern>/ActDatosU</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
