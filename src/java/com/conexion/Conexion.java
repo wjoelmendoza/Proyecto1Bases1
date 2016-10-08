@@ -17,7 +17,7 @@ public class Conexion {
     private final String cliente="jdbc:oracle:thin:@localhost:1521:XE";
     //private final String cliente="jdbc:oracle:thin:@localhost:1521:XE";
     private final String user = "PBD1";
-    private final String password = "123456";
+    private final String password = "123456789";
     
     public Conexion(){
         
